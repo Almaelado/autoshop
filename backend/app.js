@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -14,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const cors = require('cors');
 var corsOptions ={
-  origin:'http://localhost:3000', 
+  origin:'http://localhost:5173', //ezt írtam át localhost:3000-ről (dzsozef)
   credentials:true           
 }
 app.use(cors(corsOptions)); 
