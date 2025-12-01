@@ -1,0 +1,48 @@
+
+#Szures {
+  background-color: rgb(46, 44, 44);
+  width: 400px;
+  padding-right: 20px;
+  padding-left: 20px;
+  height: 816px;
+
+}
+
+.Hargita {
+  display: flex;
+}
+
+.auto-details-page #Szures {  
+  width: auto !important;
+  max-width: 400px !important; /* vagy amit akarsz */
+}
+
+.App {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  gap: 32px;
+  padding-right: 32px;
+  background: #fafbfc;
+}
+
+.autok-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#Szures p {
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#fo-oldal {
+  background-color: #fafbfc;
+  padding: 20px;
+  margin-top: 20px;
+}
