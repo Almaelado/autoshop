@@ -17,9 +17,9 @@ frontend.pnp.js
 /frontend/.env.test.local
 /frontend/.env.production.local
 
-/frontendnpm/-debug.log*
-/frontendyarn/-debug.log*
-/frontendyarn/-error.log*
+/frontend/npm/-debug.log*
+/frontend/yarn/-debug.log*
+/frontend/yarn/-error.log*
 
 /frontend/public/img
 
