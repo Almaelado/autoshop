@@ -132,4 +132,14 @@ Auto.szuro = async (sql, values) => {
         throw error;
     }
 };
+Auto.getCount = async () => {
+    try {
+        const [rows] = await pool.execute('SELECT COUNT(*) as count FROM osszes_auto');
+        return rows[0].count;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 module.exports = Auto;

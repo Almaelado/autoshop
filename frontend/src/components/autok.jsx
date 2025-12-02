@@ -7,6 +7,7 @@ import './Autok.css';
 const Autok = ({ szuro }) => {
     const [autok, setAutok] = useState([]);
     const [selectedAutoId, setSelectedAutoId] = useState(null);
+    const [szamlalo, setSzamlalo] = useState(0);
 
     const fetchAutok = async () => {
         try {
@@ -21,8 +22,11 @@ const Autok = ({ szuro }) => {
     };
     useEffect(() => {
         //console.log("Fetching autok with szuro:", szuro);
+        let szuroJson = JSON.parse(szuro);
+        szuroJson.offset = szamlalo;
+        szuro = JSON.stringify(szuroJson);
         fetchAutok(szuro);
-    }, [szuro]);
+    }, [szuro,szamlalo]);
 
     // If a car is selected, show its details
     if (selectedAutoId !== null) {
@@ -55,6 +59,18 @@ const Autok = ({ szuro }) => {
                         </Card.Body>
                     </Card>
                 ))}
+                <button onClick={()=>{
+                    setSzamlalo(szamlalo-30)
+                    if(szamlalo<0){
+                        setSzamlalo(0)
+                        alert("Nincs több előző oldal!")
+                    }
+                    }}>⬅️</button>
+                <button onClick={async()=>{
+                    setSzamlalo(szamlalo+30)
+                    const response = await http.get("/auto/count");
+                    console.log(response.data);
+                    }}>➡️</button>
             </div>
         </div>
     );
