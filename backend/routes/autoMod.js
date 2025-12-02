@@ -16,6 +16,6 @@ router.post('/admin/login', autoController.login);
 router.get('/valtok', autoController.getValto);
 router.get('/ajtok', autoController.getAjto);
 router.get('/szemelyek', autoController.getSzemely);
-
+router.get('/count', autoController.getCount);
 
 module.exports = router;
