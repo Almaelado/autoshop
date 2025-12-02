@@ -132,5 +132,4 @@ Auto.szuro = async (sql, values) => {
         throw error;
     }
 };
-
 module.exports = Auto;

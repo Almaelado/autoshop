@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const cors = require('cors');
 var corsOptions ={
-  origin:'http://localhost:5173', //ezt írtam át localhost:3000-ről (dzsozef)
+  origin:'http://localhost:5173',
   credentials:true           
 }
 app.use(cors(corsOptions)); 
