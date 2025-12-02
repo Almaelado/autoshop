@@ -253,7 +253,16 @@ const autoController={
             res.status(401).send('Érvénytelen belépés');
         }
 
-}
+},
+    async getCount(req, res) {
+        try {
+            const count =  await Auto.getCount();
+            res.status(200).json({count: count});
+        } catch (error) {   
+            console.error("Error fetching car count:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
     
 };
 module.exports=autoController;
