@@ -210,7 +210,7 @@ const autoController={
         if (whereClauses.length > 0) {
             sql += " WHERE " + whereClauses.join(" AND ");
         }
-        sql += ` Limit 10 Offset ${szuro_json.offset || 0}`; // Lapozás
+        sql += ` Limit 30 Offset ${szuro_json.offset || 0}`; // Lapozás
         console.log("Generated SQL:", sql);
         const results = await Auto.szuro(sql, values);
         res.status(200).json(results);
