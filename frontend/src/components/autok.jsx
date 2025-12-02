@@ -59,7 +59,18 @@ const Autok = ({ szuro }) => {
                         </Card.Body>
                     </Card>
                 ))}
-                <button onClick={()=>setSzamlalo(szamlalo+10)}>+10</button>
+                <button onClick={()=>{
+                    setSzamlalo(szamlalo-30)
+                    if(szamlalo<0){
+                        setSzamlalo(0)
+                        alert("Nincs több előző oldal!")
+                    }
+                    }}>⬅️</button>
+                <button onClick={async()=>{
+                    setSzamlalo(szamlalo+30)
+                    const response = await http.get("/auto/count");
+                    console.log(response.data);
+                    }}>➡️</button>
             </div>
         </div>
     );
