@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import http from "../http-common";
 import {useSearchParams} from "react-router-dom"; 
 
-export default function Szures({ value, onSearch }) {
+export default function Szures({ value, onSearch,nyitva,setNyitva }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
     // Állapotok
@@ -128,7 +128,10 @@ export default function Szures({ value, onSearch }) {
   };
 
   return (
-    <div id="Szures" >
+    <div id="Szures" className={nyitva ? "nyitva" : ""}>
+      <button className="bezar-btn" onClick={() => setNyitva(false)}>
+        ✖ Bezár
+      </button>
       <TypeaheadComponent
         label="Gyártányok"
         options={markaList}

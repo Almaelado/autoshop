@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
+  const [szuroNyitva, setSzuroNyitva] = useState(false);
   const [szur, setSzur] = useState(JSON.stringify({
             markak:[],      
             uzemanyag:[],       
@@ -42,11 +43,24 @@ function App() {
             path="/autok"
             element={
               <div className='Hargita'>
-                <Szures onSearch={(filter) => setSzur(filter)} />
+                <button 
+                  className="szuro-gomb" 
+                  onClick={() => setSzuroNyitva(prev => !prev)}
+                >
+                  Szűrő
+                </button>
+                {szuroNyitva && <div className="overlay" onClick={() => setSzuroNyitva(false)} />}
+                <Szures 
+                  onSearch={(filter) => setSzur(filter)} 
+                  nyitva={szuroNyitva}
+                  setNyitva={setSzuroNyitva}
+                />
+
                 <Autok szuro={szur} />
               </div>
             }
           />
+
           <Route path="/regisztracio" element={<Regisztracio />} />
           <Route path="/bejelentkez" element={<Bejelentkez />} />
         </Routes>
