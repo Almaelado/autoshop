@@ -162,7 +162,9 @@ Auto.validatePassword = async (email,password) =>{
     if(!user){
         return false;
     }
+    console.log(user.jelszo, password);
     const match = await bcrypt.compare(password,user.jelszo);
+    console.log("Password match:", match);
     return match ? user:false;
 }
 module.exports = Auto;
