@@ -228,26 +228,11 @@ const autoController={
     }
 },
     async login (req, res,next){   
-        const { username, password } = req.body;    
-        /*
-        const user = await authModel.validatePassword(username,password);
+        const { email, password } = req.body;    
+        const user = await Auto.validatePassword(email,password);
         console.log('Bejelentkezési kísérlet:', user);
-        if (user!= false){
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
-        res.cookie('refreshToken', refreshToken, 
-            { httpOnly: true, 
-              secure: false, // true ha HTTPS-t használsz
-              sameSite: 'Lax', // Strict, Lax, None
-              maxAge: 7*24*60*60*1000 // 7 nap
-            });
-        res.json({ accessToken });
 
-        } else {
-            res.status(401).send('Érvénytelen belépés');
-        }*/
-       if(username === 'admin' && password === 'password'){
-            const user = { username: 'admin', role: 'admin' }; 
+        if(user!= false){
             const accessToken = generateAccessToken(user);
             const refreshToken = generateRefreshToken(user);
             res.cookie('refreshToken', refreshToken, 
@@ -260,14 +245,27 @@ const autoController={
         } else {
             res.status(401).send('Érvénytelen belépés');
         }
-
-},
+    },
     async getCount(req, res) {
         try {
             const count =  await Auto.getCount();
             res.status(200).json({count: count});
         } catch (error) {   
             console.error("Error fetching car count:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async regisztracio(req,res){
+        try {
+            const body = req.body;
+            if(!body.email || !body.password){
+                res.status(404).send("Nincs email vagy jelszo");
+            }
+            else{
+                const response = await Auto.regisztracio(body);
+                res.status(200).json(response);
+            }
+        } catch (error) {
             res.status(500).json({ message: error.message });
         }
     },

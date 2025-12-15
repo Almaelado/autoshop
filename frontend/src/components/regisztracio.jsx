@@ -4,7 +4,6 @@ import { useState } from 'react';
 import http from '../http-common';
 
 export default function Regisztracio() {
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,9 +21,8 @@ export default function Regisztracio() {
         }
 
         try {
-            const response = await http.post('/user/register', { username, email, password });
+            const response = await http.post('/auto/regisztracio', { email, password });
             setSuccess("Sikeres regisztráció! Most be tudsz jelentkezni.");
-            setUsername('');
             setEmail('');
             setPassword('');
             setConfirmPassword('');
@@ -40,15 +38,6 @@ export default function Regisztracio() {
     return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="regUsername">
-                <Form.Label>Felhasználónév</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Írd be a felhasználóneved"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </Form.Group>
 
             <Form.Group controlId="regEmail">
                 <Form.Label>Email cím</Form.Label>
