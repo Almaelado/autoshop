@@ -11,7 +11,7 @@ export default function Bejelentkez() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await http.post('auto/login', { email, password });
+            const response = await http.post('auto/login', { email, password },{withCredentials:true});
             console.log("Bejelentkezés sikeres:", response.data);
             // Itt lehet token mentése vagy átirányítás pl.:
             // localStorage.setItem('userToken', response.data.token);
