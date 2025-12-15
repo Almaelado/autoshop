@@ -9,8 +9,11 @@ import Footer from './components/footer.jsx';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Profil from './components/profil.jsx';
 
 function App() {
+  const [belepett, setBelepett] = useState(false);
+  console.log("App belepett:", belepett);
   const [szuroNyitva, setSzuroNyitva] = useState(false);
   const [szur, setSzur] = useState(JSON.stringify({
             markak:[],      
@@ -28,7 +31,7 @@ function App() {
   
   return (
     <BrowserRouter>
-      <Menu />
+      <Menu belepett={belepett}/>
       <div className="App">
         <Routes>
           <Route
@@ -62,7 +65,8 @@ function App() {
           />
 
           <Route path="/regisztracio" element={<Regisztracio />} />
-          <Route path="/bejelentkez" element={<Bejelentkez />} />
+          <Route path="/bejelentkez" element={<Bejelentkez setBelepett={setBelepett} />} />
+          <Route path="/profile" element={<Profil />} />
         </Routes>
       </div>
       <Footer />

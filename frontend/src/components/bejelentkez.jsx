@@ -2,8 +2,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import http from '../http-common';
+import { useNavigate } from 'react-router-dom';
 
-export default function Bejelentkez() {
+
+export default function Bejelentkez( {setBelepett}) {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -13,9 +16,10 @@ export default function Bejelentkez() {
         try {
             const response = await http.post('auto/login', { email, password },{withCredentials:true});
             console.log("Bejelentkezés sikeres:", response.data);
+            setBelepett(true);
             // Itt lehet token mentése vagy átirányítás pl.:
             // localStorage.setItem('userToken', response.data.token);
-            window.location.href = '/';
+            navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError("Hibás felhasználónév vagy jelszó.");
