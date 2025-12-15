@@ -210,8 +210,16 @@ const autoController={
         if (whereClauses.length > 0) {
             sql += " WHERE " + whereClauses.join(" AND ");
         }
-        sql += ` Limit 30 Offset ${szuro_json.offset || 0}`; // Lapozás
+
+
+        if(szuro_json.limit && szuro_json.page){
+            sql += ` Limit ${szuro_json.limit} Offset ${(szuro_json.page-1)*1}`;
+        }
+        else{
+            sql += ` Limit 10 Offset 0`;
+        }
         console.log("Generated SQL:", sql);
+
         const results = await Auto.szuro(sql, values);
         res.status(200).json(results);
     } catch (error) {
@@ -220,26 +228,11 @@ const autoController={
     }
 },
     async login (req, res,next){   
-        const { username, password } = req.body;    
-        /*
-        const user = await authModel.validatePassword(username,password);
+        const { email, password } = req.body;    
+        const user = await Auto.validatePassword(email,password);
         console.log('Bejelentkezési kísérlet:', user);
-        if (user!= false){
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
-        res.cookie('refreshToken', refreshToken, 
-            { httpOnly: true, 
-              secure: false, // true ha HTTPS-t használsz
-              sameSite: 'Lax', // Strict, Lax, None
-              maxAge: 7*24*60*60*1000 // 7 nap
-            });
-        res.json({ accessToken });
 
-        } else {
-            res.status(401).send('Érvénytelen belépés');
-        }*/
-       if(username === 'admin' && password === 'password'){
-            const user = { username: 'admin', role: 'admin' }; 
+        if(user!= false){
             const accessToken = generateAccessToken(user);
             const refreshToken = generateRefreshToken(user);
             res.cookie('refreshToken', refreshToken, 
@@ -252,8 +245,7 @@ const autoController={
         } else {
             res.status(401).send('Érvénytelen belépés');
         }
-
-},
+    },
     async getCount(req, res) {
         try {
             const count =  await Auto.getCount();
@@ -263,6 +255,37 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-    
+    async regisztracio(req,res){
+        try {
+            const body = req.body;
+            if(!body.email || !body.password){
+                res.status(404).send("Nincs email vagy jelszo");
+            }
+            else{
+                const response = await Auto.regisztracio(body);
+                res.status(200).json(response);
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    refresh (req, res) {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+        return res.sendStatus(401); // nincs cookie
+    }
+
+    jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+        if (err) {
+            return res.sendStatus(403); // lejárt / hamis
+        }
+
+        const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+        const newAccessToken = generateAccessToken(payload);
+
+        res.json({ accessToken: newAccessToken });
+    });
+}
 };
 module.exports=autoController;

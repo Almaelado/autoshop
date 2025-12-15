@@ -12,10 +12,12 @@ router.get('/marka', autoController.getMarka);
 router.get('/szin', autoController.getSzin);
 router.get('/uzemanyag', autoController.getUzemanyag);
 router.post('/szuro', autoController.szuro);
-router.post('/admin/login', autoController.login);
+router.post('/login', autoController.login);
+router.post('/regisztracio',autoController.regisztracio);
 router.get('/valtok', autoController.getValto);
 router.get('/ajtok', autoController.getAjto);
 router.get('/szemelyek', autoController.getSzemely);
 router.get('/count', autoController.getCount);
+router.post('/refresh', autoController.refresh);
 
 module.exports = router;

@@ -4,18 +4,18 @@ import { useState } from 'react';
 import http from '../http-common';
 
 export default function Bejelentkez() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await http.post('/user/login', { username, password });
+            const response = await http.post('auto/login', { email, password },{withCredentials:true});
             console.log("Bejelentkezés sikeres:", response.data);
             // Itt lehet token mentése vagy átirányítás pl.:
             // localStorage.setItem('userToken', response.data.token);
-            // window.location.href = '/dashboard';
+            window.location.href = '/';
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError("Hibás felhasználónév vagy jelszó.");
@@ -28,13 +28,13 @@ export default function Bejelentkez() {
     return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="userUsername">
-                <Form.Label>Felhasználónév</Form.Label>
+            <Form.Group controlId="userEmail">
+                <Form.Label>Email</Form.Label>
                 <Form.Control
                     type="text"
-                    placeholder="Írd be a felhasználóneved"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Írd be az email címed"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
             </Form.Group>
 

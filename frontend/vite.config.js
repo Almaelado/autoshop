@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // A backend címe
+        target: 'http://localhost:80', // A backend címe
         changeOrigin: true, //A proxy átírja az Origin fejlécet a backend szerver URL-jére 
         secure: false, // HTTPS esetén állítsd true-ra, ha szükséges
         rewrite: (path) => path.replace(/^\/api/, ''), // Eltávolítja az /api előtagot küldéskor
