@@ -13,7 +13,7 @@ import Profil from './components/profil.jsx';
 
 function App() {
   const [belepett, setBelepett] = useState(false);
-  console.log("App belepett:", belepett);
+  const [accessToken, setAccessToken] = useState(null);
   const [szuroNyitva, setSzuroNyitva] = useState(false);
   const [szur, setSzur] = useState(JSON.stringify({
             markak:[],      
@@ -65,7 +65,7 @@ function App() {
           />
 
           <Route path="/regisztracio" element={<Regisztracio />} />
-          <Route path="/bejelentkez" element={<Bejelentkez setBelepett={setBelepett} />} />
+          <Route path="/bejelentkez" element={<Bejelentkez setBelepett={setBelepett} setAccessToken={setAccessToken} />} />
           <Route path="/profile" element={<Profil />} />
         </Routes>
       </div>

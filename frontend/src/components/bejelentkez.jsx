@@ -5,7 +5,7 @@ import http from '../http-common';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Bejelentkez( {setBelepett}) {
+export default function Bejelentkez( {setBelepett,setAccessToken} ) {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,10 +15,9 @@ export default function Bejelentkez( {setBelepett}) {
         e.preventDefault();
         try {
             const response = await http.post('auto/login', { email, password },{withCredentials:true});
-            console.log("Bejelentkezés sikeres:", response.data);
+            //console.log("Bejelentkezés sikeres:", response.data);
+            setAccessToken(response.data.accessToken);
             setBelepett(true);
-            // Itt lehet token mentése vagy átirányítás pl.:
-            // localStorage.setItem('userToken', response.data.token);
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
