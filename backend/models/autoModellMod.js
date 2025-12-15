@@ -142,4 +142,27 @@ Auto.getCount = async () => {
         throw error;
     }
 };
+Auto.regisztracio = async (data) =>{
+    try {
+        const hashedPassword = await bcrypt.hash(data.password,10);
+        const  [result] = await pool.execute('insert into vevok (jelszo,email) VALUES(?,?)',[hashedPassword,data.email]);
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.keresEmail = async(email) =>{
+    const [rows] = await pool.query("Select * from vevok where email = ?",[email])
+    return rows[0];
+}
+Auto.validatePassword = async (email,password) =>{
+    const user = await Auto.keresEmail(email);
+    console.log(user);
+    if(!user){
+        return false;
+    }
+    const match = await bcrypt.compare(password,user.jelszo);
+    return match ? user:false;
+}
 module.exports = Auto;
