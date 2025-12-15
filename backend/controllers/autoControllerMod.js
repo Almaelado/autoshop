@@ -270,22 +270,29 @@ const autoController={
         }
     },
     refresh (req, res) {
-    const refreshToken = req.cookies.refreshToken;
+        const refreshToken = req.cookies.refreshToken;
 
-    if (!refreshToken) {
-        return res.sendStatus(401); // nincs cookie
-    }
-
-    jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
-        if (err) {
-            return res.sendStatus(403); // lejárt / hamis
+        if (!refreshToken) {
+            return res.sendStatus(401); // nincs cookie
         }
 
-        const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
-        const newAccessToken = generateAccessToken(payload);
+        jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // lejárt / hamis
+            }
 
-        res.json({ accessToken: newAccessToken });
-    });
-}
+            const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+            const newAccessToken = generateAccessToken(payload);
+
+            res.json({ accessToken: newAccessToken });
+        });
+    },
+    profil (req, res) {
+            const user = req.user;  // req.user-t az authenticateToken middleware állítja be
+        res.json({
+            message: 'Profil adatok lekérve!',
+            user
+        });
+    }
 };
 module.exports=autoController;

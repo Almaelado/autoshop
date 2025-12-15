@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var authenticateToken = require('../middleware/authAuto');
 var autoController = require('../controllers/autoControllerMod');
 
 router.get('/minden', autoController.osszes);
@@ -19,5 +19,6 @@ router.get('/ajtok', autoController.getAjto);
 router.get('/szemelyek', autoController.getSzemely);
 router.get('/count', autoController.getCount);
 router.post('/refresh', autoController.refresh);
+router.get('/profil',authenticateToken,autoController.profil);
 
 module.exports = router;
