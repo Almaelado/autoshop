@@ -16,74 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Temporary view structure for view `1feladat`
---
-
-DROP TABLE IF EXISTS `1feladat`;
-/*!50001 DROP VIEW IF EXISTS `1feladat`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `1feladat` AS SELECT 
- 1 AS `nev`,
- 1 AS `szamlaid`,
- 1 AS `SUM(autok.ar)`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `2feladat`
---
-
-DROP TABLE IF EXISTS `2feladat`;
-/*!50001 DROP VIEW IF EXISTS `2feladat`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `2feladat` AS SELECT 
- 1 AS `nev`,
- 1 AS `COUNT(autok.id)`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `3feladat`
---
-
-DROP TABLE IF EXISTS `3feladat`;
-/*!50001 DROP VIEW IF EXISTS `3feladat`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `3feladat` AS SELECT 
- 1 AS `nev`,
- 1 AS `szamlaid`,
- 1 AS `SUM(autok.ar)`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `4feladat`
---
-
-DROP TABLE IF EXISTS `4feladat`;
-/*!50001 DROP VIEW IF EXISTS `4feladat`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `4feladat` AS SELECT 
- 1 AS `nev`,
- 1 AS `COUNT(autok.id)`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `5feladat`
---
-
-DROP TABLE IF EXISTS `5feladat`;
-/*!50001 DROP VIEW IF EXISTS `5feladat`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `5feladat` AS SELECT 
- 1 AS `nev`,
- 1 AS `szamlaid`,
- 1 AS `SUM(autok.ar)`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `autok`
 --
 
@@ -93,7 +25,7 @@ DROP TABLE IF EXISTS `autok`;
 CREATE TABLE `autok` (
   `id` int NOT NULL AUTO_INCREMENT,
   `marka_id` int NOT NULL,
-  `model` varchar(100) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `model` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   `valto_id` int NOT NULL,
   `kiadasiev` int NOT NULL,
   `uzemanyag_id` int NOT NULL,
@@ -104,7 +36,7 @@ CREATE TABLE `autok` (
   `szemelyek` int NOT NULL,
   `szin_id` int NOT NULL,
   `irat` tinyint(1) NOT NULL DEFAULT '1',
-  `leiras` varchar(200) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `leiras` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_autok_marka_id` (`marka_id`),
   KEY `FK_autok_valto_id` (`valto_id`),
@@ -136,7 +68,7 @@ DROP TABLE IF EXISTS `fizmodo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `fizmodo` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `mod` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `mod` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -160,7 +92,7 @@ DROP TABLE IF EXISTS `marka`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `marka` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `nev` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_marka_id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
@@ -195,7 +127,9 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `motormeret`,
  1 AS `kiadasiev`,
  1 AS `üzemanyag`,
- 1 AS `váltó`*/;
+ 1 AS `váltó`,
+ 1 AS `szemelyek`,
+ 1 AS `irat`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -223,7 +157,6 @@ CREATE TABLE `rendeles` (
 
 LOCK TABLES `rendeles` WRITE;
 /*!40000 ALTER TABLE `rendeles` DISABLE KEYS */;
-INSERT INTO `rendeles` VALUES (1,1,1),(2,1,2),(3,2,8),(4,2,100),(5,3,37);
 /*!40000 ALTER TABLE `rendeles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +168,7 @@ DROP TABLE IF EXISTS `szamla`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `szamla` (
-  `szamlaid` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `szamlaid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   `rendelesid` int NOT NULL,
   `felhasz_id` int NOT NULL,
   `kelt_datum` date NOT NULL,
@@ -244,8 +177,8 @@ CREATE TABLE `szamla` (
   `fiz_id` int NOT NULL,
   PRIMARY KEY (`szamlaid`),
   UNIQUE KEY `rendelesid` (`rendelesid`),
-  KEY `FK_szamla_felhasz_id` (`felhasz_id`),
   KEY `FK_szamla_fiz_id2` (`fiz_id`),
+  KEY `FK_szamla_felhasz_id` (`felhasz_id`),
   CONSTRAINT `FK_szamla_felhasz_id` FOREIGN KEY (`felhasz_id`) REFERENCES `vevok` (`id`),
   CONSTRAINT `FK_szamla_fiz_id2` FOREIGN KEY (`fiz_id`) REFERENCES `fizmodo` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
@@ -257,7 +190,6 @@ CREATE TABLE `szamla` (
 
 LOCK TABLES `szamla` WRITE;
 /*!40000 ALTER TABLE `szamla` DISABLE KEYS */;
-INSERT INTO `szamla` VALUES ('20251020-1',1,1,'2025-10-13','2025-10-14','2025-10-31',1),('20251024-1',2,3,'2025-10-24','2025-10-31','2025-10-24',2),('20251130-1',3,3,'2025-11-30','2025-11-30','2025-11-30',1);
 /*!40000 ALTER TABLE `szamla` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,7 +202,7 @@ DROP TABLE IF EXISTS `szin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `szin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `nev` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -294,7 +226,7 @@ DROP TABLE IF EXISTS `uzemanyag`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `uzemanyag` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `nev` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -318,7 +250,7 @@ DROP TABLE IF EXISTS `valtok`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `valtok` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `nev` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -342,12 +274,16 @@ DROP TABLE IF EXISTS `vevok`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vevok` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nev` varchar(70) COLLATE utf8mb4_hungarian_ci NOT NULL,
-  `lakcim` varchar(150) COLLATE utf8mb4_hungarian_ci NOT NULL,
-  `adoszam` varchar(30) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `nev` varchar(70) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `lakcim` varchar(150) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `adoszam` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `jelszo` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
   UNIQUE KEY `felhasznalonev` (`nev`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,117 +292,9 @@ CREATE TABLE `vevok` (
 
 LOCK TABLES `vevok` WRITE;
 /*!40000 ALTER TABLE `vevok` DISABLE KEYS */;
-INSERT INTO `vevok` VALUES (1,'Kiss Pál','5400 Mezőtúr Petőfi tér 1','3292611'),(2,'Cserepes Dávid','5420 Mordor Tűzhányó út 1',NULL),(3,'Kiss Zsolt','4172 Biharnagybajom Réz út 3','5492134');
+INSERT INTO `vevok` VALUES (1,NULL,NULL,NULL,'$2b$10$JNXI3sK1LpyMdDhhMWefOe7yLuLoPSGkPMvA6a5wtUlrfjJEVGnWS','admin',1),(8,NULL,NULL,NULL,'$2b$10$IwekjZEsrl1WEUqpNS0DT.Xt8/plMshC0O5PEIUsRei.hRDT18l8q','musza202@gmail.com',0);
 /*!40000 ALTER TABLE `vevok` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary view structure for view `view5`
---
-
-DROP TABLE IF EXISTS `view5`;
-/*!50001 DROP VIEW IF EXISTS `view5`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `view5` AS SELECT 
- 1 AS `Név`,
- 1 AS `lakcim`,
- 1 AS `adoszam`,
- 1 AS `kelt_datum`,
- 1 AS `model`,
- 1 AS `ar`,
- 1 AS `szamlaid`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Final view structure for view `1feladat`
---
-
-/*!50001 DROP VIEW IF EXISTS `1feladat`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `1feladat` AS select `vevok`.`nev` AS `nev`,`szamla`.`szamlaid` AS `szamlaid`,sum(`autok`.`ar`) AS `SUM(autok.ar)` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) group by `szamla`.`szamlaid` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `2feladat`
---
-
-/*!50001 DROP VIEW IF EXISTS `2feladat`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `2feladat` AS select `marka`.`nev` AS `nev`,count(`autok`.`id`) AS `COUNT(autok.id)` from ((((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) where (month(`szamla`.`kelt_datum`) = 10) group by `marka`.`nev` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `3feladat`
---
-
-/*!50001 DROP VIEW IF EXISTS `3feladat`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `3feladat` AS select `vevok`.`nev` AS `nev`,`szamla`.`szamlaid` AS `szamlaid`,sum(`autok`.`ar`) AS `SUM(autok.ar)` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) where (`vevok`.`nev` = 'Kiss Zsolt') group by `szamla`.`szamlaid` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `4feladat`
---
-
-/*!50001 DROP VIEW IF EXISTS `4feladat`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `4feladat` AS select `marka`.`nev` AS `nev`,count(`autok`.`id`) AS `COUNT(autok.id)` from ((((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) where (`marka`.`nev` like '%Honda%') group by `marka`.`nev` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `5feladat`
---
-
-/*!50001 DROP VIEW IF EXISTS `5feladat`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `5feladat` AS select `vevok`.`nev` AS `nev`,`szamla`.`szamlaid` AS `szamlaid`,sum(`autok`.`ar`) AS `SUM(autok.ar)` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) group by `szamla`.`szamlaid` order by sum(`autok`.`ar`) desc limit 1 */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `osszes_auto`
@@ -481,25 +309,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `osszes_auto` AS select `autok`.`id` AS `id`,`marka`.`nev` AS `nev`,`szin`.`nev` AS `szin_nev`,`autok`.`model` AS `model`,`autok`.`ajtoszam` AS `ajtoszam`,`autok`.`ar` AS `ar`,`autok`.`km` AS `km`,`autok`.`motormeret` AS `motormeret`,`autok`.`kiadasiev` AS `kiadasiev`,`uzemanyag`.`nev` AS `üzemanyag`,`valtok`.`nev` AS `váltó` from ((((`autok` join `szin` on((`autok`.`szin_id` = `szin`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) join `uzemanyag` on((`autok`.`uzemanyag_id` = `uzemanyag`.`id`))) join `valtok` on((`autok`.`valto_id` = `valtok`.`id`))) order by `autok`.`id` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `view5`
---
-
-/*!50001 DROP VIEW IF EXISTS `view5`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view5` AS select `vevok`.`nev` AS `Név`,`vevok`.`lakcim` AS `lakcim`,`vevok`.`adoszam` AS `adoszam`,`szamla`.`kelt_datum` AS `kelt_datum`,`autok`.`model` AS `model`,`autok`.`ar` AS `ar`,`szamla`.`szamlaid` AS `szamlaid` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) */;
+/*!50001 VIEW `osszes_auto` AS select `autok`.`id` AS `id`,`marka`.`nev` AS `nev`,`szin`.`nev` AS `szin_nev`,`autok`.`model` AS `model`,`autok`.`ajtoszam` AS `ajtoszam`,`autok`.`ar` AS `ar`,`autok`.`km` AS `km`,`autok`.`motormeret` AS `motormeret`,`autok`.`kiadasiev` AS `kiadasiev`,`uzemanyag`.`nev` AS `üzemanyag`,`valtok`.`nev` AS `váltó`,`autok`.`szemelyek` AS `szemelyek`,`autok`.`irat` AS `irat` from ((((`autok` join `szin` on((`autok`.`szin_id` = `szin`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) join `uzemanyag` on((`autok`.`uzemanyag_id` = `uzemanyag`.`id`))) join `valtok` on((`autok`.`valto_id` = `valtok`.`id`))) order by `autok`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -513,4 +323,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-10  9:53:32
+-- Dump completed on 2025-12-15 14:25:01

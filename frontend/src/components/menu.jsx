@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import NavDropdown from 'react-bootstrap/NavDropdown';
-
+import http from "../http-common";
 
 export default function Menu({belepett}) {
   return (
@@ -19,7 +19,12 @@ export default function Menu({belepett}) {
               {belepett ? (
                 <NavDropdown title="Saját fiók" id="basic-nav-dropdown" className="ms-auto">
                   <NavDropdown.Item as={Link} to="/profile">Profilom</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/logout">Kijelentkezés</NavDropdown.Item>
+                  <NavDropdown.Item 
+                    onClick={async()=>{
+                      await http.post("/auto/logout", {}, { withCredentials: true });
+                      window.location.href="/";
+                      
+                  }}>Kijelentkezés</NavDropdown.Item>
                 </NavDropdown>
               ) : (
               <NavDropdown title="Bejelentkezés" id="basic-nav-dropdown" className="ms-auto">

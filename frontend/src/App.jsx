@@ -10,6 +10,7 @@ import { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Profil from './components/profil.jsx';
+import http from "./http-common";
 
 function App() {
   const [belepett, setBelepett] = useState(false);
@@ -32,19 +33,27 @@ function App() {
         useEffect(() => {
           const refreshAccessToken = async () => {
             try {
-              console.log("Frissítés token...");
-              const response = await http.get('/auto/refresh', { withCredentials: true });
-              console.log("Új access token:", response.data.accessToken);
-              setAccessToken(response.data.accessToken);
-              setBelepett(true);
+              const response = await http.post('/auto/refresh', {}, { withCredentials: true });
+
+              if (response.data?.accessToken) {
+                setAccessToken(response.data.accessToken);
+                setBelepett(true);
+              } else {
+                // nincs token, tehát user nem bejelentkezett
+                setAccessToken(null);
+                setBelepett(false);
+              }
             } catch (err) {
+              console.error(err);
               setAccessToken(null);
               setBelepett(false);
             }
+
           };
 
           refreshAccessToken();
         }, []);
+
 
 
   return (

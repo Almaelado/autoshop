@@ -273,7 +273,7 @@ const autoController={
         const refreshToken = req.cookies.refreshToken;
 
         if (!refreshToken) {
-            return res.sendStatus(401); // nincs cookie
+            return res.sendStatus(204); // nincs cookie
         }
 
         jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
@@ -287,7 +287,7 @@ const autoController={
             res.json({ accessToken: newAccessToken });
         });
     },
-    profil (req, res) {
+    profil (req, res) { 
             const user = req.user;  // req.user-t az authenticateToken middleware állítja be
             console.log("Profil lekérdezés user:", user);
         res.json(user);
