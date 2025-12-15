@@ -18,5 +18,6 @@ router.get('/valtok', autoController.getValto);
 router.get('/ajtok', autoController.getAjto);
 router.get('/szemelyek', autoController.getSzemely);
 router.get('/count', autoController.getCount);
+router.post('/refresh', autoController.refresh);
 
 module.exports = router;

@@ -269,6 +269,23 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-    
+    refresh (req, res) {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+        return res.sendStatus(401); // nincs cookie
+    }
+
+    jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+        if (err) {
+            return res.sendStatus(403); // lejárt / hamis
+        }
+
+        const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+        const newAccessToken = generateAccessToken(payload);
+
+        res.json({ accessToken: newAccessToken });
+    });
+}
 };
 module.exports=autoController;
