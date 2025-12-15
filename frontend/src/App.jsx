@@ -6,7 +6,7 @@ import Szures from './components/szures.jsx';
 import Menu from './components/menu.jsx';
 import Kezdolap from './components/kezdolap.jsx';
 import Footer from './components/footer.jsx';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Profil from './components/profil.jsx';
@@ -29,6 +29,24 @@ function App() {
             szemely:[]                         
         }));
   
+        useEffect(() => {
+          const refreshAccessToken = async () => {
+            try {
+              console.log("Frissítés token...");
+              const response = await http.get('/auto/refresh', { withCredentials: true });
+              console.log("Új access token:", response.data.accessToken);
+              setAccessToken(response.data.accessToken);
+              setBelepett(true);
+            } catch (err) {
+              setAccessToken(null);
+              setBelepett(false);
+            }
+          };
+
+          refreshAccessToken();
+        }, []);
+
+
   return (
     <BrowserRouter>
       <Menu belepett={belepett}/>
@@ -66,7 +84,7 @@ function App() {
 
           <Route path="/regisztracio" element={<Regisztracio />} />
           <Route path="/bejelentkez" element={<Bejelentkez setBelepett={setBelepett} setAccessToken={setAccessToken} />} />
-          <Route path="/profile" element={<Profil />} />
+          <Route path="/profile" element={<Profil accessToken={accessToken}/>} />
         </Routes>
       </div>
       <Footer />

@@ -289,10 +289,13 @@ const autoController={
     },
     profil (req, res) {
             const user = req.user;  // req.user-t az authenticateToken middleware állítja be
-        res.json({
-            message: 'Profil adatok lekérve!',
-            user
-        });
+            console.log("Profil lekérdezés user:", user);
+        res.json(user);
+    },
+    logout (req, res) {
+        res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
+        res.sendStatus(204);
     }
+
 };
 module.exports=autoController;
