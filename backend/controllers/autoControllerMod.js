@@ -241,7 +241,7 @@ const autoController={
                   sameSite: 'Lax', // Strict, Lax, None
                   maxAge: 7*24*60*60*1000 // 7 nap
                 });
-            res.json({ accessToken });
+            res.json({ accessToken, user });
         } else {
             res.status(401).send('Érvénytelen belépés');
         }
@@ -283,8 +283,8 @@ const autoController={
 
             const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
             const newAccessToken = generateAccessToken(payload);
-
-            res.json({ accessToken: newAccessToken });
+            console.log(payload);
+            res.json({ accessToken: newAccessToken , user: payload });
         });
     },
     profil (req, res) { 
