@@ -57,7 +57,6 @@ export default function FoOldal() {
               <Card.Img
                 variant="top"
                 src={`/img/${auto.id}_1.jpg`}
-                onError={(e) => (e.target.src = "https://via.placeholder.com/300x200")}
               />
 
               <Card.Body>
