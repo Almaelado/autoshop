@@ -20,5 +20,5 @@ router.get('/szemelyek', autoController.getSzemely);
 router.get('/count', autoController.getCount);
 router.post('/refresh', autoController.refresh);
 router.get('/profil',authenticateToken,autoController.profil);
-
+router.post('/logout', autoController.logout);
 module.exports = router;
