@@ -241,7 +241,7 @@ const autoController={
                   sameSite: 'Lax', // Strict, Lax, None
                   maxAge: 7*24*60*60*1000 // 7 nap
                 });
-            res.json({ accessToken });
+            res.json({ accessToken, user });
         } else {
             res.status(401).send('Érvénytelen belépés');
         }
@@ -270,22 +270,32 @@ const autoController={
         }
     },
     refresh (req, res) {
-    const refreshToken = req.cookies.refreshToken;
+        const refreshToken = req.cookies.refreshToken;
 
-    if (!refreshToken) {
-        return res.sendStatus(401); // nincs cookie
-    }
-
-    jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
-        if (err) {
-            return res.sendStatus(403); // lejárt / hamis
+        if (!refreshToken) {
+            return res.sendStatus(204); // nincs cookie
         }
 
-        const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
-        const newAccessToken = generateAccessToken(payload);
+        jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // lejárt / hamis
+            }
 
-        res.json({ accessToken: newAccessToken });
-    });
-}
+            const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+            const newAccessToken = generateAccessToken(payload);
+            console.log(payload);
+            res.json({ accessToken: newAccessToken , user: payload });
+        });
+    },
+    profil (req, res) { 
+            const user = req.user;  // req.user-t az authenticateToken middleware állítja be
+            console.log("Profil lekérdezés user:", user);
+        res.json(user);
+    },
+    logout (req, res) {
+        res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
+        res.sendStatus(204);
+    }
+
 };
 module.exports=autoController;
