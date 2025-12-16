@@ -4,6 +4,7 @@ import Bejelentkez from './components/bejelentkez.jsx';
 import Regisztracio from './components/regisztracio.jsx';
 import Szures from './components/szures.jsx';
 import Menu from './components/menu.jsx';
+import Reszletek from './components/autokreszletek.jsx';
 import Kezdolap from './components/kezdolap.jsx';
 import Footer from './components/footer.jsx';
 import { useState } from 'react';
@@ -63,6 +64,7 @@ function App() {
 
           <Route path="/regisztracio" element={<Regisztracio />} />
           <Route path="/bejelentkez" element={<Bejelentkez />} />
+          <Route path="/auto/:autoId" element={<Reszletek />} />
         </Routes>
       </div>
       <Footer />
