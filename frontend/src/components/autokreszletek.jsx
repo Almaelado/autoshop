@@ -1,117 +1,90 @@
 import { useState, useEffect } from "react";
-import http from "../http-common";
-import { Container, Row, Col, Carousel } from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
+import http from "../http-common.js";
+import { Carousel } from "react-bootstrap";
 
-export default function Autokreszletek({ autoId }) {
-  const [auto, setAuto] = useState(null);
-  const [error, setError] = useState(null);
-  const [kepek, setKepek] = useState([]);
+export default function Autokreszletek() {
+    const { autoId } = useParams(); // az URL-ből jön
+    const navigate = useNavigate();
+    const [auto, setAuto] = useState(null);
+    const [kepek, setKepek] = useState([]);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchAutoDetails = async () => {
-      try {
-        const response = await http.get(`/auto/egy/${autoId}`);
-        setAuto(response.data);
-      } catch (error) {
-        setError("Nem sikerült betölteni az autó adatait.");
-      }
-    };
-    fetchAutoDetails();
-  }, [autoId]);
+    useEffect(() => {
+        if (!autoId) return;
 
+        const fetchAuto = async () => {
+            try {
+                const res = await http.get(`auto/egy/${autoId}`);
+                setAuto(res.data);
+            } catch (err) {
+                console.error(err);
+                setError("Nem sikerült betölteni az autót");
+            }
+        };
+        fetchAuto();
+    }, [autoId]);
 
-  // Képlista generálás ID alapján
-  useEffect(() => {
-  if (!autoId) return;
+    useEffect(() => {
+        if (!autoId) return;
+        const maxImages = 20;
+        const promises = [];
+        for (let i = 1; i <= maxImages; i++) {
+            const path = `/img/${autoId}_${i}.jpg`;
+            promises.push(new Promise(resolve => {
+                const img = new Image();
+                img.src = path;
+                img.onload = () => resolve(path);
+                img.onerror = () => resolve(null);
+            }));
+        }
+        Promise.all(promises).then(results => {
+            setKepek(results.filter(k => k !== null));
+        });
+    }, [autoId]);
 
-  const maxImages = 20;
-  const promises = [];
+    if (error) return <div>{error}</div>;
+    if (!auto) return <div>Betöltés...</div>;
 
-  for (let i = 1; i <= maxImages; i++) {
-    const path = `/img/${autoId}_${i}.jpg`;
+    return (
+  <div className="auto-details-fullpage">
+    <div className="auto-details-page">
+      <button className="close-btn" onClick={() => navigate(-1)}>X</button>
 
-    const p = new Promise(resolve => {
-      const img = new Image();
-      img.src = path;
-
-      img.onload = () => resolve(path);
-      img.onerror = () => resolve(null); // ha nincs ilyen kép
-    });
-
-    promises.push(p);
-  }
-
-  Promise.all(promises).then(results => {
-    const valid = results.filter(k => k !== null);
-    setKepek(valid);
-  });
-
-}, [autoId]);
-
-
-  if (error) return <div style={{ color: "red" }}>{error}</div>;
-  if (!auto || kepek.length === 0) return <div>Betöltés...</div>;
-
-
-  return (
-  <div className="auto-details-page">
-    <Container className="mt-4">
-
-      <Row className="justify-content-center align-items-start">
-
-        {/* BAL OLDAL – Carousel */}
-        <Col md={6} className="mb-4">
-          <Carousel interval={null} indicators={true} controls={true}>
+      {/* Carousel */}
+      {kepek.length > 0 && (
+        <div className="carousel-container">
+          <Carousel interval={null} indicators controls>
             {kepek.map((kep, index) => (
               <Carousel.Item key={index}>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "600px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "#f5f5f5",
-                    overflow: "hidden",
-                  }}
-                >
-                  <img
-                    src={kep}
-                    alt={`Kép ${index + 1}`}
-                    style={{
-                      maxHeight: "100%",
-                      maxWidth: "100%",
-                      objectFit: "contain",
-                    }}
-                    className="d-block"
-                  />
+                <div className="carousel-img-wrapper">
+                  <img src={kep} alt={`Kép ${index + 1}`} className="carousel-img" />
                 </div>
               </Carousel.Item>
             ))}
           </Carousel>
-        </Col>
+        </div>
+      )}
 
-        {/* JOBB OLDAL – Autó adatok */}
-        <Col md={4} className="text-center">
-          <h2 className="mb-3">
-            {auto.nev} {auto.model}
-          </h2>
-
-          <p className="text-muted">{auto.leírás}</p>
-
-          <ul className="list-unstyled mt-4">
-            <li><strong>Szín:</strong> {auto.szin_nev}</li>
-            <li><strong>Km:</strong> {auto.km.toLocaleString()} km</li>
-            <li>
-              <strong>Ár:</strong>{" "}
-              {auto.ar.toLocaleString()} Ft
-            </li>
-          </ul>
-        </Col>
-
-      </Row>
-
-    </Container>
+      {/* Autó adatok */}
+      <div className="auto-info">
+        <h2>{auto.nev} {auto.model}</h2>
+        <p>{auto.leírás}</p>
+        <div className="auto-specs">
+          <div>
+            <div className="label">Szín</div>
+            <div className="value">{auto.szin_nev}</div>
+          </div>
+          <div>
+            <div className="label">Kilométer</div>
+            <div className="value">{auto.km.toLocaleString()} km</div>
+          </div>
+          <div>
+            <div className="label">Ár</div>
+            <div className="value">{auto.ar.toLocaleString()} Ft</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-);
-}
+)};
