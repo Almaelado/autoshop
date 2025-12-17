@@ -71,6 +71,7 @@ const Autok = ({ szuro }) => {
                         className="autok-card"
                         key={auto.id}
                         ref={autok.length === index + 1 ? lastItemRef : null}
+                        onClick={() => navigate(`/auto/${auto.id}`)}
                     >
                         <Card.Img variant="top" src={`/img/${auto.id}_1.jpg`} />
                         <Card.Body>
@@ -80,11 +81,9 @@ const Autok = ({ szuro }) => {
                         <ListGroup className="list-group-flush">
                             <ListGroup.Item>Szín: {auto.szin_nev}</ListGroup.Item>
                             <ListGroup.Item>{auto.km} km</ListGroup.Item>
-                            <ListGroup.Item>Ár: {auto.ar} Ft</ListGroup.Item>
                         </ListGroup>
                         <Card.Body>
-                            {/* Navigálás a részletekhez */}
-                            <button onClick={() => navigate(`/auto/${auto.id}`)}>Részletek</button>
+                            <Card.Text >Ár: {auto.ar} Ft</Card.Text>
                         </Card.Body>
                     </Card>
                 ))}
