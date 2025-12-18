@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common.js";
 import { Carousel } from "react-bootstrap";
 
-export default function Autokreszletek() {
+export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
     const { autoId } = useParams(); // az URL-ből jön
     const navigate = useNavigate();
     const [auto, setAuto] = useState(null);
@@ -11,6 +11,9 @@ export default function Autokreszletek() {
     const [error, setError] = useState(null);
     const [ajanlott, setAjanlott] = useState([]); // ajánlott autók
     const [loading, setLoading] = useState(true); // betöltés animáció
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [erdekelLoading, setErdekelLoading] = useState(false);
+    const [erdekelSuccess, setErdekelSuccess] = useState(false);
 
     useEffect(() => {
         if (!autoId) return;
@@ -57,6 +60,9 @@ export default function Autokreszletek() {
                 const res = await http.get(`auto/ajanlott/${auto.nev}?kiveve=${autoId}`);
                 setAjanlott(res.data || []);
                 console.log('Ajánlott autók válasz:', res.data);
+                if (!res.data || res.data.length === 0) {
+                  console.warn('Nincs ajánlott autó találat! Ellenőrizd a backend választ és az adatbázist.');
+                }
             } catch (err) {
                 setAjanlott([]);
                 console.error('Ajánlott autók hiba:', err);
@@ -64,6 +70,36 @@ export default function Autokreszletek() {
         };
         fetchAjanlott();
     }, [auto, autoId]);
+
+    const handleErdekel = async () => {
+      if (!accessToken) {
+        if (onLoginModalOpen) {
+          onLoginModalOpen();
+        } else {
+          setShowLoginPrompt(true);
+        }
+        return;
+      }
+      setErdekelLoading(true);
+      setShowLoginPrompt(false);
+      setErdekelSuccess(false);
+      try {
+        await http.post(
+          "/auto/erdekel",
+          { autoId: Number(autoId) },
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+        setErdekelSuccess(true);
+      } catch (err) {
+        setErdekelSuccess(false);
+        alert("Hiba történt az érdeklődés mentésekor!");
+      } finally {
+        setErdekelLoading(false);
+      }
+    };
 
     if (error) return <div>{error}</div>;
     if (loading) return (
@@ -77,7 +113,20 @@ export default function Autokreszletek() {
     return (
   <div className="auto-details-fullpage">
     <div className="auto-details-page">
-      <button className="close-btn" onClick={() => navigate(-1)}>X</button>
+      <button className="close-btn" onClick={() => navigate('/autok')}>X</button>
+
+      {/* Érdekel gomb */}
+      <div style={{ margin: '16px 0' }}>
+        <button className="erdekel-btn" onClick={handleErdekel} disabled={erdekelLoading}>
+          {erdekelLoading ? "Mentés..." : "Érdekel"}
+        </button>
+        {erdekelSuccess && <span style={{ color: 'green', marginLeft: 8 }}>Hozzáadva az érdeklődésekhez!</span>}
+        {showLoginPrompt && (
+          <div style={{ color: 'red', marginTop: 8 }}>
+            Jelentkezz be az érdeklődéshez!
+          </div>
+        )}
+      </div>
 
       {/* Carousel */}
       {kepek.length > 0 && (
@@ -126,6 +175,28 @@ export default function Autokreszletek() {
           </div>
         </div>
       </div>
+
+      {/* Ajánlott autók */}
+      {ajanlott.length > 0 && (
+        <div className="ajanlott-autok">
+          <h3>Hasonló autók</h3>
+          <div className="ajanlott-lista">
+            {ajanlott.map((a) => (
+              <div key={a.id} className="ajanlott-card" onClick={() => {
+                if (a.id !== Number(autoId)) {
+                  navigate(`/auto/${a.id}`);
+                }
+              }}>
+                <img src={`/img/${a.id}_1.jpg`} alt={a.nev} className="ajanlott-img" />
+                <div className="ajanlott-info">
+                  <div className="ajanlott-nev">{a.nev} {a.model}</div>
+                  <div className="ajanlott-ar">{a.ar?.toLocaleString()} Ft</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </div>
 );

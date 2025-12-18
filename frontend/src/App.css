@@ -215,35 +215,76 @@
   } 
 }
 
-.ajanlott-lista { 
-  display: flex; 
-  gap: 1rem; 
-  flex-wrap: wrap; 
+/* Ajánlott autók szekció */
+.ajanlott-autok {
+  margin-top: 40px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #0001;
+  padding: 24px 18px 18px 18px;
 }
-
-.ajanlott-card { 
-  cursor: pointer; 
-  border: 1px solid #eee; 
-  border-radius: 8px; 
-  padding: 8px; 
-  width: 160px; 
-  text-align: center; 
-  background: #fafafa; 
-  transition: box-shadow .2s; 
+.ajanlott-autok h3 {
+  margin-bottom: 18px;
+  font-size: 1.3em;
+  color: #2a3a4a;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
-
-.ajanlott-card:hover { 
-  box-shadow: 0 2px 8px #0001; 
+.ajanlott-lista {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-
-.ajanlott-img { 
-  width: 100%; 
-  height: 90px; 
-  object-fit: cover; 
-  border-radius: 4px; 
+.ajanlott-card {
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 8px 12px 8px;
+  width: 170px;
+  min-width: 150px;
+  background: #f8fafc;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 1px 4px #0001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
-.ajanlott-info { 
-  margin-top: 6px; 
-  font-size: 0.95em; 
+.ajanlott-card:hover {
+  box-shadow: 0 4px 16px #0002;
+  transform: translateY(-2px) scale(1.03);
+  border-color: #b3c6e0;
+}
+.ajanlott-img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #eaeaea;
+  margin-bottom: 8px;
+}
+.ajanlott-info {
+  margin-top: 2px;
+  font-size: 1em;
+  color: #222;
+}
+.ajanlott-nev {
+  font-weight: 600;
+  font-size: 1.05em;
+  margin-bottom: 2px;
+}
+.ajanlott-ar {
+  color: #1a7b3b;
+  font-weight: 700;
+  font-size: 1.08em;
+}
+@media (max-width: 700px) {
+  .ajanlott-lista {
+    flex-direction: column;
+    align-items: center;
+  }
+  .ajanlott-card {
+    width: 90vw;
+    min-width: unset;
+  }
 }
