@@ -1,117 +1,204 @@
 import { useState, useEffect } from "react";
-import http from "../http-common";
-import { Container, Row, Col, Carousel } from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
+import http from "../http-common.js";
+import { Carousel } from "react-bootstrap";
 
-export default function Autokreszletek({ autoId }) {
-  const [auto, setAuto] = useState(null);
-  const [error, setError] = useState(null);
-  const [kepek, setKepek] = useState([]);
+export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
+    const { autoId } = useParams(); // az URL-ből jön
+    const navigate = useNavigate();
+    const [auto, setAuto] = useState(null);
+    const [kepek, setKepek] = useState([]);
+    const [error, setError] = useState(null);
+    const [ajanlott, setAjanlott] = useState([]); // ajánlott autók
+    const [loading, setLoading] = useState(true); // betöltés animáció
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [erdekelLoading, setErdekelLoading] = useState(false);
+    const [erdekelSuccess, setErdekelSuccess] = useState(false);
 
-  useEffect(() => {
-    const fetchAutoDetails = async () => {
+    useEffect(() => {
+        if (!autoId) return;
+        setLoading(true);
+        const fetchAuto = async () => {
+            try {
+                const res = await http.get(`auto/egy/${autoId}`);
+                setAuto(res.data);
+                setError(null);
+            } catch (err) {
+                console.error(err);
+                setError("Nem sikerült betölteni az autót");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchAuto();
+    }, [autoId]);
+
+    useEffect(() => {
+        if (!autoId) return;
+        const maxImages = 20;
+        const promises = [];
+        for (let i = 1; i <= maxImages; i++) {
+            const path = `/img/${autoId}_${i}.jpg`;
+            promises.push(new Promise(resolve => {
+                const img = new window.Image();
+                img.src = path;
+                img.onload = () => resolve(path);
+                img.onerror = () => resolve(null);
+            }));
+        }
+        Promise.all(promises).then(results => {
+            setKepek(results.filter(k => k !== null));
+        });
+    }, [autoId]);
+
+    // Ajánlott autók lekérése (pl. azonos típus vagy árkategória alapján)
+    useEffect(() => {
+        if (!auto || !autoId) return;
+        console.log('Ajánlott autók lekérdezés, auto.nev:', auto.nev, 'autoId:', autoId);
+        const fetchAjanlott = async () => {
+            try {
+                const res = await http.get(`auto/ajanlott/${auto.nev}?kiveve=${autoId}`);
+                setAjanlott(res.data || []);
+                console.log('Ajánlott autók válasz:', res.data);
+                if (!res.data || res.data.length === 0) {
+                  console.warn('Nincs ajánlott autó találat! Ellenőrizd a backend választ és az adatbázist.');
+                }
+            } catch (err) {
+                setAjanlott([]);
+                console.error('Ajánlott autók hiba:', err);
+            }
+        };
+        fetchAjanlott();
+    }, [auto, autoId]);
+
+    const handleErdekel = async () => {
+      if (!accessToken) {
+        if (onLoginModalOpen) {
+          onLoginModalOpen();
+        } else {
+          setShowLoginPrompt(true);
+        }
+        return;
+      }
+      setErdekelLoading(true);
+      setShowLoginPrompt(false);
+      setErdekelSuccess(false);
       try {
-        const response = await http.get(`/auto/egy/${autoId}`);
-        setAuto(response.data);
-      } catch (error) {
-        setError("Nem sikerült betölteni az autó adatait.");
+        await http.post(
+          "/auto/erdekel",
+          { autoId: Number(autoId) },
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+        setErdekelSuccess(true);
+      } catch (err) {
+        setErdekelSuccess(false);
+        alert("Hiba történt az érdeklődés mentésekor!");
+      } finally {
+        setErdekelLoading(false);
       }
     };
-    fetchAutoDetails();
-  }, [autoId]);
 
+    if (error) return <div>{error}</div>;
+    if (loading) return (
+        <div className="betoltes-spinner">
+            <div className="spinner"></div>
+            <div>Betöltés...</div>
+        </div>
+    );
+    if (!auto) return <div>Betöltés...</div>;
 
-  // Képlista generálás ID alapján
-  useEffect(() => {
-  if (!autoId) return;
+    return (
+  <div className="auto-details-fullpage">
+    <div className="auto-details-page">
+      <button className="close-btn" onClick={() => navigate('/autok')}>X</button>
 
-  const maxImages = 20;
-  const promises = [];
+      {/* Érdekel gomb */}
+      <div style={{ margin: '16px 0' }}>
+        <button className="erdekel-btn" onClick={handleErdekel} disabled={erdekelLoading}>
+          {erdekelLoading ? "Mentés..." : "Érdekel"}
+        </button>
+        {erdekelSuccess && <span style={{ color: 'green', marginLeft: 8 }}>Hozzáadva az érdeklődésekhez!</span>}
+        {showLoginPrompt && (
+          <div style={{ color: 'red', marginTop: 8 }}>
+            Jelentkezz be az érdeklődéshez!
+          </div>
+        )}
+      </div>
 
-  for (let i = 1; i <= maxImages; i++) {
-    const path = `/img/${autoId}_${i}.jpg`;
-
-    const p = new Promise(resolve => {
-      const img = new Image();
-      img.src = path;
-
-      img.onload = () => resolve(path);
-      img.onerror = () => resolve(null); // ha nincs ilyen kép
-    });
-
-    promises.push(p);
-  }
-
-  Promise.all(promises).then(results => {
-    const valid = results.filter(k => k !== null);
-    setKepek(valid);
-  });
-
-}, [autoId]);
-
-
-  if (error) return <div style={{ color: "red" }}>{error}</div>;
-  if (!auto || kepek.length === 0) return <div>Betöltés...</div>;
-
-
-  return (
-  <div className="auto-details-page">
-    <Container className="mt-4">
-
-      <Row className="justify-content-center align-items-start">
-
-        {/* BAL OLDAL – Carousel */}
-        <Col md={6} className="mb-4">
-          <Carousel interval={null} indicators={true} controls={true}>
+      {/* Carousel */}
+      {kepek.length > 0 && (
+        <div className="carousel-container">
+          <Carousel interval={null} indicators controls>
             {kepek.map((kep, index) => (
               <Carousel.Item key={index}>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "600px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "#f5f5f5",
-                    overflow: "hidden",
-                  }}
-                >
-                  <img
-                    src={kep}
-                    alt={`Kép ${index + 1}`}
-                    style={{
-                      maxHeight: "100%",
-                      maxWidth: "100%",
-                      objectFit: "contain",
-                    }}
-                    className="d-block"
-                  />
+                <div className="carousel-img-wrapper">
+                  <img src={kep} alt={`Kép ${index + 1}`} className="carousel-img" />
                 </div>
               </Carousel.Item>
             ))}
           </Carousel>
-        </Col>
+        </div>
+      )}
 
-        {/* JOBB OLDAL – Autó adatok */}
-        <Col md={4} className="text-center">
-          <h2 className="mb-3">
-            {auto.nev} {auto.model}
-          </h2>
+      {/* Autó adatok */}
+      <div className="auto-info">
+        <h2>{auto.nev} {auto.model}</h2>
+        <p>{auto.leírás}</p>
+        <div className="auto-specs">
+          <div>
+            <div className="label">Szín</div>
+            <div className="value">{auto.szin_nev}</div>
+          </div>
+          <div>
+            <div className="label">Kilométer</div>
+            <div className="value">{auto.km?.toLocaleString()} km</div>
+          </div>
+          <div>
+            <div className="label">Ár</div>
+            <div className="value">{auto.ar?.toLocaleString()} Ft</div>
+          </div>
+          {/* Új adatok */}
+          <div>
+            <div className="label">Évjárat</div>
+            <div className="value">{auto.kiadasiev || '-'}</div>
+          </div>
+          <div>
+            <div className="label">Üzemanyag</div>
+            <div className="value">{auto.üzemanyag || '-'}</div>
+          </div>
+          <div>
+            <div className="label">Váltó</div>
+            <div className="value">{auto.váltó || '-'}</div>
+          </div>
+        </div>
+      </div>
 
-          <p className="text-muted">{auto.leírás}</p>
-
-          <ul className="list-unstyled mt-4">
-            <li><strong>Szín:</strong> {auto.szin_nev}</li>
-            <li><strong>Km:</strong> {auto.km.toLocaleString()} km</li>
-            <li>
-              <strong>Ár:</strong>{" "}
-              {auto.ar.toLocaleString()} Ft
-            </li>
-          </ul>
-        </Col>
-
-      </Row>
-
-    </Container>
+      {/* Ajánlott autók */}
+      {ajanlott.length > 0 && (
+        <div className="ajanlott-autok">
+          <h3>Hasonló autók</h3>
+          <div className="ajanlott-lista">
+            {ajanlott.map((a) => (
+              <div key={a.id} className="ajanlott-card" onClick={() => {
+                if (a.id !== Number(autoId)) {
+                  navigate(`/auto/${a.id}`);
+                }
+              }}>
+                <img src={`/img/${a.id}_1.jpg`} alt={a.nev} className="ajanlott-img" />
+                <div className="ajanlott-info">
+                  <div className="ajanlott-nev">{a.nev} {a.model}</div>
+                  <div className="ajanlott-ar">{a.ar?.toLocaleString()} Ft</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   </div>
 );
 }
+

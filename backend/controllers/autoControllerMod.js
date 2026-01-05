@@ -132,30 +132,15 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-    async szuro(req, res, next) {
-    try {/*
-        const szuro_json = {
-            markak:["Mahindra","Hyundai"],      // -> SQL: nev
-            uzemanyag:["Diesel","Petrol"],       // -> SQL: üzemanyag
-            szin:["zöld","sárga"],               // -> SQL: szin_nev
-            arRange:[0,17300000],
-            kmRange:[0,350000],
-            evjarat:[1930,2025],
-            irat:true,
-            valto:[],                  // -> SQL: váltó
-            motormeret:[],
-            ajto:[],                           // -> SQL: ajto
-            szemely:[]                         // -> SQL: szemelyek
-        };
-        */
-       
+async szuro(req, res, next) {
+    try {
         const szuro_json = req.body;
-        console.log("Szurok: ",szuro_json);
+        console.log("Szurok:", szuro_json);
 
         let whereClauses = [];
         let values = [];
 
-        // Milyen JSON kulcs -> melyik SQL oszlop
+        // Tömb alapú szűrők
         const fieldMap = {
             markak: "nev",
             uzemanyag: "üzemanyag",
@@ -165,17 +150,15 @@ const autoController={
             szemely: "szemelyek"
         };
 
-        // ⬅⬅ csak akkor kerül be, ha a tömb nem üres!
         for (const key in fieldMap) {
             const sqlField = fieldMap[key];
-
             if (Array.isArray(szuro_json[key]) && szuro_json[key].length > 0) {
                 whereClauses.push(`${sqlField} IN (${szuro_json[key].map(() => '?').join(',')})`);
                 values.push(...szuro_json[key]);
             }
         }
 
-        // Range mezők -> BETWEEN
+        // Range szűrők
         const rangeFields = {
             arRange: "ar",
             kmRange: "km",
@@ -190,20 +173,23 @@ const autoController={
         }
 
         // Boolean mező
-        if (typeof szuro_json.irat === "boolean") {
-            if(szuro_json.irat==true){
-                whereClauses.push(`irat = ?`);
-                values.push(1);
-            }
-
+        if (typeof szuro_json.irat === "boolean" && szuro_json.irat === true) {
+            whereClauses.push(`irat = ?`);
+            values.push(1);
         }
 
-            if(szuro_json.motormeret>0){
-                whereClauses.push(`motormeret >= ?`);
+        // Motorméret
+        if (typeof szuro_json.motormeret === "number" && szuro_json.motormeret > 0) {
+            whereClauses.push(`motormeret >= ?`);
             values.push(szuro_json.motormeret);
-            }
-            
-        
+        }
+
+        // Keresés SQL-ben (csak létező oszlopok)
+        if (szuro_json.keres && szuro_json.keres.trim() !== "") {
+            const keres = `%${szuro_json.keres.trim()}%`;
+            whereClauses.push(`(nev LIKE ? OR model LIKE ? OR szin_nev LIKE ?)`);
+            values.push(keres, keres, keres);
+        }
 
         // SQL összeállítása
         let sql = "SELECT * FROM osszes_auto";
@@ -211,48 +197,156 @@ const autoController={
             sql += " WHERE " + whereClauses.join(" AND ");
         }
 
+        // Paginálás
+        const limit = Number(szuro_json.limit) || 10;
+        const page = Number(szuro_json.page) || 1;
+        const offset = (page - 1) * limit;
+
+        // LIMIT és OFFSET közvetlenül az SQL-be
+        sql += ` LIMIT ${limit} OFFSET ${offset}`;
+
+        console.log("Generated SQL:", sql, "Values:", values);
+
+        // Lekérés
         const results = await Auto.szuro(sql, values);
         res.status(200).json(results);
+
     } catch (error) {
         console.error("Error in filtering:", error);
         res.status(500).json({ message: error.message });
     }
-},
-    async login (req, res,next){   
-        const { username, password } = req.body;    
-        /*
-        const user = await authModel.validatePassword(username,password);
-        console.log('Bejelentkezési kísérlet:', user);
-        if (user!= false){
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
-        res.cookie('refreshToken', refreshToken, 
-            { httpOnly: true, 
-              secure: false, // true ha HTTPS-t használsz
-              sameSite: 'Lax', // Strict, Lax, None
-              maxAge: 7*24*60*60*1000 // 7 nap
-            });
-        res.json({ accessToken });
+}
 
-        } else {
-            res.status(401).send('Érvénytelen belépés');
-        }*/
-       if(username === 'admin' && password === 'password'){
-            const user = { username: 'admin', role: 'admin' }; 
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
+
+,
+
+    async login (req, res,next){   
+        const { email, password } = req.body;    
+        const user = await Auto.validatePassword(email,password);
+        console.log('Bejelentkezési kísérlet:', user);
+
+        if(user!= false){
+            // Csak az id-t és emailt tesszük a tokenbe!
+            const accessToken = generateAccessToken({ id: user.id, email: user.email });
+            const refreshToken = generateRefreshToken({ id: user.id, email: user.email });
             res.cookie('refreshToken', refreshToken, 
                 { httpOnly: true, 
                   secure: false, // true ha HTTPS-t használsz
                   sameSite: 'Lax', // Strict, Lax, None
                   maxAge: 7*24*60*60*1000 // 7 nap
                 });
-            res.json({ accessToken });
+            res.json({ accessToken, user });
         } else {
             res.status(401).send('Érvénytelen belépés');
         }
+    },
+    async getCount(req, res) {
+        try {
+            const count =  await Auto.getCount();
+            res.status(200).json({count: count});
+        } catch (error) {   
+            console.error("Error fetching car count:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async regisztracio(req,res){
+        try {
+            const body = req.body;
+            if(!body.email || !body.password){
+                res.status(404).send("Nincs email vagy jelszo");
+            }
+            else{
+                const response = await Auto.regisztracio(body);
+                res.status(200).json(response);
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    refresh (req, res) {
+        const refreshToken = req.cookies.refreshToken;
 
-}
-    
+        if (!refreshToken) {
+            return res.sendStatus(204); // nincs cookie
+        }
+
+        jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // lejárt / hamis
+            }
+
+            const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+            const newAccessToken = generateAccessToken(payload);
+            console.log(payload);
+            res.json({ accessToken: newAccessToken , user: payload });
+        });
+    },
+    profil (req, res) { 
+            const user = req.user;  // req.user-t az authenticateToken middleware állítja be
+            console.log("Profil lekérdezés user:", user);
+        res.json(user);
+    },
+    logout (req, res) {
+        res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
+        res.sendStatus(204);
+    },
+    async ajanlott(req, res) {
+        try {
+            const marka = req.params.marka;
+            const excludeId = req.query.kiveve;
+            let sql = 'SELECT * FROM osszes_auto WHERE nev = ?';
+            let params = [marka];
+            if (excludeId) {
+                sql += ' AND id != ?';
+                params.push(excludeId);
+            }
+            sql += ' LIMIT 4';
+            const rows = await Auto.szuro(sql, params);
+            res.status(200).json(rows);
+        } catch (error) {
+            console.error('Ajánlott autók lekérdezési hiba:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // POST /auto/erdekel
+    async erdekel(req, res) {
+        try {
+            console.log('ERDEKEL', req.user, req.query); // DEBUG: logoljuk a usert és az autoId-t
+            const user = req.user;
+            const { autoId } = req.body;
+            if (!user || !user.id || !autoId) {
+                return res.status(400).json({ message: "Hiányzó adat vagy user id!" });
+            }
+            await Auto.erdekelHozzaad(user.id, autoId);
+            res.status(201).json({ success: true });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // GET /auto/erdekeltek
+    async erdekeltek(req, res) {
+        try {
+            const user = req.user;
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+            const lista = await Auto.erdekeltekListaja(user.id);
+            res.status(200).json(lista);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async felhasznalok(req, res) {
+        try {
+            const felhasznalok = await Auto.felhasznalok();
+            res.status(200).json(felhasznalok);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
 };
 module.exports=autoController;

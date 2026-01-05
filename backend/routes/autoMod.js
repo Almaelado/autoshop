@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var authenticateToken = require('../middleware/authAuto');
 var autoController = require('../controllers/autoControllerMod');
 
 router.get('/minden', autoController.osszes);
@@ -12,10 +12,17 @@ router.get('/marka', autoController.getMarka);
 router.get('/szin', autoController.getSzin);
 router.get('/uzemanyag', autoController.getUzemanyag);
 router.post('/szuro', autoController.szuro);
-router.post('/admin/login', autoController.login);
+router.post('/login', autoController.login);
+router.post('/regisztracio',autoController.regisztracio);
 router.get('/valtok', autoController.getValto);
 router.get('/ajtok', autoController.getAjto);
 router.get('/szemelyek', autoController.getSzemely);
-
-
+router.get('/count', autoController.getCount);
+router.post('/refresh', autoController.refresh);
+router.get('/profil',authenticateToken,autoController.profil);
+router.post('/logout', autoController.logout);
+router.get('/felhasznalok', authenticateToken, autoController.felhasznalok);
+router.get('/ajanlott/:marka', autoController.ajanlott);
+router.post('/erdekel', authenticateToken, autoController.erdekel);
+router.get('/erdekeltek', authenticateToken, autoController.erdekeltek);
 module.exports = router;

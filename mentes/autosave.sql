@@ -195,7 +195,10 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `motormeret`,
  1 AS `kiadasiev`,
  1 AS `üzemanyag`,
- 1 AS `váltó`*/;
+ 1 AS `váltó`,
+ 1 AS `leírás`,
+ 1 AS `irat`,
+ 1 AS `szemelyek`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -223,7 +226,6 @@ CREATE TABLE `rendeles` (
 
 LOCK TABLES `rendeles` WRITE;
 /*!40000 ALTER TABLE `rendeles` DISABLE KEYS */;
-INSERT INTO `rendeles` VALUES (1,1,1),(2,1,2),(3,2,8),(4,2,100),(5,3,37);
 /*!40000 ALTER TABLE `rendeles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,7 +259,6 @@ CREATE TABLE `szamla` (
 
 LOCK TABLES `szamla` WRITE;
 /*!40000 ALTER TABLE `szamla` DISABLE KEYS */;
-INSERT INTO `szamla` VALUES ('20251020-1',1,1,'2025-10-13','2025-10-14','2025-10-31',1),('20251024-1',2,3,'2025-10-24','2025-10-31','2025-10-24',2),('20251130-1',3,3,'2025-11-30','2025-11-30','2025-11-30',1);
 /*!40000 ALTER TABLE `szamla` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,12 +343,16 @@ DROP TABLE IF EXISTS `vevok`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vevok` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nev` varchar(70) COLLATE utf8mb4_hungarian_ci NOT NULL,
-  `lakcim` varchar(150) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `nev` varchar(70) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `lakcim` varchar(150) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
   `adoszam` varchar(30) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `jelszo` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
   UNIQUE KEY `felhasznalonev` (`nev`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,7 +361,7 @@ CREATE TABLE `vevok` (
 
 LOCK TABLES `vevok` WRITE;
 /*!40000 ALTER TABLE `vevok` DISABLE KEYS */;
-INSERT INTO `vevok` VALUES (1,'Kiss Pál','5400 Mezőtúr Petőfi tér 1','3292611'),(2,'Cserepes Dávid','5420 Mordor Tűzhányó út 1',NULL),(3,'Kiss Zsolt','4172 Biharnagybajom Réz út 3','5492134');
+INSERT INTO `vevok` VALUES (4,NULL,NULL,NULL,'$2b$10$vuKIEpQZaPIuTkfpeb2qbuhIWNTdA/lmoo1nhu7sR5ItL0EYif/iK','admin',1);
 /*!40000 ALTER TABLE `vevok` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -481,7 +486,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `osszes_auto` AS select `autok`.`id` AS `id`,`marka`.`nev` AS `nev`,`szin`.`nev` AS `szin_nev`,`autok`.`model` AS `model`,`autok`.`ajtoszam` AS `ajtoszam`,`autok`.`ar` AS `ar`,`autok`.`km` AS `km`,`autok`.`motormeret` AS `motormeret`,`autok`.`kiadasiev` AS `kiadasiev`,`uzemanyag`.`nev` AS `üzemanyag`,`valtok`.`nev` AS `váltó` from ((((`autok` join `szin` on((`autok`.`szin_id` = `szin`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) join `uzemanyag` on((`autok`.`uzemanyag_id` = `uzemanyag`.`id`))) join `valtok` on((`autok`.`valto_id` = `valtok`.`id`))) order by `autok`.`id` */;
+/*!50001 VIEW `osszes_auto` AS select `autok`.`id` AS `id`,`marka`.`nev` AS `nev`,`szin`.`nev` AS `szin_nev`,`autok`.`model` AS `model`,`autok`.`ajtoszam` AS `ajtoszam`,`autok`.`ar` AS `ar`,`autok`.`km` AS `km`,`autok`.`motormeret` AS `motormeret`,`autok`.`kiadasiev` AS `kiadasiev`,`uzemanyag`.`nev` AS `üzemanyag`,`valtok`.`nev` AS `váltó`,`autok`.`leiras` AS `leírás`,`autok`.`irat` AS `irat`,`autok`.`szemelyek` AS `szemelyek` from ((((`autok` join `szin` on((`autok`.`szin_id` = `szin`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) join `uzemanyag` on((`autok`.`uzemanyag_id` = `uzemanyag`.`id`))) join `valtok` on((`autok`.`valto_id` = `valtok`.`id`))) order by `autok`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -513,4 +518,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-10  9:53:32
+-- Dump completed on 2025-12-16 12:32:15

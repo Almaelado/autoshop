@@ -132,5 +132,75 @@ Auto.szuro = async (sql, values) => {
         throw error;
     }
 };
+Auto.getCount = async () => {
+    try {
+        const [rows] = await pool.execute('SELECT COUNT(*) as count FROM osszes_auto');
+        return rows[0].count;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.regisztracio = async (data) =>{
+    try {
+        const hashedPassword = await bcrypt.hash(data.password,10);
+        const  [result] = await pool.execute('insert into vevok (jelszo,email) VALUES(?,?)',[hashedPassword,data.email]);
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.keresEmail = async(email) =>{
+    const [rows] = await pool.query("Select * from vevok where email = ?",[email])
+    return rows[0];
+}
+Auto.validatePassword = async (email,password) =>{
+    const user = await Auto.keresEmail(email);
+    console.log(user);
+    if(!user){
+        return false;
+    }
+    console.log(user.jelszo, password);
+    const match = await bcrypt.compare(password,user.jelszo);
+    console.log("Password match:", match);
+    return match ? user:false;
+}
+// Érdeklődés hozzáadása
+Auto.erdekelHozzaad = async (vevo_id, auto_id) => {
+    try {
+        await pool.execute(
+            "INSERT IGNORE INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
+            [vevo_id, auto_id]
+        );
+        return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
+// Érdeklődött autók lekérdezése
+Auto.erdekeltekListaja = async (vevo_id) => {
+    try {
+        const [rows] = await pool.execute(
+            `SELECT a.* FROM osszes_auto a JOIN erdeklodesek e ON a.id = e.auto_id WHERE e.vevo_id = ?`,
+            [vevo_id]
+        );
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.felhasznalok = async () => {
+    try {
+        const [rows] = await pool.execute('SELECT * FROM vevok');
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 module.exports = Auto;
