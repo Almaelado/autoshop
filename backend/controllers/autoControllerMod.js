@@ -132,30 +132,15 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-    async szuro(req, res, next) {
-    try {/*
-        const szuro_json = {
-            markak:["Mahindra","Hyundai"],      // -> SQL: nev
-            uzemanyag:["Diesel","Petrol"],       // -> SQL: üzemanyag
-            szin:["zöld","sárga"],               // -> SQL: szin_nev
-            arRange:[0,17300000],
-            kmRange:[0,350000],
-            evjarat:[1930,2025],
-            irat:true,
-            valto:[],                  // -> SQL: váltó
-            motormeret:[],
-            ajto:[],                           // -> SQL: ajto
-            szemely:[]                         // -> SQL: szemelyek
-        };
-        */
-       
+async szuro(req, res, next) {
+    try {
         const szuro_json = req.body;
-        console.log("Szurok: ",szuro_json);
+        console.log("Szurok:", szuro_json);
 
         let whereClauses = [];
         let values = [];
 
-        // Milyen JSON kulcs -> melyik SQL oszlop
+        // Tömb alapú szűrők
         const fieldMap = {
             markak: "nev",
             uzemanyag: "üzemanyag",
@@ -165,17 +150,15 @@ const autoController={
             szemely: "szemelyek"
         };
 
-        // ⬅⬅ csak akkor kerül be, ha a tömb nem üres!
         for (const key in fieldMap) {
             const sqlField = fieldMap[key];
-
             if (Array.isArray(szuro_json[key]) && szuro_json[key].length > 0) {
                 whereClauses.push(`${sqlField} IN (${szuro_json[key].map(() => '?').join(',')})`);
                 values.push(...szuro_json[key]);
             }
         }
 
-        // Range mezők -> BETWEEN
+        // Range szűrők
         const rangeFields = {
             arRange: "ar",
             kmRange: "km",
@@ -190,20 +173,23 @@ const autoController={
         }
 
         // Boolean mező
-        if (typeof szuro_json.irat === "boolean") {
-            if(szuro_json.irat==true){
-                whereClauses.push(`irat = ?`);
-                values.push(1);
-            }
-
+        if (typeof szuro_json.irat === "boolean" && szuro_json.irat === true) {
+            whereClauses.push(`irat = ?`);
+            values.push(1);
         }
 
-            if(szuro_json.motormeret>0){
-                whereClauses.push(`motormeret >= ?`);
+        // Motorméret
+        if (typeof szuro_json.motormeret === "number" && szuro_json.motormeret > 0) {
+            whereClauses.push(`motormeret >= ?`);
             values.push(szuro_json.motormeret);
-            }
-            
-        
+        }
+
+        // Keresés SQL-ben (csak létező oszlopok)
+        if (szuro_json.keres && szuro_json.keres.trim() !== "") {
+            const keres = `%${szuro_json.keres.trim()}%`;
+            whereClauses.push(`(nev LIKE ? OR model LIKE ? OR szin_nev LIKE ?)`);
+            values.push(keres, keres, keres);
+        }
 
         // SQL összeállítása
         let sql = "SELECT * FROM osszes_auto";
@@ -211,22 +197,29 @@ const autoController={
             sql += " WHERE " + whereClauses.join(" AND ");
         }
 
+        // Paginálás
+        const limit = Number(szuro_json.limit) || 10;
+        const page = Number(szuro_json.page) || 1;
+        const offset = (page - 1) * limit;
 
-        if(szuro_json.limit && szuro_json.page){
-            sql += ` Limit ${szuro_json.limit} Offset ${(szuro_json.page-1)*1}`;
-        }
-        else{
-            sql += ` Limit 10 Offset 0`;
-        }
-        console.log("Generated SQL:", sql);
+        // LIMIT és OFFSET közvetlenül az SQL-be
+        sql += ` LIMIT ${limit} OFFSET ${offset}`;
 
+        console.log("Generated SQL:", sql, "Values:", values);
+
+        // Lekérés
         const results = await Auto.szuro(sql, values);
         res.status(200).json(results);
+
     } catch (error) {
         console.error("Error in filtering:", error);
         res.status(500).json({ message: error.message });
     }
-},
+}
+
+
+,
+
     async login (req, res,next){   
         const { email, password } = req.body;    
         const user = await Auto.validatePassword(email,password);
