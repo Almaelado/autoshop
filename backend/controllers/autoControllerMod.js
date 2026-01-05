@@ -288,6 +288,15 @@ async szuro(req, res, next) {
     logout (req, res) {
         res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
         res.sendStatus(204);
+    },
+    async felhasznalok(req, res) {
+        try {
+            const felhasznalok = await Auto.felhasznalok();
+            res.status(200).json(felhasznalok);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            res.status(500).json({ message: error.message });
+        }
     }
 
 };

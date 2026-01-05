@@ -21,4 +21,5 @@ router.get('/count', autoController.getCount);
 router.post('/refresh', autoController.refresh);
 router.get('/profil',authenticateToken,autoController.profil);
 router.post('/logout', autoController.logout);
+router.get('/felhasznalok', authenticateToken, autoController.felhasznalok);
 module.exports = router;
