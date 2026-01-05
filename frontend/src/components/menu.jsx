@@ -74,6 +74,7 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken}) 
         {belepett ? (
           <NavDropdown title="Saját fiók" id="basic-nav-dropdown">
             <NavDropdown.Item as={Link} to="/profile">Profilom</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/uzenetek">Üzenetek</NavDropdown.Item>
             <NavDropdown.Item
               onClick={async () => {
                 await http.post("/auto/logout", {}, { withCredentials: true });

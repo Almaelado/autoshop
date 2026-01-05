@@ -229,4 +229,51 @@ Auto.jelszoModositas = async (email, newPassword) => {
         throw error;
     }
 };
+Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
+    try {
+        await pool.execute(
+            'INSERT INTO uzenet (vevo_id, auto_id, uzenet_text, elkuldve) VALUES (?, ?, ?, ?)',
+            [vevo_id, auto_id, uzenet, new Date()]
+        );
+        return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.uzenetekLekerdezese = async (vevo_id) => {
+    try {
+        const [rows] = await pool.execute(
+            ` SELECT 
+                osszes_auto.nev,osszes_auto.model,osszes_auto.ar
+                FROM uzenet
+                JOIN osszes_auto ON uzenet.auto_id = osszes_auto.id
+                WHERE uzenet.vevo_id = ?
+                GROUP by auto_id;`,
+            [vevo_id]
+        );
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.AdminuzenetekLekerdezese = async () => {
+    try {
+        const [rows] = await pool.execute(
+            ` SELECT vevok.nev,osszes_auto.model,osszes_auto.ar,uzenet.uzenet_text,uzenet.elkuldve,uzenet.valasz
+                FROM uzenet
+                JOIN osszes_auto ON uzenet.auto_id = osszes_auto.id
+                JOIN vevok ON uzenet.vevo_id = vevok.id
+                where valasz is null
+                ORDER by  uzenet.elkuldve DESC;`
+        );
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+
 module.exports = Auto;

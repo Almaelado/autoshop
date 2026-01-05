@@ -11,17 +11,19 @@ import { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Profil from './components/profil.jsx';
-import http from "./http-common";
+import http,{setAccessToken as setHttpAccesToken} from "./http-common";
 import Admin from './components/admin.jsx';
 import VedettVonal from "./components/VedettVonal.jsx";
 import AdminVonal from "./components/AdminVonal.jsx";
 import AdminAutok from './components/AdminAutok.jsx';
 import AdminFelhasznalok from './components/AdminFelhasznalok.jsx';
 import ProfileSzerkesztes from './components/ProfileSzerkesztes.jsx';
-
+import Uzenet from './components/uzenet.jsx';
+import Uzenetek from './components/uzenetek.jsx';
+import AdminUzenetek from './components/AdminUzenetek.jsx';
 function App() {
   const [belepett, setBelepett] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [szuroNyitva, setSzuroNyitva] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -39,41 +41,33 @@ function App() {
             ajto:[],                           
             szemely:[]                         
         }));
-  
-        useEffect(() => {
-          const refreshAccessToken = async () => {
-            try {
-              const response = await http.post('/auto/refresh', {}, { withCredentials: true });
 
-              if (response.data?.accessToken) {
-                setAccessToken(response.data.accessToken);
+useEffect(() => {
+    const refreshAccessToken = async () => {
+        try {
+            const res = await http.post('/auto/refresh', {}, { withCredentials: true });
+            if (res.data?.accessToken) {
+                setAccessToken(res.data.accessToken);
+                setHttpAccesToken(res.data.accessToken);
                 setBelepett(true);
-                
-                if (response.data.user.admin === 1) {
-                  setIsAdmin(true);
-                } else {
-                  setIsAdmin(false);
-                }
-              } else {
-                // nincs token, tehát user nem bejelentkezett
-                setAccessToken(null);
+                setIsAdmin(Boolean(Number(res.data.user.admin)));
+            } else {
                 setBelepett(false);
-              }
-            } catch (err) {
-              console.error(err);
-              setAccessToken(null);
-              setBelepett(false);
-            } finally {
-              setLoading(false);
+                setIsAdmin(false);
             }
+        } catch (err) {
+            setBelepett(false);
+            setIsAdmin(false);
+        } finally {
+            setLoading(false);
+        }
+    };
+    refreshAccessToken();
+}, []);
 
-          };
-
-          refreshAccessToken();
-        }, []);
 
 
-  if (loading) {
+  if (loading || isAdmin === null) {
     return <div>Betöltés...</div>;
   }
   return (
@@ -138,7 +132,14 @@ function App() {
                 <AdminFelhasznalok />
               </AdminVonal>
           } />
+          <Route path="/admin/uzenetek" element={
+              <AdminVonal belepett={belepett} isAdmin={isAdmin}>
+                <AdminUzenetek accessToken={accessToken} />
+              </AdminVonal>
+          } />
           <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
+          <Route path="/uzenet/:autoId" element={<Uzenet accessToken={accessToken} />} />
+          <Route path="/uzenetek" element={<Uzenetek accessToken={accessToken} />} />
         </Routes>
       </div>
       <Footer />

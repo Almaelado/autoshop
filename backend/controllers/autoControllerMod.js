@@ -375,6 +375,40 @@ async szuro(req, res, next) {
             res.status(500).json({ message: error.message });
         }
     },
+    async uzenetKuldes(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, uzenet } = req.body;
+            if (!user || !user.id || !autoId || !uzenet) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            await Auto.uzenetKuldes(user.id, autoId, uzenet);
+            res.status(201).json({ success: true });
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetekLekerdezese(req, res) {
+        try {
+            const user = req.user;
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+            const uzenetek = await Auto.uzenetekLekerdezese(user.id);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async AdminUzenetek(req, res) {
+        try {
+            const uzenetek = await Auto.AdminUzenetek();
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 
 };
 module.exports=autoController;
