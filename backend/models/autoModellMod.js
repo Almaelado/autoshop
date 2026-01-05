@@ -167,4 +167,32 @@ Auto.validatePassword = async (email,password) =>{
     console.log("Password match:", match);
     return match ? user:false;
 }
+// Érdeklődés hozzáadása
+Auto.erdekelHozzaad = async (vevo_id, auto_id) => {
+    try {
+        await pool.execute(
+            "INSERT IGNORE INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
+            [vevo_id, auto_id]
+        );
+        return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+// Érdeklődött autók lekérdezése
+Auto.erdekeltekListaja = async (vevo_id) => {
+    try {
+        const [rows] = await pool.execute(
+            `SELECT a.* FROM osszes_auto a JOIN erdeklodesek e ON a.id = e.auto_id WHERE e.vevo_id = ?`,
+            [vevo_id]
+        );
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 module.exports = Auto;
