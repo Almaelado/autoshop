@@ -113,6 +113,7 @@ const Autok = ({ szuro, admin }) => {
                         className="autok-card"
                         key={auto.id}
                         ref={autok.length === index + 1 ? lastItemRef : null}
+                        onClick={() => navigate(`/auto/${auto.id}`)}
                     >
                         <Card.Img variant="top" src={`/img/${auto.id}_1.jpg`} />
 
@@ -124,7 +125,6 @@ const Autok = ({ szuro, admin }) => {
                         <ListGroup className="list-group-flush">
                             <ListGroup.Item>Szín: {auto.szin_nev}</ListGroup.Item>
                             <ListGroup.Item>{auto.km} km</ListGroup.Item>
-                            <ListGroup.Item>Ár: {auto.ar} Ft</ListGroup.Item>
                         </ListGroup>
 
                         <Card.Body>

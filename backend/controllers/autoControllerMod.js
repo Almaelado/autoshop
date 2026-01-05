@@ -226,8 +226,9 @@ async szuro(req, res, next) {
         console.log('Bejelentkezési kísérlet:', user);
 
         if(user!= false){
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
+            // Csak az id-t és emailt tesszük a tokenbe!
+            const accessToken = generateAccessToken({ id: user.id, email: user.email });
+            const refreshToken = generateRefreshToken({ id: user.id, email: user.email });
             res.cookie('refreshToken', refreshToken, 
                 { httpOnly: true, 
                   secure: false, // true ha HTTPS-t használsz
@@ -289,6 +290,54 @@ async szuro(req, res, next) {
         res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
         res.sendStatus(204);
     },
+    async ajanlott(req, res) {
+        try {
+            const marka = req.params.marka;
+            const excludeId = req.query.kiveve;
+            let sql = 'SELECT * FROM osszes_auto WHERE nev = ?';
+            let params = [marka];
+            if (excludeId) {
+                sql += ' AND id != ?';
+                params.push(excludeId);
+            }
+            sql += ' LIMIT 4';
+            const rows = await Auto.szuro(sql, params);
+            res.status(200).json(rows);
+        } catch (error) {
+            console.error('Ajánlott autók lekérdezési hiba:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // POST /auto/erdekel
+    async erdekel(req, res) {
+        try {
+            console.log('ERDEKEL', req.user, req.query); // DEBUG: logoljuk a usert és az autoId-t
+            const user = req.user;
+            const { autoId } = req.body;
+            if (!user || !user.id || !autoId) {
+                return res.status(400).json({ message: "Hiányzó adat vagy user id!" });
+            }
+            await Auto.erdekelHozzaad(user.id, autoId);
+            res.status(201).json({ success: true });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // GET /auto/erdekeltek
+    async erdekeltek(req, res) {
+        try {
+            const user = req.user;
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+            const lista = await Auto.erdekeltekListaja(user.id);
+            res.status(200).json(lista);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
     async felhasznalok(req, res) {
         try {
             const felhasznalok = await Auto.felhasznalok();
@@ -297,7 +346,7 @@ async szuro(req, res, next) {
             console.error("Error fetching users:", error);
             res.status(500).json({ message: error.message });
         }
-    }
+    },
 
 };
 module.exports=autoController;

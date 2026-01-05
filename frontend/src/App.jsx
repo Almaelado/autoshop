@@ -132,7 +132,6 @@ function App() {
                 <AdminFelhasznalok />
               </AdminVonal>
           } />
-
           <Route path="/auto/:autoId" element={<Reszletek />} />
         </Routes>
       </div>

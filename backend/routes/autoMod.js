@@ -22,4 +22,7 @@ router.post('/refresh', autoController.refresh);
 router.get('/profil',authenticateToken,autoController.profil);
 router.post('/logout', autoController.logout);
 router.get('/felhasznalok', authenticateToken, autoController.felhasznalok);
+router.get('/ajanlott/:marka', autoController.ajanlott);
+router.post('/erdekel', authenticateToken, autoController.erdekel);
+router.get('/erdekeltek', authenticateToken, autoController.erdekeltek);
 module.exports = router;

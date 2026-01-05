@@ -175,8 +175,6 @@ export default function FoOldal() {
           loading="lazy"
         ></iframe>
       </div>
-      
-
     </div>
   );
 }

@@ -1,0 +1,551 @@
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: autoshopbigprojekt
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Temporary view structure for view `1feladat`
+--
+
+DROP TABLE IF EXISTS `1feladat`;
+/*!50001 DROP VIEW IF EXISTS `1feladat`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `1feladat` AS SELECT 
+ 1 AS `nev`,
+ 1 AS `szamlaid`,
+ 1 AS `SUM(autok.ar)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `2feladat`
+--
+
+DROP TABLE IF EXISTS `2feladat`;
+/*!50001 DROP VIEW IF EXISTS `2feladat`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `2feladat` AS SELECT 
+ 1 AS `nev`,
+ 1 AS `COUNT(autok.id)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `3feladat`
+--
+
+DROP TABLE IF EXISTS `3feladat`;
+/*!50001 DROP VIEW IF EXISTS `3feladat`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `3feladat` AS SELECT 
+ 1 AS `nev`,
+ 1 AS `szamlaid`,
+ 1 AS `SUM(autok.ar)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `4feladat`
+--
+
+DROP TABLE IF EXISTS `4feladat`;
+/*!50001 DROP VIEW IF EXISTS `4feladat`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `4feladat` AS SELECT 
+ 1 AS `nev`,
+ 1 AS `COUNT(autok.id)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `5feladat`
+--
+
+DROP TABLE IF EXISTS `5feladat`;
+/*!50001 DROP VIEW IF EXISTS `5feladat`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `5feladat` AS SELECT 
+ 1 AS `nev`,
+ 1 AS `szamlaid`,
+ 1 AS `SUM(autok.ar)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `autok`
+--
+
+DROP TABLE IF EXISTS `autok`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `autok` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `marka_id` int NOT NULL,
+  `model` varchar(100) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `valto_id` int NOT NULL,
+  `kiadasiev` int NOT NULL,
+  `uzemanyag_id` int NOT NULL,
+  `motormeret` int NOT NULL,
+  `km` int NOT NULL,
+  `ar` int NOT NULL,
+  `ajtoszam` int NOT NULL,
+  `szemelyek` int NOT NULL,
+  `szin_id` int NOT NULL,
+  `irat` tinyint(1) NOT NULL DEFAULT '1',
+  `leiras` varchar(200) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_autok_marka_id` (`marka_id`),
+  KEY `FK_autok_valto_id` (`valto_id`),
+  KEY `FK_autok_uzemanyag_id` (`uzemanyag_id`),
+  KEY `FK_autok_szin_id` (`szin_id`),
+  CONSTRAINT `FK_autok_marka_id` FOREIGN KEY (`marka_id`) REFERENCES `marka` (`id`),
+  CONSTRAINT `FK_autok_szin_id` FOREIGN KEY (`szin_id`) REFERENCES `szin` (`id`),
+  CONSTRAINT `FK_autok_uzemanyag_id` FOREIGN KEY (`uzemanyag_id`) REFERENCES `uzemanyag` (`id`),
+  CONSTRAINT `FK_autok_valto_id` FOREIGN KEY (`valto_id`) REFERENCES `valtok` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=599 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci AVG_ROW_LENGTH=327;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `autok`
+--
+
+LOCK TABLES `autok` WRITE;
+/*!40000 ALTER TABLE `autok` DISABLE KEYS */;
+INSERT INTO `autok` VALUES (1,1,'Thar LX D 4WD MT CONVERTIBLE',1,2020,1,2184,11003,1231000,5,4,4,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(2,2,'Verna 1.6 VTVT SX',1,2018,2,1591,66936,786000,5,4,3,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(3,3,'Harrier XT PLUS 2.0L KRYOTEC DARK EDITON',1,2022,1,1956,27990,1489000,4,4,8,0,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(4,4,'City 1.5L I-VTE V CVT',2,2023,2,1498,5061,1227000,5,2,4,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(5,5,'Ecosport TITANIUM 1.5L DIESEL',1,2021,1,1498,23480,887000,3,5,8,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(6,4,'WR-V 1.2L I-VTEC VX MT',1,2021,2,1199,44787,796000,3,2,7,0,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(7,3,'PUNCH CREATIVE  1.2 RTN DUAL TONE',1,2022,2,1199,450,813000,4,2,7,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(8,3,'NEXON XMA DIESEL',2,2020,1,1172,59866,728000,3,5,7,0,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(9,1,'XUV700 AX 7 LUXURY D AWD AT 7 STR',2,2022,1,2184,62567,2322000,3,4,4,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(10,5,'Ecosport TITANIUM + 1.5L PETROL AT',2,2019,2,1497,58503,766000,5,4,4,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(11,6,'Dzire LXI',1,2018,2,1197,58159,471000,4,5,5,0,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(12,2,'GRAND I10 NIOS SPORTZ 1.2 KAPPA VTVT',1,2023,2,1197,15568,689000,5,5,7,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(13,3,'Tiago XE PETROL',1,2023,2,1199,6676,536000,5,5,9,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(14,2,'Creta E PLUS 1.6 PETROL',1,2018,2,1389,59085,823000,5,5,3,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(15,6,'Alto K10 VXI',1,2018,2,998,52966,310000,5,2,3,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(16,2,'Verna 1.6 CRDI SX',1,2020,1,1582,60592,993000,3,2,3,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(17,6,'Alto K10 VXI AMT',2,2014,2,998,71297,265000,3,5,10,0,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(18,4,'Amaze 1.2L I-VTEC S',1,2022,2,1199,15935,699000,5,2,1,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(19,7,'SELTOS HTE 1.5 DIESEL',1,2021,1,1493,71040,980000,4,5,3,0,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(20,2,'GRAND I10 NIOS ASTA 1.2 KAPPA VTVT',1,2023,2,1197,2850,710000,5,5,1,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(21,8,'HECTOR SHARP 1.5 PETROL CVT',2,2022,2,1451,26999,1652000,5,5,5,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(22,3,'TIGOR XM PETROL',1,2023,2,1199,12096,590000,5,2,4,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(23,4,'City 1.5L I-VTEC ZX CVT',2,2017,2,1497,65434,787000,4,4,2,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(24,2,'Verna SX 1.5 CRDI',1,2020,1,1493,48995,1060000,3,2,8,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(25,5,'FREESTYLE TITANIUM PLUS 1.2 PETROL',1,2018,2,1194,66584,495000,3,5,10,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(26,6,'Ciaz S 1.5 MT PETROL',1,2020,2,1462,24961,878000,3,5,2,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(27,6,'Dzire LXI',1,2019,2,1197,33972,514000,3,2,7,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(28,3,'Tiago XZ PLUS CNG',1,2022,3,1199,22874,684000,5,5,5,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(29,6,'Dzire ZXI PLUS',1,2019,2,1197,109938,584000,3,4,6,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(30,6,'Alto LXI O',1,2019,2,796,60452,316000,4,2,2,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(31,6,'Celerio VXI AMT',2,2016,2,998,32747,394000,3,4,2,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(32,7,'CARENS LUXURY PLUS 1.5 DIESEL AT 7 STR',2,2022,1,1493,34694,1654000,5,4,9,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(33,6,'IGNIS DELTA 1.2',1,2019,2,1197,51244,472000,4,2,2,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(34,9,'TRIBER RXL MT',1,2023,2,999,6843,636000,5,2,6,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(35,5,'Ecosport TITANIUM 1.5L PETROL AT',2,2019,2,1496,20751,806000,3,5,6,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(36,3,'PUNCH ADVENTURE RHYTHM PACK AMT',2,2023,2,1199,16393,668000,4,2,4,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(37,4,'City 1.5L I-VTEC ZX CVT',2,2017,2,1497,74671,832000,5,5,10,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(38,2,'Verna 1.6 VTVT SX O',1,2017,2,1591,94020,819000,5,2,4,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(39,1,'XUV500 W7 AT',2,2021,1,2179,25366,1400000,3,5,2,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(40,6,'S PRESSO VXI CNG',1,2020,3,998,75502,432000,3,5,8,0,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(41,3,'NEXON XZ PLUS PETROL',1,2022,2,1199,22894,941000,4,5,6,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(42,3,'Tiago XZ PETROL',1,2020,2,1199,42313,456000,3,4,9,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(43,3,'ALTROZ XT PETROL',1,2020,2,1199,58047,590000,4,2,9,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(44,6,'Ciaz ALPHA 1.5 SHVS PETROL',1,2018,2,1462,76120,721000,5,2,10,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(45,2,'Xcent SX 1.2',1,2017,2,1197,60964,449000,4,4,8,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(46,3,'Tiago XT (O) PETROL',1,2023,2,1199,17297,574000,3,5,10,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(47,9,'TRIBER RXZ',1,2020,2,999,34646,594000,5,2,1,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(48,6,'Ciaz DELTA AT 1.5 SHVS PETROL',2,2018,2,1462,45254,687000,4,5,8,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(49,6,'Ciaz ZETA AT 1.5  SHVS PETROL',2,2022,2,1462,24062,1041000,4,2,10,0,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(50,2,'Grand i10 ASTA (O) 1.2 KAPPA VTVT',1,2016,2,1197,28221,456000,4,4,10,0,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(51,6,'XL6 ALPHA PLUS MT',1,2022,2,1462,43830,1196000,4,4,7,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(52,6,'Wagon R 1.0 VXI AMT',2,2016,2,998,21218,375000,4,2,3,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(53,2,'NEW SANTRO SPORTZ CNG',1,2020,3,1086,62996,504000,5,4,6,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(54,6,'XL6 ALPHA PLUS AT',2,2022,2,1462,40395,1152000,5,4,1,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(55,6,'Baleno ZETA CVT PETROL 1.2',2,2017,2,1197,42752,567000,3,5,9,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(56,6,'Ciaz ALPHA 1.5 SHVS PETROL',1,2019,2,1462,59733,751000,5,2,6,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(57,6,'Ciaz ALPHA 1.4 PETROL',1,2017,2,1373,92389,607000,5,5,10,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(58,2,'VENUE SX 1.0 (O) TURBO',1,2020,2,998,36125,864000,5,5,10,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(59,6,'Ciaz ALPHA 1.5 SHVS PETROL',1,2020,2,1462,26202,825000,5,2,4,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(60,10,'VIRTUS COMFORTLINE TSI 1.0 MT',1,2022,2,999,27653,918000,4,2,10,0,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(61,4,'City 1.5L I-VTEC SV CVT',2,2016,2,1497,61033,572000,5,2,2,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(62,7,'SONET HTK PLUS 1.2',1,2023,2,1197,7907,898000,4,4,5,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(63,8,'HECTOR SUPER 1.5 PETROL',1,2020,2,1451,26793,1135000,3,2,2,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(64,10,'VIRTUS HIGHLINE TSI 1.0 AT',2,2023,2,999,9083,1383000,3,5,3,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(65,3,'Tiago XT PETROL',1,2018,2,1199,50015,371000,3,5,7,0,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(66,11,'MAGNITE XE',1,2022,2,999,22517,562000,5,4,7,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(67,12,'Rapid AMBITION 1.6 MPI AT',2,2017,2,1598,100001,546000,4,2,10,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(68,6,'Swift VXI',1,2023,2,1197,14887,638000,5,2,1,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(69,4,'Amaze 1.2L I-VTEC S',1,2020,2,1199,48004,493000,3,4,8,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(70,6,'Ertiga LXI',1,2012,2,1373,52706,330000,5,4,7,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(71,13,'YARIS G MT',1,2020,2,1496,37628,803000,3,5,5,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(72,14,'Go Plus T (O)',1,2018,3,1198,23055,331000,5,5,9,0,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(73,6,'Alto K10 LXI',1,2023,2,998,14943,445000,4,5,9,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(74,11,'MAGNITE XE',1,2022,2,999,20338,548000,3,4,9,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(75,2,'NEW I20 Sportz (O) 1.2 IVT',2,2024,2,1398,3295,974000,4,4,10,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(76,1,'KUV 100 NXT K2+ P 6 STR',1,2020,2,1198,19376,474000,3,5,8,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(77,11,'MAGNITE XE',1,2022,2,999,31760,556000,3,5,2,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(78,1,'XUV700 AX 5 P MT 7 STR',1,2021,2,1997,37303,1473000,4,2,9,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(79,6,'Baleno DELTA PETROL 1.2',1,2022,2,1197,25782,657000,5,4,5,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(80,2,'VENUE SX 1.2 PETROL',1,2022,2,1197,25523,909000,3,5,10,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(81,2,'Creta EX 1.5 PETROL',1,2022,2,1497,19352,1103000,5,4,8,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(82,4,'City 1.5L I-VTEC ZX',1,2021,2,1498,28398,1078000,4,5,4,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(83,6,'Dzire LXI',1,2017,2,1197,22148,467000,5,4,4,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(84,2,'Verna FLUIDIC 1.6 VTVT EX',1,2013,2,1591,75331,378000,4,5,7,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(85,4,'Amaze 1.2L I-VTEC S',1,2020,2,1199,52036,573000,3,2,7,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(86,6,'Swift ZXI PLUS',1,2022,2,1197,24626,757000,3,5,3,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(87,6,'Vitara Brezza VDI AMT',2,2019,1,1248,86677,632000,4,5,2,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(88,11,'MAGNITE XL',1,2022,2,999,18222,614000,4,4,6,0,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(89,4,'City 1.5L I-VTEC ZX',1,2021,2,1376,5404,1251000,3,2,9,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(90,6,'Baleno ZETA PETROL 1.2',1,2020,2,1197,72471,572000,5,5,2,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(91,9,'Kwid CLIMBER 1.0 AMT',2,2017,2,999,47819,292000,3,4,4,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(92,10,'Ameo HIGHLINE PLUS 1.0L 16 ALLOY',1,2018,2,999,40904,471000,5,5,9,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(93,6,'Celerio VXI',1,2022,2,998,12708,494000,5,5,7,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(94,11,'MAGNITE XE',1,2022,2,999,36341,551000,5,5,2,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(95,6,'IGNIS DELTA 1.2',1,2022,2,1197,17745,525000,3,5,3,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(96,11,'MAGNITE XE',1,2021,2,999,30455,522000,5,5,1,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(97,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2018,2,1197,40398,396000,4,4,3,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(98,6,'Wagon R 1.0 VXI+',1,2017,2,998,60446,350000,3,2,1,0,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(99,9,'Kwid RXT 1.0 (O)',1,2016,2,999,20709,262000,3,4,4,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(100,4,'City 1.5L I-VTEC SV',1,2017,2,1497,78608,578000,4,4,8,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(101,14,'Redi Go A',1,2018,2,799,84695,207000,4,4,7,0,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(102,6,'Wagon R 1.0 LXI CNG',1,2018,3,998,56257,367000,3,4,6,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(103,6,'Swift ZXI PLUS',1,2018,2,1197,27356,569000,3,5,1,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(104,6,'Ciaz DELTA DIESEL 1.5',1,2019,1,1498,61329,702000,3,2,3,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(105,2,'VENUE S 1.4 CRDI',1,2020,1,1396,46446,734000,3,2,7,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(106,9,'Kwid CLIMBER 1.0 AMT',2,2017,2,999,41308,285000,3,4,2,0,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(107,3,'Tiago XT PETROL',1,2018,2,1199,94259,384000,5,2,6,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(108,4,'Jazz 1.2L I-VTEC V',1,2016,2,1199,79166,382000,3,2,1,0,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(109,2,'NEW SANTRO SPORTZ MT',1,2019,2,1086,61839,397000,4,4,6,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(110,6,'Baleno SIGMA PETROL 1.2',1,2020,2,1197,46628,522000,5,2,6,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(111,6,'Wagon R 1.0 LXI CNG',1,2018,3,998,87192,374000,5,4,6,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(112,3,'NEXON XM SUNROOF DIESEL',1,2022,1,1497,45834,804000,3,5,4,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(113,6,'IGNIS DELTA 1.2',1,2022,2,1197,18015,528000,3,2,7,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(114,3,'NEXON XM SUNROOF DIESEL',1,2020,1,1497,52276,718000,5,2,6,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(115,5,'FREESTYLE TITANIUM 1.2 PETROL',1,2018,2,1194,87411,442000,4,2,5,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(116,6,'IGNIS DELTA 1.2',1,2019,2,1197,47484,431000,4,2,5,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(117,2,'VENUE S 1.2',1,2021,2,1197,19866,765000,4,2,5,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(118,6,'Alto K10 VXI',1,2023,2,998,21607,467000,5,4,3,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(119,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2015,2,1197,62536,311000,3,4,10,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(120,8,'HECTOR SHARP 2.0 DIESEL',1,2019,1,1956,33306,1286000,5,2,1,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(121,2,'Creta SX AT 1.6 DIESEL',2,2019,1,1582,67168,1037000,4,5,1,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(122,5,'Ecosport TITANIUM 1.5L DIESEL',1,2019,1,1498,27603,670000,3,5,6,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(123,6,'Baleno ZETA PETROL 1.2',1,2020,2,1197,36323,652000,4,5,5,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(124,2,'Tucson 2WD MT PETROL',1,2018,2,1999,43368,1225000,4,2,7,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(125,2,'Creta S 1.4 DIESEL',1,2019,1,1396,51919,815000,4,2,9,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(126,6,'Ciaz ZETA 1.5 SHVS MT PETROL',1,2022,2,1462,15994,872000,4,2,3,0,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(127,4,'City 1.5L I-VTEC V MT',1,2016,2,1497,72308,523000,5,4,10,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(128,4,'Amaze 1.2L I-VTEC S',1,2018,2,1199,27051,515000,5,5,7,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(129,3,'TIAGO NRG PETROL',1,2018,2,1199,35764,421000,3,2,10,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(130,9,'Kiger RXZ TURBO MT',1,2021,2,999,46375,654000,3,4,7,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(131,7,'SELTOS HTK PLUS 1.5',1,2019,2,1511,90505,980000,3,2,10,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(132,8,'HECTOR SMART 1.5 DCT PETROL',2,2019,2,1451,14172,1288000,4,2,3,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(133,6,'Baleno DELTA PETROL 1.2',1,2020,2,1197,27841,581000,4,2,6,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(134,3,'Safari XZ',1,2021,1,1956,30203,1546000,4,4,5,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(135,6,'IGNIS SIGMA 1.2',1,2021,2,1197,25742,476000,5,4,8,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(136,4,'Amaze 1.2L I-VTEC S',1,2015,2,1198,91116,320000,5,2,8,0,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(137,3,'ALTROZ XZ PETROL',1,2020,2,1199,30274,595000,3,4,2,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(138,9,'Kiger RXZ AMT',2,2021,2,999,30195,711000,5,5,5,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(139,7,'SELTOS HTK PLUS 1.5 IMT',1,2022,2,1497,51566,1162000,5,2,7,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(140,7,'SONET HTK PLUS 1.0 IMT',1,2022,2,998,4763,981000,4,5,5,0,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(141,2,'NEW I20 ASTA (O) 1.2 MT',1,2023,2,1197,20051,890000,3,5,8,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(142,10,'Polo COMFORTLINE 1.0L MPI',1,2019,2,999,68763,534000,3,5,10,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(143,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2015,2,1197,63079,307000,5,2,6,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(144,6,'S Cross SIGMA 1.5',1,2022,2,1462,15983,852000,5,4,6,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(145,6,'Baleno ZETA PETROL 1.2',1,2020,2,1197,55790,626000,4,5,1,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(146,7,'SELTOS HTK PLUS 1.5 IMT',1,2021,2,1497,38307,1058000,3,5,5,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(147,11,'MAGNITE XV TURBO CVT',2,2022,2,999,18193,836000,5,2,1,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(148,2,'VENUE SX 1.0 (O) TURBO',1,2019,2,998,57649,729000,5,4,1,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(149,4,'Amaze 1.2L I-VTEC VX CVT',2,2023,2,1199,8376,816000,5,4,3,0,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(150,9,'TRIBER RXT',1,2022,2,999,13196,690000,3,2,5,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(151,6,'Ertiga VXI',1,2012,2,1373,54751,407000,5,5,2,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(152,14,'Go Plus A(O)',1,2019,2,1198,27695,400000,3,2,10,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(153,4,'City 1.5L I-VTEC SV',1,2017,2,1497,102835,608000,3,2,1,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(154,4,'Amaze 1.2L I-VTEC S',1,2019,2,1199,37864,543000,4,2,4,0,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(155,4,'City 1.5L I-VTEC ZX CVT',2,2017,2,1497,42012,814000,3,5,9,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(156,2,'i20 SPORTZ 1.2',1,2013,2,1197,31479,316000,4,2,8,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(157,7,'SELTOS HTX ANNIVERSARY EDITION 1.5 PETROL',1,2021,2,1497,26456,1221000,5,4,10,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(158,13,'URBAN CRUISER PREMIUM GRADE MT',1,2021,2,1462,42381,862000,3,4,5,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(159,9,'Kwid RXT 1.0 AMT (O)',2,2019,2,999,13568,386000,5,4,3,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(160,6,'Ciaz ZETA AT 1.5  SHVS PETROL',2,2022,2,1462,21566,974000,4,2,5,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(161,7,'SELTOS HTX 1.5 PETROL',1,2019,2,1497,85336,1032000,3,2,3,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(162,6,'Swift Dzire LXI (O)',1,2015,2,1197,35817,377000,3,2,1,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(163,2,'Creta SX (O) 1.6 DIESEL',1,2019,1,1582,72781,1114000,3,4,8,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(164,15,'Compass SPORT PLUS 1.4 PETROL',1,2020,2,1368,76041,1065000,3,5,9,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(165,6,'Ciaz VXI',1,2016,2,1373,60440,478000,4,4,3,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(166,1,'XUV500 W5',1,2019,1,2179,45984,1011000,5,2,7,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(167,15,'Compass LIMITED (O) 2.0 DIESEL 4X4',1,2018,1,1956,53738,968000,5,4,7,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(168,6,'Alto LXI',1,2021,2,796,8945,364000,5,4,3,0,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(169,7,'SONET HTK PLUS 1.5',1,2020,1,1493,68421,811000,5,2,2,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(170,3,'NEXON XZ PETROL',1,2021,2,1199,8119,858000,3,5,1,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(171,8,'HECTOR SMART 1.5 DCT PETROL',2,2019,2,1451,8797,1338000,3,4,5,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(172,6,'Baleno DELTA PETROL 1.2',1,2017,2,1197,32348,476000,5,4,3,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(173,4,'City 1.5L I-VTEC V MT',1,2017,2,1497,115810,583000,3,5,3,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(174,1,'XUV300 W6 1.2 PETROL',1,2020,2,1197,40924,681000,3,2,3,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(175,6,'Baleno DELTA PETROL 1.2',1,2016,2,1197,33099,473000,4,2,8,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(176,8,'HECTOR SHARP 1.5 DCT PETROL',2,2020,2,1451,66590,1269000,5,5,9,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(177,2,'Creta S 1.5 PETROL',1,2020,2,1497,80554,968000,5,4,10,0,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(178,7,'SELTOS GTX PLUS AT 1.5 DIESEL',2,2019,1,1493,51955,1266000,5,5,5,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(179,2,'Creta SX PLUS AT 1.6 PETROL',2,2016,2,1591,61059,715000,4,5,1,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(180,3,'NEXON XZ PLUS PETROL SUNROOF',1,2023,2,1199,24415,969000,4,5,9,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(181,6,'Dzire VXI',1,2018,2,1197,65268,509000,4,4,7,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(182,6,'Swift VXI',1,2012,2,1197,34096,256000,3,4,5,0,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(183,6,'Swift VXI',1,2022,2,1197,35230,626000,5,4,5,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(184,13,'Glanza G CVT',2,2019,2,1197,55311,622000,3,5,9,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(185,2,'Creta SX 1.5 PETROL',1,2020,2,1497,61464,1172000,4,5,4,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(186,7,'SELTOS HTX 1.5 PETROL',1,2019,2,1497,32251,1127000,4,4,4,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(187,6,'Baleno ALPHA 1.2 AGS',2,2022,2,1197,27052,817000,4,4,4,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(188,7,'SONET HTK PLUS 1.0 IMT',1,2022,2,998,22078,958000,4,4,2,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(189,15,'Compass SPORT 2.0 DIESEL',1,2019,1,1956,93467,930000,3,4,4,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(190,6,'Swift ZXI PLUS',1,2018,2,1197,21574,630000,3,4,4,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(191,6,'Alto 800 LXI',1,2016,2,796,97698,220000,4,5,3,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(192,1,'Thar LX PETROL HT 4WD AT',2,2021,2,1997,31332,1318000,5,4,1,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(193,1,'Thar LX PETROL HT 4WD AT',2,2021,2,1997,25411,1365000,5,4,3,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(194,2,'Creta SX AT 1.6 PETROL',2,2019,2,1591,69534,1045000,3,4,7,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(195,2,'Elite i20 SPORTZ 1.2 (O)',1,2014,2,1197,87564,443000,5,2,1,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(196,4,'City 1.5L I-VTEC VX',1,2020,2,1877,35169,923000,4,4,1,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(197,2,'GRAND I10 NIOS MAGNA 1.2 KAPPA VTVT CNG',1,2021,3,1197,19115,610000,5,5,5,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(198,6,'XL6 ALPHA PLUS  AT DUAL TONE',2,2022,2,1233,6753,1294000,5,2,6,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(199,6,'Baleno ZETA PETROL 1.2',1,2019,2,1197,59602,563000,4,4,1,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(200,7,'SELTOS HTX 1.5 PETROL',1,2019,2,1497,64349,1053000,3,5,2,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(201,6,'Ciaz ZETA 1.5 SHVS MT PETROL',1,2022,2,1462,35483,870000,4,5,1,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(202,2,'Grand i10 ASTA 1.2 KAPPA VTVT',1,2018,3,1197,87009,464000,5,2,1,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(203,14,'Redi Go T',1,2021,2,799,36150,314000,4,5,8,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(204,4,'Amaze 1.2L I-VTEC S',1,2018,3,1555,76942,512000,3,4,1,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(205,6,'Vitara Brezza VXI AT SHVS',2,2021,2,1462,29125,829000,4,5,2,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(206,4,'City 1.5L I-VTEC S MT',1,2012,2,1497,77380,293000,4,4,3,0,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(207,3,'Tiago XTA PETROL',2,2017,2,1199,102235,374000,3,2,3,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(208,2,'Creta S 1.5 PETROL',1,2020,2,1497,14693,1124000,5,5,5,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(209,9,'Duster RXZ 1.3 TURBO PETROL MT',1,2021,2,1330,50108,929000,3,4,8,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(210,2,'Creta E PLUS 1.6 PETROL',1,2019,2,1591,17333,886000,3,5,3,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(211,2,'Creta SX PLUS 1.6 PETROL',1,2015,2,1591,102963,569000,5,5,2,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(212,5,'Ecosport TITANIUM 1.5L THUNDER EDTION DIESEL',1,2020,1,1498,71807,679000,3,2,3,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(213,3,'Tiago XZ PLUS PETROL',1,2020,2,1199,53413,505000,5,4,5,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(214,6,'Swift LXI (O)',1,2015,2,1197,71287,338000,4,4,10,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(215,9,'Duster RXL PETROL',1,2013,2,1598,77978,314000,4,2,9,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(216,1,'XUV500 W5',1,2019,1,2179,56200,949000,5,4,4,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(217,6,'Baleno SIGMA PETROL 1.2',1,2021,2,1197,11344,574000,4,2,9,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(218,6,'Baleno ALPHA CVT PETROL 1.2',2,2020,2,1197,15673,746000,3,4,10,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(219,9,'Kwid CLIMBER 1.0 AMT (O)',2,2020,2,999,45704,403000,5,4,7,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(220,2,'Creta SX PLUS 1.6 PETROL',1,2016,3,1591,84938,681000,5,2,8,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(221,2,'Verna SX (O) 1.0 TURBO DCT',2,2020,2,998,42349,1057000,4,4,1,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(222,14,'Redi Go A',1,2018,2,799,30684,231000,4,5,10,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(223,6,'Vitara Brezza VXI AT SHVS',2,2021,2,1462,57060,808000,4,2,1,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(224,10,'Polo COMFORTLINE 1.0L MPI',1,2018,2,999,96717,488000,4,2,4,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(225,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2017,2,1197,96739,374000,5,4,3,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(226,2,'Elite i20 MAGNA 1.2',1,2015,2,1197,38116,410000,4,4,10,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(227,6,'Baleno SIGMA PETROL 1.2',1,2020,2,1197,25069,570000,4,2,7,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(228,7,'SONET GTX PLUS 1.0 IMT',1,2020,2,998,37438,874000,4,4,6,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(229,7,'SELTOS GTX PLUS DCT 1.4 PETROL',2,2019,2,1353,49161,1316000,4,5,2,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(230,3,'TIGOR XZ PETROL',1,2018,2,1199,60364,430000,3,2,9,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(231,6,'Wagon R 1.0 LXI CNG',1,2017,3,1244,81370,350000,4,4,10,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(232,3,'TIGOR XZA PETROL',2,2018,2,1199,97131,443000,3,2,3,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(233,1,'Thar LX PETROL HT 4WD AT',2,2021,2,1997,30914,1340000,5,5,5,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(234,1,'XUV500 W11 AT',2,2019,1,2179,36660,1262000,4,2,1,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(235,6,'Swift LXI (O)',1,2017,2,1197,55771,403000,4,2,7,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(236,7,'SELTOS GTX PLUS DCT 1.4 PETROL',2,2019,2,1353,24009,1405000,3,5,9,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(237,5,'Ecosport TITANIUM 1.5L DIESEL',1,2020,1,1498,62541,826000,5,2,3,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(238,2,'VENUE SX 1.0 TURBO',1,2019,2,998,17536,850000,4,2,4,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(239,3,'NEXON XM SUNROOF PETROL',1,2022,2,1199,21897,824000,3,4,5,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(240,2,'Grand i10 SPORTZ 1.2 KAPPA VTVT',1,2015,2,1197,96142,322000,5,5,2,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(241,6,'IGNIS ALPHA 1.2 AMT',2,2021,2,1197,38768,668000,3,2,10,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(242,9,'Kwid RXL',1,2021,2,1765,32589,349000,4,4,1,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(243,7,'SONET HTX 1.0 IMT',1,2022,2,998,29811,1024000,5,2,9,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(244,10,'Vento HIGHLINE PLUS 1.2 AT 16 ALLOY',2,2018,2,1197,106608,679000,3,4,8,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(245,2,'VENUE SX 1.0 TURBO IMT',1,2021,2,998,39415,886000,4,5,8,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(246,6,'IGNIS ALPHA 1.2',1,2021,2,1197,30314,592000,3,2,4,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(247,1,'Thar LX  P 4WD AT CONVERTIBLE',2,2022,2,1997,29045,1397000,3,5,6,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(248,14,'Redi Go A',1,2021,2,799,15680,304000,4,2,9,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(249,4,'City 1.5L I-VTEC SV',1,2016,2,1497,97885,551000,4,4,1,0,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(250,11,'MAGNITE XE',1,2022,2,999,13843,553000,4,4,7,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(251,14,'Go Plus T(O)',1,2019,2,1198,30616,411000,3,4,7,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(252,6,'Baleno DELTA CVT PETROL 1.2',2,2019,2,1197,36124,590000,5,2,9,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(253,4,'Amaze 1.2L I-VTEC VX CVT',2,2023,2,1199,13137,917000,5,5,7,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(254,3,'Harrier XZA PLUS 2.0L',2,2022,1,1956,27222,1765000,5,2,5,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(255,6,'Ciaz SIGMA 1.5 SHVS MT  PETROL',1,2019,2,1462,66068,663000,5,2,5,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(256,6,'Wagon R 1.0 LXI CNG',1,2017,3,998,110029,325000,3,2,8,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(257,6,'Swift LXI (O)',1,2015,2,1197,65365,355000,3,4,8,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(258,6,'Alto VXI',1,2021,2,796,9171,358000,4,2,6,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(259,3,'NEXON XZA PLUS PETROL',2,2019,2,1198,61470,713000,3,5,4,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(260,3,'ALTROZ XZA PLUS',2,2022,2,1199,24933,789000,3,5,7,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(261,6,'Dzire VXI',1,2020,2,1197,61172,541000,5,2,2,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(262,4,'Amaze 1.2L I-VTEC S',1,2015,2,1198,44993,356000,5,5,9,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(263,6,'Swift LXI',1,2013,2,1197,61671,282000,3,5,10,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(264,3,'NEXON XZA PLUS PETROL',2,2022,2,1199,13124,967000,3,5,5,0,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(265,6,'New Wagon-R LXI CNG (O) 1.0',1,2020,3,998,18852,516000,5,2,9,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(266,6,'Ciaz ALPHA  AT 1.4  PETROL',2,2017,3,1373,90034,644000,3,2,8,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(267,6,'Vitara Brezza VDI AMT',2,2019,1,1248,59343,634000,3,5,10,0,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(268,4,'Amaze 1.2L I-VTEC S',1,2015,2,1198,41525,349000,3,4,5,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(269,2,'Creta BASE 1.6 PETROL',1,2016,2,1591,45368,655000,3,2,6,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(270,6,'Ciaz VXI',1,2014,2,1373,58546,404000,4,5,6,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(271,2,'Grand i10 ASTA 1.2 KAPPA VTVT',1,2016,3,1197,57121,396000,5,5,4,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(272,3,'TIGOR XE PETROL',1,2021,2,1199,24927,515000,4,5,10,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(273,1,'XUV300 W8 1.2 PETROL',1,2019,2,1197,39926,829000,5,4,5,0,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(274,6,'Swift LXI (O)',1,2017,2,1197,61039,419000,3,4,5,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(275,15,'Compass SPORT PLUS 1.4 PETROL',1,2019,2,1368,59431,1149000,3,5,8,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(276,6,'IGNIS ZETA 1.2 AMT',2,2022,2,1197,36051,663000,4,2,6,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(277,4,'Amaze 1.2L I-VTEC S',1,2016,2,1198,52996,410000,5,5,4,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(278,6,'Baleno DELTA PETROL 1.2',1,2019,3,1197,47849,537000,4,4,6,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(279,6,'Swift VXI',1,2015,2,1197,59365,372000,3,5,4,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(280,3,'NEXON XZA PLUS DIESEL DARK EDITION',2,2022,1,1497,19703,1053000,5,5,10,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(281,9,'Kwid RXT 0.8',1,2020,2,799,62083,356000,4,2,9,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(282,6,'S PRESSO VXI+',1,2020,2,998,15966,392000,5,4,5,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(283,2,'Elite i20 MAGNA 1.2',1,2016,2,1197,74240,448000,4,2,7,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(284,11,'MAGNITE XV PREMIUM TURBO CVT',2,2022,2,999,42637,795000,5,5,1,0,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(285,8,'HECTOR SHARP 1.5 DCT PETROL',2,2020,2,1451,50365,1246000,4,5,5,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(286,3,'TIGOR XE PETROL',1,2020,2,1199,73158,479000,3,5,2,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(287,2,'i20 SPORTZ 1.2',1,2014,2,1197,78713,347000,5,4,10,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(288,3,'NEXON XZ PLUS PETROL',1,2017,2,1198,82375,590000,5,4,9,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(289,6,'Swift LXI (O)',1,2017,2,1197,23582,438000,3,2,7,0,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(290,3,'TIGOR XZ PLUS PETROL',1,2020,2,1665,38544,524000,5,2,3,0,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(291,2,'NEW SANTRO SPORTZ MT',1,2019,2,1086,49352,413000,5,2,9,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(292,5,'Ecosport TITANIUM 1.5L PETROL',1,2018,2,1497,99535,581000,5,4,9,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(293,9,'Kwid CLIMBER 1.0 (O) DUAL TONE',1,2022,2,1244,26312,446000,3,2,5,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(294,6,'Dzire ZXI CNG',1,2022,3,1197,47217,795000,5,2,10,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(295,6,'Ciaz DELTA 1.4 AT PETROL',2,2018,2,1373,46850,575000,5,4,2,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(296,2,'i20 Active 1.2 S',1,2016,2,1197,54148,493000,4,5,5,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(297,4,'City 1.5L I-VTEC SV CVT',2,2015,2,1497,39168,522000,4,4,10,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(298,9,'Kwid RXT 0.8',1,2019,2,1754,66778,340000,5,4,2,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(299,7,'SONET HTK 1.5',1,2022,1,1493,23502,955000,3,5,5,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(300,2,'Creta SX PLUS AT 1.6 PETROL',2,2017,2,1591,67495,832000,3,4,4,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(301,6,'Celerio ZXI AMT',2,2016,2,998,19759,403000,3,2,1,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(302,4,'City 1.5L I-VTEC V MT',1,2015,2,1497,91368,497000,5,5,8,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(303,6,'Swift Dzire LXI',1,2013,2,1197,36536,319000,5,5,2,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(304,11,'MAGNITE XV PREMIUM DUAL TONE',1,2021,2,999,42886,672000,5,5,8,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(305,7,'SONET HTX 1.5',1,2021,1,1493,28209,979000,5,2,9,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(306,6,'New Wagon-R VXI 1.2',1,2019,2,1197,19085,459000,3,5,2,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(307,2,'Verna FLUIDIC 4S 1.6 VTVT S',1,2015,2,1591,102445,472000,4,2,4,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(308,6,'Swift Dzire VXI',1,2012,2,1197,51629,266000,3,2,1,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(309,6,'Wagon R Stingray VXI',1,2013,2,998,70322,229000,3,5,3,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(310,2,'Creta E PLUS 1.6 PETROL',1,2018,2,1591,48108,803000,3,5,9,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(311,6,'Dzire VXI',1,2020,2,1221,108051,552000,3,5,7,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(312,2,'Grand i10 SPORTZ 1.2 KAPPA VTVT',1,2020,2,1197,56215,551000,5,2,4,0,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(313,5,'Ecosport TITANIUM 1.5L PETROL',1,2018,2,1497,70008,652000,3,2,5,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(314,2,'i20 SPORTZ 1.2',1,2014,2,1197,85321,353000,4,2,2,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(315,6,'Swift Dzire VXI',1,2012,2,1197,43425,251000,5,2,6,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(316,6,'Wagon R 1.0 VXI+ AMT',2,2017,2,998,40144,393000,4,2,3,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(317,6,'Wagon R 1.0 VXI',1,2017,2,998,54614,346000,5,4,2,0,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(318,2,'Xcent S 1.2',1,2018,3,1197,60152,476000,3,2,10,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(319,9,'Duster 110 PS RXS MT DIESEL',1,2019,1,1461,40838,713000,3,2,7,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(320,6,'Swift LXI (O)',1,2017,2,1197,47968,408000,3,5,6,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(321,2,'Grand i10 SPORTZ 1.2 KAPPA VTVT',1,2018,2,1197,75742,403000,5,5,8,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(322,2,'Verna FLUIDIC 1.6 VTVT EX',1,2013,2,1591,108787,374000,4,2,10,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(323,6,'Baleno DELTA PETROL 1.2',1,2019,2,1197,65533,503000,4,4,5,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(324,2,'VENUE SX 1.0 TURBO',1,2020,2,998,43417,828000,3,2,4,0,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(325,6,'Baleno DELTA PETROL 1.2',1,2019,2,1197,35337,540000,4,2,5,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(326,6,'Swift ZXI',1,2017,2,1197,68304,486000,4,4,7,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(327,3,'PUNCH CREATIVE  1.2 RTN DUAL TONE',1,2022,2,1199,20770,778000,5,4,5,0,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(328,3,'TIGOR XZ PLUS PETROL',1,2020,2,1199,17280,678000,4,4,7,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(329,6,'Baleno DELTA PETROL 1.2',1,2017,2,1197,47472,520000,5,5,6,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(330,10,'Vento HIGHLINE PLUS 1.2 AT',2,2019,2,1197,30946,1056000,5,5,5,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(331,1,'XUV500 W7 AT',2,2019,1,2179,36879,1026000,4,4,9,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(332,4,'City 1.5L I-VTEC VX CVT',2,2016,2,1497,68957,671000,5,4,5,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(333,4,'City 1.5L I-VTEC VX CVT',2,2014,2,1497,69403,553000,3,5,3,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(334,4,'City 1.5L I-VTEC S MT',1,2011,2,1497,88490,262000,3,5,8,0,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(335,2,'GRAND I10 NIOS SPORTZ 1.2 KAPPA VTVT',1,2022,2,1197,17035,628000,5,5,10,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(336,2,'Creta S 1.6 PETROL',1,2016,2,1591,77095,700000,4,4,4,0,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(337,6,'Swift VXI ABS',1,2016,2,1197,40875,474000,3,4,4,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(338,6,'Baleno DELTA PETROL 1.2',1,2021,2,1197,28415,638000,3,5,10,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(339,3,'NEXON XM SUNROOF PETROL',1,2021,2,1199,46101,769000,4,5,7,0,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(340,2,'Grand i10 ASTA AT 1.2 KAPPA VTVT',2,2014,2,1197,36652,393000,3,4,3,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(341,6,'Ciaz ALPHA 1.5 SHVS PETROL',1,2019,2,1462,41735,719000,4,4,9,0,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(342,6,'Baleno ZETA CVT PETROL 1.2',2,2019,2,1197,22779,643000,4,2,7,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(343,1,'XUV500 W9',1,2019,1,2179,46648,1099000,5,4,3,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(344,6,'Wagon R 1.0 LX',1,2011,2,998,93282,163000,5,5,10,0,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(345,3,'Tiago XZ PLUS PETROL',1,2020,2,1199,67014,489000,5,5,5,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(346,6,'S PRESSO VXI CNG',1,2020,3,998,64311,412000,5,2,4,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(347,2,'Grand i10 SPORTZ 1.2 KAPPA VTVT',1,2017,3,1442,99180,406000,4,5,5,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(348,1,'XUV300 W8 (O) 1.5 DIESEL',1,2021,1,1497,18252,961000,4,2,5,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(349,4,'City 1.5L I-VTEC VX',1,2016,2,1497,56424,609000,4,2,9,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(350,2,'Creta E PLUS 1.6 PETROL',1,2018,2,1591,103772,723000,3,4,6,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(351,6,'Baleno DELTA PETROL 1.2',1,2021,2,1197,29923,606000,3,2,2,0,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(352,6,'Baleno DELTA PETROL 1.2',1,2021,2,1197,41436,591000,3,2,8,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(353,9,'TRIBER RXT',1,2022,2,999,7021,629000,4,4,2,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(354,2,'Creta E PLUS 1.6 PETROL',1,2018,2,1661,60193,803000,5,2,9,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(355,3,'TIGOR XE PETROL',1,2021,2,1199,29667,508000,5,4,1,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(356,2,'NEW SANTRO SPORTZ MT',1,2019,2,1086,62309,407000,3,5,7,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(357,10,'Vento HIGHLINE PLUS 1.2 AT 16 ALLOY',2,2019,2,1197,58082,910000,4,2,7,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(358,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2015,2,1197,29116,363000,4,5,8,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(359,6,'S PRESSO LXI',1,2020,2,998,30782,369000,4,4,10,0,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(360,4,'Jazz 1.2L I-VTEC V AT',2,2017,2,1199,95825,471000,3,4,1,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(361,4,'Jazz 1.2L I-VTEC S',1,2017,2,1199,59577,416000,4,4,6,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(362,9,'TRIBER RXZ AMT',2,2023,2,999,21044,741000,5,2,6,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(363,9,'Kwid CLIMBER 1.0 (O)',1,2020,2,999,11812,407000,5,5,6,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(364,5,'Ecosport TITANIUM 1.5L DIESEL',1,2019,1,1498,78701,705000,4,2,7,0,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(365,2,'NEW SANTRO MAGNA',1,2021,2,1086,13421,472000,3,5,7,0,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(366,2,'Xcent SX 1.2',1,2014,2,1197,57224,332000,3,2,4,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(367,9,'TRIBER RXZ',1,2023,2,999,14050,683000,5,5,7,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(368,1,'XUV500 W5',1,2019,1,2179,55608,860000,4,4,8,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(369,6,'Ciaz DELTA 1.5 SHVS MT PETROL',1,2018,2,1462,51690,665000,3,2,10,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(370,6,'Baleno SIGMA PETROL 1.2',1,2021,2,1197,20654,603000,4,2,6,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(371,2,'Creta SX AT 1.6 PETROL',2,2019,2,1591,47323,1096000,5,4,8,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(372,6,'Baleno DELTA PETROL 1.2',1,2018,2,1197,35462,535000,4,4,6,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(373,2,'AURA S 1.2',1,2021,2,1197,30058,610000,4,2,7,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(374,9,'TRIBER RXE MT',1,2021,2,999,28929,525000,3,5,5,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(375,1,'XUV300 W8 (O) 1.5 DIESEL AMT',2,2020,1,1497,64038,862000,5,2,8,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(376,6,'Baleno DELTA PETROL 1.2',1,2021,2,1197,25705,669000,3,2,4,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(377,6,'Celerio ZXI AMT (O)',2,2018,2,998,35251,448000,5,2,5,0,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(378,1,'XUV300 W4 1.5 DIESEL',1,2019,1,1497,21843,692000,3,2,4,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(379,7,'SONET HTK PLUS 1.0 IMT',1,2022,2,998,15612,954000,3,4,6,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(380,2,'i20 SPORTZ 1.2',1,2014,2,1197,33251,389000,5,4,2,0,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(381,2,'\"XCENT PRIME T+ CNG\"',1,2021,3,1197,30541,631000,4,5,4,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(382,6,'Baleno ALPHA PETROL 1.2',1,2019,2,1554,48969,629000,5,5,3,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(383,6,'Ciaz ALPHA 1.4 PETROL',1,2017,2,1373,43537,647000,4,5,10,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(384,2,'Creta SX PLUS AT 1.6 PETROL',2,2017,2,1591,76048,828000,4,2,7,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(385,6,'IGNIS ALPHA 1.2',1,2018,2,1197,31802,555000,3,4,6,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(386,6,'New Wagon-R ZXI 1.2',1,2022,2,1197,13103,568000,5,4,4,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(387,6,'New Wagon-R VXI CNG 1.0',1,2022,3,998,38261,616000,4,2,6,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(388,6,'Celerio VXI',1,2019,2,998,63194,394000,5,2,7,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(389,7,'SELTOS GTX PLUS AT 1.5 DIESEL',2,2021,1,1493,66666,1492000,4,4,9,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(390,6,'Wagon R 1.0 LXI',1,2014,2,998,32631,288000,3,2,4,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(391,2,'GRAND I10 NIOS SPORTZ 1.2 KAPPA VTVT',1,2022,2,1197,33898,651000,3,4,2,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(392,6,'Wagon R 1.0 LXI CNG',1,2018,3,998,80107,394000,4,4,10,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(393,9,'Kwid RXT 1.0',1,2022,2,999,15362,408000,5,2,3,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(394,6,'Wagon R 1.0 LXI',1,2014,2,998,64539,236000,4,5,5,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(395,3,'NEXON EV XZ PLUS',2,2020,4,1332,46001,1100000,3,5,10,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(396,2,'Grand i10 SPORTZ 1.2 KAPPA VTVT',1,2015,2,1197,99453,339000,5,5,10,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(397,4,'City 1.5L I-VTEC SV CVT',2,2014,2,1497,47445,472000,5,4,8,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(398,6,'Baleno ZETA PETROL 1.2',1,2019,2,1197,30890,582000,3,5,2,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(399,4,'City 1.5L I-VTEC VX CVT',2,2019,2,1497,68275,892000,5,2,10,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(400,5,'Ecosport TITANIUM 1.5L PETROL',1,2019,2,1497,98296,616000,5,2,4,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(401,2,'i20 SPORTZ 1.2',1,2011,2,1197,89562,230000,3,4,8,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(402,9,'Kwid RXT 1.0 (O)',1,2022,2,999,7168,421000,5,5,4,0,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(403,9,'Kwid RXT 1.0 (O)',1,2019,2,999,34562,364000,5,5,7,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(404,4,'City 1.5L I-VTEC S MT',1,2011,2,1497,61297,234000,3,4,6,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(405,3,'NEXON XZ PLUS PETROL',1,2020,2,1199,62836,763000,4,2,7,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(406,3,'Tiago XZ PETROL',1,2021,2,1199,47603,530000,5,5,3,0,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(407,6,'Ciaz VXI+',1,2015,2,1373,119079,427000,3,4,9,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(408,6,'New Wagon-R VXI 1.0 AMT',2,2020,2,998,41307,477000,5,5,7,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(409,11,'MAGNITE XV PREMIUM TURBO',1,2022,2,999,26583,874000,3,5,9,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(410,3,'Tiago XZ PLUS PETROL',1,2021,2,1199,19878,574000,5,4,8,0,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(411,6,'Ciaz VXI',1,2015,2,1373,56050,512000,3,4,6,0,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(412,6,'New Wagon-R ZXI 1.2',1,2019,2,1197,34898,474000,3,2,7,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(413,2,'Verna FLUIDIC 1.6 VTVT EX',1,2012,2,1591,38005,356000,4,4,6,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(414,9,'TRIBER RXL MT',1,2022,2,999,21089,613000,3,4,9,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(415,2,'Creta SX (O) 1.4 TURBO DCT',2,2020,2,1353,57541,1438000,3,2,10,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(416,9,'Kwid RXT 1.0 AMT (O)',2,2020,2,999,12381,399000,5,5,10,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(417,6,'Baleno DELTA PETROL 1.2',1,2020,2,1197,38482,602000,4,4,4,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(418,6,'S PRESSO VXI+',1,2020,2,998,30057,403000,3,2,5,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(419,4,'City 1.5L I-VTEC V MT',1,2015,2,1497,89726,523000,4,4,1,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(420,6,'Baleno DELTA PETROL 1.2',1,2021,2,1197,20120,644000,3,2,10,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(421,4,'Brio VX MT',1,2015,2,1198,96395,327000,4,4,4,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(422,2,'i20 MAGNA 1.2',1,2011,2,1197,97272,189000,4,4,3,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(423,6,'Baleno ZETA PETROL 1.2',1,2016,2,1197,58639,459000,4,2,4,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(424,6,'Baleno DELTA PETROL 1.2',1,2020,2,1197,31279,602000,3,2,2,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(425,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2015,2,1197,99108,322000,5,4,1,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(426,2,'Xcent S 1.2',1,2018,3,1197,90833,462000,3,2,6,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(427,2,'i20 MAGNA (O) 1.2',1,2011,2,1233,43796,214000,4,4,3,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(428,3,'NEXON XZ PLUS (O) PETROL DARK EDITION',1,2022,2,1199,26202,1038000,4,5,5,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(429,6,'Wagon R Stingray VXI',1,2015,2,998,66325,312000,5,4,7,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(430,1,'XUV500 W9',1,2019,1,2179,42625,1055000,3,5,10,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(431,2,'VENUE SX PLUS 1.0 TURBO DCT',2,2019,2,998,72340,877000,4,2,2,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(432,6,'Baleno DELTA PETROL 1.2',1,2020,2,1197,60937,589000,5,5,10,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(433,6,'Baleno ZETA PETROL 1.2',1,2020,2,1197,35495,659000,5,4,2,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(434,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2016,2,1197,22581,391000,4,2,1,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(435,4,'City 1.5L I-VTEC VX CVT',2,2016,2,1497,30591,729000,3,4,4,0,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(436,2,'Elite i20 SPORTZ 1.2',1,2017,2,1197,47327,502000,5,2,2,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(437,6,'Ritz VXI',1,2011,2,1197,43560,185000,3,2,8,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(438,6,'S PRESSO VXI+',1,2020,2,998,18518,408000,3,4,1,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(439,6,'New Wagon-R LXI 1.0',1,2020,2,998,54209,451000,3,2,6,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(440,1,'XUV300 W8 (O) 1.2 PETROL',1,2023,2,1197,12061,1128000,5,5,7,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(441,2,'Creta SX PLUS AT 1.6 PETROL',2,2017,2,1591,41908,849000,5,5,3,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(442,2,'VENUE SX 1.0 TURBO',1,2020,2,998,49650,860000,4,5,1,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(443,9,'TRIBER RXZ AMT',2,2020,2,999,13341,664000,4,2,3,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(444,9,'Kwid CLIMBER 1.0 (O)',1,2022,2,999,15517,432000,5,5,10,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(445,6,'Swift VXI',1,2011,2,1197,48906,222000,3,2,5,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(446,6,'S PRESSO VXI+',1,2022,2,998,21688,405000,5,2,8,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(447,2,'Grand i10 ASTA 1.2 KAPPA VTVT',1,2016,2,1197,97502,396000,4,2,9,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(448,3,'NEXON XZA PLUS PETROL',2,2021,2,1199,36520,888000,5,4,9,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(449,2,'Creta E PLUS 1.6 PETROL',1,2017,2,1591,83038,715000,4,5,6,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(450,7,'SONET GTX PLUS 1.0 IMT',1,2022,2,998,22732,1084000,5,2,8,0,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(451,6,'Wagon R 1.0 VXI',1,2017,2,998,43683,337000,4,4,5,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(452,7,'SELTOS HTK PLUS AT 1.5 DIESEL',2,2020,1,1493,82433,1036000,3,4,10,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(453,6,'Baleno DELTA PETROL 1.2',1,2017,2,1197,84098,444000,3,2,4,0,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(454,5,'Ecosport TITANIUM 1.5L DIESEL',1,2019,1,1498,71456,695000,3,2,5,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(455,3,'Tiago XZ PLUS CNG',1,2022,3,1199,22213,675000,4,2,1,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(456,2,'Xcent E+',1,2017,2,1197,50492,400000,5,4,5,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(457,2,'Creta SX PLUS AT 1.6 PETROL',2,2017,2,1591,74436,817000,3,2,8,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(458,2,'Grand i10 SPORTZ 1.2 KAPPA VTVT',1,2013,2,1197,71347,281000,3,5,1,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(459,9,'TRIBER RXT',1,2020,2,999,29244,543000,4,2,10,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(460,4,'City 1.5L I-VTEC V MT',1,2015,2,1497,48941,573000,3,2,9,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(461,5,'Ecosport TITANIUM 1.5L DIESEL',1,2019,1,1498,68051,703000,5,5,2,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(462,4,'Amaze 1.2L I-VTEC S AT',2,2014,2,1198,75833,369000,3,4,5,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(463,6,'XL6 ZETA AT',2,2021,2,1462,27739,1037000,4,5,5,0,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(464,6,'Celerio ZXI AMT',2,2016,2,998,84574,374000,5,4,6,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(465,2,'NEW SANTRO MAGNA CNG',1,2019,3,1086,75012,437000,3,2,7,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(466,4,'City 1.5L I-VTEC VX',1,2016,2,1497,91272,606000,4,4,1,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(467,6,'Celerio ZXI AMT (O)',2,2017,2,998,43600,473000,5,2,6,0,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(468,6,'Swift VXI',1,2011,2,1197,28823,223000,3,5,8,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(469,4,'Brio VX MT',1,2013,2,1198,78963,252000,5,4,2,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(470,6,'Ciaz ZETA 1.4  AT PETROL',2,2017,2,1373,91712,596000,5,4,1,0,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(471,6,'New Wagon-R VXI 1.0 AMT',2,2022,2,998,22666,574000,5,2,5,0,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(472,5,'Ecosport TITANIUM 1.5L PETROL AT',2,2017,2,1499,48832,605000,5,5,10,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(473,6,'Baleno DELTA PETROL 1.2',1,2017,2,1197,31714,485000,5,2,9,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(474,6,'Celerio ZXI AMT',2,2016,2,998,65734,386000,5,5,9,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(475,6,'Ciaz ZETA 1.4  AT PETROL',2,2017,2,1373,93032,527000,3,2,9,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(476,6,'Baleno ZETA PETROL 1.2',1,2017,2,1197,29508,511000,5,4,10,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(477,6,'Swift VXI',1,2011,2,1197,28799,222000,5,2,5,0,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(478,3,'Tiago XT CNG',1,2022,3,1199,19968,626000,4,4,1,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(479,6,'Dzire ZXI AMT',2,2019,2,1197,80225,628000,4,5,3,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(480,6,'Celerio VXI AMT',2,2017,2,1232,29841,432000,5,5,6,0,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(481,9,'Kwid RXT 1.0 AMT (O)',2,2020,2,999,52957,397000,5,4,2,0,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(482,3,'Tiago XT CNG',1,2022,3,1199,12693,624000,4,4,3,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(483,6,'S PRESSO LXI',1,2020,2,998,39602,344000,5,5,1,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(484,6,'Swift Dzire VXI',1,2012,2,1197,54388,280000,3,4,8,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(485,6,'Ciaz ALPHA 1.5 SHVS PETROL',1,2018,2,1462,76461,687000,4,2,6,0,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(486,1,'XUV300 W8 (O) 1.2 PETROL AMT',2,2022,2,1197,13045,1127000,3,2,9,0,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(487,6,'Baleno ZETA CVT PETROL 1.2',2,2018,2,1197,54458,522000,3,2,5,0,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(488,6,'Ciaz DELTA AT 1.5 SHVS PETROL',2,2019,2,1462,31561,761000,5,5,4,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(489,6,'Baleno DELTA PETROL 1.2',1,2021,2,1197,33986,644000,5,2,1,0,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(490,6,'XL6 ZETA AT',2,2019,2,1462,54342,921000,5,2,5,0,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(491,3,'TIGOR XZ PLUS CNG',1,2022,3,1199,39086,747000,5,2,1,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(492,8,'HECTOR SHARP 2.0 DIESEL',1,2021,1,1956,64687,1548000,3,2,2,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(493,6,'Baleno ZETA PETROL 1.2',1,2020,2,1197,51871,610000,3,2,9,0,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(494,6,'Baleno DELTA CVT PETROL 1.2',2,2018,2,1197,70318,509000,3,4,7,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(495,2,'GRAND I10 NIOS MAGNA CORPORATE EDITION 1.2 KAPPA VTVT',1,2020,2,1197,20631,531000,4,4,9,0,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(496,6,'Wagon R 1.0 LXI',1,2012,2,998,32697,216000,3,4,9,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(497,6,'Baleno DELTA PETROL 1.2',1,2015,2,1197,69308,416000,5,4,5,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(498,6,'Celerio VXI AMT',2,2015,2,998,64427,324000,5,5,1,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(499,6,'Wagon R 1.0 VXI',1,2014,2,998,65948,268000,3,4,1,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(500,4,'City 1.5L I-VTEC V MT',1,2014,2,1497,50829,497000,3,5,10,1,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(501,2,'i20 MAGNA 1.2',1,2011,2,1197,34169,215000,5,2,3,0,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(502,13,'Etios V',1,2011,2,1496,83914,212000,5,4,3,0,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(503,6,'Ciaz VXI+',1,2015,2,1373,109884,424000,5,2,9,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(504,9,'Kwid CLIMBER 1.0 (O)',1,2020,2,999,35932,408000,4,2,3,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(505,6,'Celerio ZXI AMT (O)',2,2017,2,998,41900,396000,4,4,1,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(506,9,'Kwid CLIMBER 1.0 AMT (O)',2,2020,2,999,21527,418000,5,4,2,0,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(507,2,'Grand i10 ASTA AT 1.2 KAPPA VTVT',2,2014,2,1197,80495,360000,4,5,6,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(508,6,'Swift VXI',1,2013,2,1197,82502,281000,5,4,5,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(509,2,'i20 SPORTZ 1.2',1,2011,2,1197,82650,209000,4,5,4,0,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(510,6,'S PRESSO VXI PLUS AMT',2,2021,2,998,27180,466000,5,4,9,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(511,4,'WR-V 1.5L I-DTEC VX MT',1,2020,1,1498,45972,692000,3,2,5,0,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(512,13,'Etios Liva G',1,2013,2,1197,103571,257000,3,2,3,0,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(513,3,'NEXON XZ PLUS (O) PETROL DARK EDITION',1,2022,2,1199,14842,1002000,4,4,1,1,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(514,6,'Baleno ZETA CVT PETROL 1.2',2,2017,2,1197,40326,522000,4,2,1,0,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(515,2,'i20 SPORTZ 1.2',1,2011,2,1197,71630,209000,3,5,4,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(516,4,'Amaze 1.2L I-VTEC S',1,2015,2,1198,95876,328000,3,2,2,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(517,6,'Baleno ZETA CVT PETROL 1.2',2,2018,2,1197,37067,608000,5,4,7,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(518,2,'VENUE SX 1.0 TURBO IMT',1,2021,2,998,50568,881000,3,5,5,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(519,6,'Ritz LXI',1,2011,2,1197,41391,181000,4,4,3,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(520,1,'XUV300 W8 (O) 1.2 PETROL',1,2020,2,1197,31607,859000,3,2,7,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(521,2,'Creta EX 1.6 PETROL',1,2019,2,1591,19577,926000,5,5,7,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(522,3,'NEXON XZ PLUS PETROL SUNROOF',1,2022,2,1199,42490,975000,4,4,4,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(523,1,'XUV300 W8 1.5 DIESEL AMT',2,2020,1,1497,64788,883000,4,4,4,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(524,5,'Ecosport TITANIUM 1.5L PETROL',1,2016,2,1499,92575,517000,5,2,1,1,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(525,6,'XL6 ZETA MT',1,2022,2,1462,16405,1060000,4,2,6,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(526,6,'New Wagon-R LXI CNG (O) 1.0',1,2020,3,998,67693,504000,4,4,7,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(527,6,'New Wagon-R LXI 1.0',1,2022,2,998,24887,520000,5,2,7,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(528,6,'Ciaz ZETA 1.4  AT PETROL',2,2018,2,1373,119997,643000,5,4,1,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(529,6,'Baleno DELTA PETROL 1.2',1,2015,2,1197,75397,406000,5,4,4,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(530,2,'Grand i10 MAGNA AT 1.2 KAPPA VTVT',2,2016,2,1197,25133,424000,3,4,4,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(531,6,'Celerio X ZXI (O) AMT',2,2018,2,998,54534,412000,5,5,8,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(532,1,'XUV300 W8 (O) 1.2 PETROL AMT',2,2021,2,1197,16848,1108000,3,2,9,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(533,9,'Kwid CLIMBER 1.0 AMT (O)',2,2020,2,999,24963,442000,3,2,1,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(534,2,'Grand i10 ASTA AT 1.2 KAPPA VTVT',2,2015,2,1197,80208,434000,3,2,1,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(535,6,'Swift LXI (O)',1,2017,2,1197,58539,420000,4,2,5,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(536,6,'Ciaz ALPHA 1.4 PETROL',1,2017,2,1373,60227,619000,5,5,7,0,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(537,11,'MAGNITE XL',1,2022,2,999,15128,616000,5,2,7,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(538,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2017,2,1221,45515,417000,5,4,7,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(539,13,'Etios G',1,2015,2,1496,94749,325000,4,5,7,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(540,6,'Celerio ZXI AMT (O)',2,2016,2,998,47575,429000,5,2,6,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(541,2,'Grand i10 ASTA 1.2 KAPPA VTVT',1,2016,2,1197,72615,412000,3,5,5,1,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(542,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2017,2,1197,60546,386000,4,4,10,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.'),(543,6,'S PRESSO VXI+',1,2020,2,998,43141,386000,4,5,2,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(544,6,'Baleno DELTA CVT PETROL 1.2',2,2018,2,1197,94466,475000,4,4,1,1,'Gondosan kezelt jármű, melyre mindig odafigyeltek. Csendes és takarékos működés.'),(545,6,'Swift VXI',1,2011,2,1197,47760,223000,3,5,5,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(546,6,'Ciaz DELTA 1.5 SHVS MT PETROL',1,2019,2,1462,46705,714000,4,5,3,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(547,4,'City 1.5L I-VTEC V MT',1,2015,2,1497,60965,551000,4,5,1,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(548,1,'XUV300 W8 (O) 1.2 PETROL',1,2019,2,1197,48044,836000,4,5,10,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(549,3,'NEXON XZ PLUS PETROL SUNROOF',1,2021,2,1199,29284,939000,4,5,6,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(550,2,'i10 MAGNA 1.2',1,2011,2,1197,65182,194000,5,2,1,1,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(551,1,'XUV500 W11 AT',2,2019,1,2179,53206,1202000,3,2,6,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(552,1,'XUV300 W8(O) 1.2 PETROL DUAL TONE',1,2021,2,1197,12532,1011000,5,4,8,1,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(553,6,'Baleno ALPHA PETROL 1.2',1,2017,2,1197,78186,538000,5,2,1,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(554,6,'Baleno ZETA CVT PETROL 1.2',2,2017,2,1197,36618,542000,4,5,9,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(555,3,'TIGOR XZ PLUS CNG',1,2022,3,1199,37621,723000,5,4,5,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(556,6,'Ciaz VXI+',1,2015,2,1373,94942,470000,3,5,10,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(557,6,'Ciaz ALPHA DIESEL 1.5',1,2019,1,1498,92478,702000,4,5,7,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(558,2,'i10 MAGNA 1.2',1,2011,2,1197,75338,164000,5,4,5,1,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(559,6,'Baleno ALPHA PETROL 1.2',1,2019,2,1332,41726,649000,3,2,6,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(560,2,'i10 SPORTZ 1.2',1,2011,2,1197,55760,178000,5,4,6,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(561,4,'Amaze 1.2L I-VTEC S',1,2019,3,1199,70849,514000,5,4,7,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(562,6,'Swift LXI',1,2019,2,1197,57073,447000,5,4,9,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(563,6,'Swift ZXI',1,2019,2,1197,43834,577000,4,5,7,1,'Modern, igényes és jól felszerelt jármű – tökéletes választás bárkinek.'),(564,3,'ALTROZ XE PETROL',1,2021,2,1199,10551,522000,3,2,1,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(565,6,'BREZZA ZXI SMART HYBRID',1,2023,2,1462,8502,994000,3,4,4,1,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(566,1,'Thar LX PETROL HT 4WD AT',2,2021,2,1997,38659,1231000,5,4,2,1,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(567,13,'URBAN CRUISER MID GRADE MT',1,2022,2,1462,28970,825000,5,4,7,0,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(568,6,'BREZZA ZXI SMART HYBRID',1,2023,2,1462,7048,1176000,4,5,7,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(569,6,'Dzire VXI',1,2020,2,1197,44365,583000,4,2,8,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(570,2,'Elite i20 SPORTZ 1.2',1,2015,2,1197,76596,397000,5,5,4,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(571,7,'SELTOS HTE 1.5 DIESEL',1,2022,1,1493,36166,1034000,5,5,10,1,'Tisztán tartott, jól felszerelt autó, amely kényelmet és biztonságot kínál.'),(572,8,'HECTOR SUPER 1.5 PETROL',1,2020,2,1451,67143,994000,3,4,5,1,'Szép állapotú, szeretettel karbantartott autó, amely mindig készen áll az útra.'),(573,2,'Santro Xing GLS',1,2013,2,1086,59572,197000,3,5,1,0,'Takarékos, városban is könnyen kezelhető autó, kényelmes ülésekkel és tágas belsővel.'),(574,3,'TIAGO EV XT LONG RANGE',2,2023,4,1234,10423,875000,3,4,7,1,'Ápolt, tiszta autó, amely évek óta gondos kezekben volt.'),(575,6,'Swift VXI AMT',2,2021,2,1197,11486,616000,3,4,6,1,'Kiváló állapotú, szeretettel kezelt jármű. Gazdaságos fenntartás, kényelmes vezetés.'),(576,6,'Ciaz VXI+',1,2015,2,1373,45419,459000,3,2,2,1,'Szerethető autó, amely kényelmes, halk és mindig megbízható.'),(577,2,'NEW I20 N LINE N6 1.0 TURBO GDI IMT',1,2022,2,998,10797,919000,4,4,4,0,'Tisztán tartott, gondozott autó, amely hosszú távon is megbízható.'),(578,4,'Amaze 1.2L I-VTEC S',1,2022,2,1199,10819,708000,4,4,9,1,'Megbízható, komfortos autó, amely tökéletes városi és hosszabb utakra is.'),(579,15,'Compass LIMITED PLUS DIESEL 4X4',1,2019,1,1956,36398,1357000,5,4,3,1,'Egy tulajdonos által használt, rendszeresen karbantartott jármű, kitűnő állapotban.'),(580,2,'Elite i20 MAGNA 1.2',1,2015,2,1197,66783,428000,5,5,2,0,'Kényelmes, gazdaságos és könnyen vezethető autó, ideális napi használatra.'),(581,15,'Compass SPORT PLUS 2.0 DIESEL',1,2019,1,1956,45323,994000,5,2,2,0,'Jó állapotú, megbízható jármű, tökéletes választás első autónak vagy családi használatra.'),(582,1,'Thar LX PETROL HT 4WD AT',2,2021,2,1997,19467,1334000,3,4,2,1,'Stílusos, jól felszerelt autó, amely kiváló választás munkába járáshoz vagy utazáshoz.'),(583,4,'Amaze 1.2L I-VTEC EX',1,2013,2,1198,107855,249000,4,4,10,1,'Nem dohányzó autó, kulturált belsővel és ápolt külsővel.'),(584,3,'Safari XMA',2,2022,1,1956,20858,1715000,4,2,6,1,'Igényes, karbantartott jármű, amely mindig időben kapta a szükséges szervizt.'),(585,4,'Amaze 1.2L I-VTEC S',1,2019,2,1199,56996,581000,5,2,10,0,'Rendszeresen szervizelt, tiszta és gondozott autó. Praktikus és biztonságos.'),(586,4,'Brio VX AT',2,2015,2,1198,44303,380000,5,2,7,1,'Megbízható konstrukció, kényelmes vezetés, gazdaságos üzemeltetés – minden adott egy jó autóhoz.'),(587,2,'Grand i10 MAGNA 1.2 KAPPA VTVT',1,2018,2,1197,41163,382000,4,2,1,1,'Egy gazdás, gondosan kezelt jármű, kifogástalan állapotban.'),(588,4,'Amaze 1.2L I-VTEC S CVT',2,2018,2,1199,49616,553000,4,2,8,0,'Megkímélt állapotban, nem dohányzó tulajdonostól. Gondosan karbantartott és megbízható jármű.'),(589,6,'Baleno ALPHA CVT PETROL 1.2',2,2020,2,1197,27579,670000,3,4,8,0,'Rendszeresen karbantartott, igényes autó nem dohányzó tulajdonostól.'),(590,6,'Alto VXI',1,2022,2,796,2116,406000,4,4,5,1,'Gazdaságos fogyasztás, kényelmes beltér és megbízható működés jellemzi.'),(591,4,'Amaze 1.2L I-VTEC S',1,2019,2,1199,54392,562000,5,5,4,1,'Modern megjelenésű és kényelmes belsővel rendelkező, megbízható jármű.'),(592,2,'i20 Active 1.2 SX',1,2015,2,1197,51152,477000,3,5,3,0,'Csendes, kulturált, igényes autó, amely odafigyeléssel volt kezelve.'),(593,6,'Dzire VXI',1,2020,2,1197,30892,608000,4,5,8,1,'Egy gazdás, karbantartott autó, amely készen áll az új tulajdonosára.'),(594,6,'Wagon R 1.0 VXI',1,2017,2,998,43944,335000,4,4,2,1,'Egy tulajdonostól, újszerű belső térrel és rendszeres szervizzel. Ideális mindennapi használatra.'),(595,9,'TRIBER RXL MT',1,2022,2,999,36809,652000,4,4,1,1,'Sérülésmentes, jó műszaki állapotban lévő autó. Stabil és biztonságos vezetési élmény.'),(596,3,'NEXON XZA PLUS DIESEL',2,2022,1,1497,34248,1089000,4,2,1,1,'Praktikus és kényelmes autó, tökéletes társ a mindennapokban.'),(597,2,'Xcent S (O) 1.2',1,2014,2,1197,88848,269000,5,2,9,0,'Tisztán tartott, jól karbantartott autó, egy tulajdonostól.'),(598,2,'i20 SPORTZ 1.2',1,2014,2,1197,54137,362000,3,5,1,1,'Nem dohányzó, kulturált belső, igazi megkímélt darab.');
+/*!40000 ALTER TABLE `autok` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `erdeklodesek`
+--
+
+DROP TABLE IF EXISTS `erdeklodesek`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `erdeklodesek` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `vevo_id` int NOT NULL,
+  `auto_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_erdeklodesek_vevo_id` (`vevo_id`),
+  KEY `FK_erdeklodesek_auto_id` (`auto_id`),
+  CONSTRAINT `FK_erdeklodesek_auto_id` FOREIGN KEY (`auto_id`) REFERENCES `autok` (`id`),
+  CONSTRAINT `FK_erdeklodesek_vevo_id` FOREIGN KEY (`vevo_id`) REFERENCES `vevok` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `erdeklodesek`
+--
+
+LOCK TABLES `erdeklodesek` WRITE;
+/*!40000 ALTER TABLE `erdeklodesek` DISABLE KEYS */;
+INSERT INTO `erdeklodesek` VALUES (2,6,5,'2025-12-18 11:26:37'),(3,5,10,'2026-01-05 07:01:49'),(4,5,1,'2026-01-05 07:07:51'),(5,5,1,'2026-01-05 07:09:19');
+/*!40000 ALTER TABLE `erdeklodesek` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fizmodo`
+--
+
+DROP TABLE IF EXISTS `fizmodo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fizmodo` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `mod` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fizmodo`
+--
+
+LOCK TABLES `fizmodo` WRITE;
+/*!40000 ALTER TABLE `fizmodo` DISABLE KEYS */;
+INSERT INTO `fizmodo` VALUES (1,'kártya'),(2,'készpénz ');
+/*!40000 ALTER TABLE `fizmodo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `marka`
+--
+
+DROP TABLE IF EXISTS `marka`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `marka` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_marka_id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `marka`
+--
+
+LOCK TABLES `marka` WRITE;
+/*!40000 ALTER TABLE `marka` DISABLE KEYS */;
+INSERT INTO `marka` VALUES (1,'Mahindra'),(2,'Hyundai'),(3,'Tata'),(4,'Honda'),(5,'Ford'),(6,'Maruti'),(7,'KIA'),(8,'MG'),(9,'Renault'),(10,'Volkswagen'),(11,'Nissan'),(12,'Skoda'),(13,'Toyota'),(14,'Datsun'),(15,'Jeep');
+/*!40000 ALTER TABLE `marka` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `osszes_auto`
+--
+
+DROP TABLE IF EXISTS `osszes_auto`;
+/*!50001 DROP VIEW IF EXISTS `osszes_auto`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `osszes_auto` AS SELECT 
+ 1 AS `id`,
+ 1 AS `nev`,
+ 1 AS `szin_nev`,
+ 1 AS `model`,
+ 1 AS `ajtoszam`,
+ 1 AS `ar`,
+ 1 AS `km`,
+ 1 AS `motormeret`,
+ 1 AS `kiadasiev`,
+ 1 AS `üzemanyag`,
+ 1 AS `váltó`,
+ 1 AS `leírás`,
+ 1 AS `irat`,
+ 1 AS `szemelyek`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `rendeles`
+--
+
+DROP TABLE IF EXISTS `rendeles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rendeles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `szid` int NOT NULL,
+  `auto_Id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_rendeles_auto_Id` (`auto_Id`),
+  KEY `FK_rendeles_szid` (`szid`),
+  CONSTRAINT `FK_rendeles_auto_Id` FOREIGN KEY (`auto_Id`) REFERENCES `autok` (`id`),
+  CONSTRAINT `FK_rendeles_szid` FOREIGN KEY (`szid`) REFERENCES `szamla` (`rendelesid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rendeles`
+--
+
+LOCK TABLES `rendeles` WRITE;
+/*!40000 ALTER TABLE `rendeles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rendeles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `szamla`
+--
+
+DROP TABLE IF EXISTS `szamla`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `szamla` (
+  `szamlaid` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `rendelesid` int NOT NULL,
+  `felhasz_id` int NOT NULL,
+  `kelt_datum` date NOT NULL,
+  `tel_datum` date NOT NULL,
+  `fiz_datim` date NOT NULL,
+  `fiz_id` int NOT NULL,
+  PRIMARY KEY (`szamlaid`),
+  UNIQUE KEY `rendelesid` (`rendelesid`),
+  KEY `FK_szamla_felhasz_id` (`felhasz_id`),
+  KEY `FK_szamla_fiz_id2` (`fiz_id`),
+  CONSTRAINT `FK_szamla_felhasz_id` FOREIGN KEY (`felhasz_id`) REFERENCES `vevok` (`id`),
+  CONSTRAINT `FK_szamla_fiz_id2` FOREIGN KEY (`fiz_id`) REFERENCES `fizmodo` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `szamla`
+--
+
+LOCK TABLES `szamla` WRITE;
+/*!40000 ALTER TABLE `szamla` DISABLE KEYS */;
+/*!40000 ALTER TABLE `szamla` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `szin`
+--
+
+DROP TABLE IF EXISTS `szin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `szin` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `szin`
+--
+
+LOCK TABLES `szin` WRITE;
+/*!40000 ALTER TABLE `szin` DISABLE KEYS */;
+INSERT INTO `szin` VALUES (1,'sárga'),(2,'zöld'),(3,'piros'),(4,'fekete'),(5,'fehér'),(6,'kék'),(7,'szürke'),(8,'lila'),(9,'akvamarinkék'),(10,'barna');
+/*!40000 ALTER TABLE `szin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `uzemanyag`
+--
+
+DROP TABLE IF EXISTS `uzemanyag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `uzemanyag` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `uzemanyag`
+--
+
+LOCK TABLES `uzemanyag` WRITE;
+/*!40000 ALTER TABLE `uzemanyag` DISABLE KEYS */;
+INSERT INTO `uzemanyag` VALUES (1,'Diesel'),(2,'Petrol'),(3,'CNG'),(4,'Electric');
+/*!40000 ALTER TABLE `uzemanyag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `valtok`
+--
+
+DROP TABLE IF EXISTS `valtok`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `valtok` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nev` varchar(50) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `valtok`
+--
+
+LOCK TABLES `valtok` WRITE;
+/*!40000 ALTER TABLE `valtok` DISABLE KEYS */;
+INSERT INTO `valtok` VALUES (1,'Manual'),(2,'Automatic');
+/*!40000 ALTER TABLE `valtok` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vevok`
+--
+
+DROP TABLE IF EXISTS `vevok`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vevok` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nev` varchar(70) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `lakcim` varchar(150) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `adoszam` varchar(30) COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `jelszo` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `felhasznalonev` (`nev`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vevok`
+--
+
+LOCK TABLES `vevok` WRITE;
+/*!40000 ALTER TABLE `vevok` DISABLE KEYS */;
+INSERT INTO `vevok` VALUES (4,NULL,NULL,NULL,'$2b$10$vuKIEpQZaPIuTkfpeb2qbuhIWNTdA/lmoo1nhu7sR5ItL0EYif/iK','admin',1),(5,NULL,NULL,NULL,'$2b$10$ocTtfX5.yJXSjLECU1w3WeJrDumr/qQDlVHEiMAaZ7VA53q5XLaKm','skeletonjoco@gmail.com',0),(6,NULL,NULL,NULL,'$2b$10$eEWqbZlxZJ35PssA41HVgO6dB453YLI7lb4B0iFB/6JZmLinXI1Cu','KissLk12@LeagueOfDiamond.com',0);
+/*!40000 ALTER TABLE `vevok` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `view5`
+--
+
+DROP TABLE IF EXISTS `view5`;
+/*!50001 DROP VIEW IF EXISTS `view5`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view5` AS SELECT 
+ 1 AS `Név`,
+ 1 AS `lakcim`,
+ 1 AS `adoszam`,
+ 1 AS `kelt_datum`,
+ 1 AS `model`,
+ 1 AS `ar`,
+ 1 AS `szamlaid`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Final view structure for view `1feladat`
+--
+
+/*!50001 DROP VIEW IF EXISTS `1feladat`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `1feladat` AS select `vevok`.`nev` AS `nev`,`szamla`.`szamlaid` AS `szamlaid`,sum(`autok`.`ar`) AS `SUM(autok.ar)` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) group by `szamla`.`szamlaid` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `2feladat`
+--
+
+/*!50001 DROP VIEW IF EXISTS `2feladat`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `2feladat` AS select `marka`.`nev` AS `nev`,count(`autok`.`id`) AS `COUNT(autok.id)` from ((((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) where (month(`szamla`.`kelt_datum`) = 10) group by `marka`.`nev` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `3feladat`
+--
+
+/*!50001 DROP VIEW IF EXISTS `3feladat`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `3feladat` AS select `vevok`.`nev` AS `nev`,`szamla`.`szamlaid` AS `szamlaid`,sum(`autok`.`ar`) AS `SUM(autok.ar)` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) where (`vevok`.`nev` = 'Kiss Zsolt') group by `szamla`.`szamlaid` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `4feladat`
+--
+
+/*!50001 DROP VIEW IF EXISTS `4feladat`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `4feladat` AS select `marka`.`nev` AS `nev`,count(`autok`.`id`) AS `COUNT(autok.id)` from ((((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) where (`marka`.`nev` like '%Honda%') group by `marka`.`nev` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `5feladat`
+--
+
+/*!50001 DROP VIEW IF EXISTS `5feladat`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `5feladat` AS select `vevok`.`nev` AS `nev`,`szamla`.`szamlaid` AS `szamlaid`,sum(`autok`.`ar`) AS `SUM(autok.ar)` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) group by `szamla`.`szamlaid` order by sum(`autok`.`ar`) desc limit 1 */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `osszes_auto`
+--
+
+/*!50001 DROP VIEW IF EXISTS `osszes_auto`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `osszes_auto` AS select `autok`.`id` AS `id`,`marka`.`nev` AS `nev`,`szin`.`nev` AS `szin_nev`,`autok`.`model` AS `model`,`autok`.`ajtoszam` AS `ajtoszam`,`autok`.`ar` AS `ar`,`autok`.`km` AS `km`,`autok`.`motormeret` AS `motormeret`,`autok`.`kiadasiev` AS `kiadasiev`,`uzemanyag`.`nev` AS `üzemanyag`,`valtok`.`nev` AS `váltó`,`autok`.`leiras` AS `leírás`,`autok`.`irat` AS `irat`,`autok`.`szemelyek` AS `szemelyek` from ((((`autok` join `szin` on((`autok`.`szin_id` = `szin`.`id`))) join `marka` on((`autok`.`marka_id` = `marka`.`id`))) join `uzemanyag` on((`autok`.`uzemanyag_id` = `uzemanyag`.`id`))) join `valtok` on((`autok`.`valto_id` = `valtok`.`id`))) order by `autok`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `view5`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view5`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `view5` AS select `vevok`.`nev` AS `Név`,`vevok`.`lakcim` AS `lakcim`,`vevok`.`adoszam` AS `adoszam`,`szamla`.`kelt_datum` AS `kelt_datum`,`autok`.`model` AS `model`,`autok`.`ar` AS `ar`,`szamla`.`szamlaid` AS `szamlaid` from (((`rendeles` join `autok` on((`rendeles`.`auto_Id` = `autok`.`id`))) join `szamla` on((`rendeles`.`szid` = `szamla`.`rendelesid`))) join `vevok` on((`szamla`.`felhasz_id` = `vevok`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-01-05  9:47:56
