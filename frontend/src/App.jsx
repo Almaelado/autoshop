@@ -15,7 +15,8 @@ import http from "./http-common";
 import Admin from './components/admin.jsx';
 import VedettVonal from "./components/VedettVonal.jsx";
 import AdminVonal from "./components/AdminVonal.jsx";
-
+import AdminAutok from './components/AdminAutok.jsx';
+import AdminFelhasznalok from './components/AdminFelhasznalok.jsx';
 
 function App() {
   const [belepett, setBelepett] = useState(false);
@@ -104,7 +105,7 @@ function App() {
                   setNyitva={setSzuroNyitva}
                 />
 
-                <Autok szuro={szur} />
+                <Autok szuro={szur} admin={isAdmin} />
               </div>
             }
           />
@@ -121,7 +122,17 @@ function App() {
                 <Admin />
               </AdminVonal>
           } />
-          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
+          <Route path="/admin/autok" element={
+              <AdminVonal belepett={belepett} isAdmin={isAdmin}>
+                <AdminAutok />
+              </AdminVonal>
+          } />
+          <Route path="/admin/felhasznalok" element={
+              <AdminVonal belepett={belepett} isAdmin={isAdmin}>
+                <AdminFelhasznalok />
+              </AdminVonal>
+          } />
+          <Route path="/auto/:autoId" element={<Reszletek />} />
         </Routes>
       </div>
       <Footer />
