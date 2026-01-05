@@ -121,7 +121,7 @@ function App() {
                 <Admin />
               </AdminVonal>
           } />
-          <Route path="/auto/:autoId" element={<Reszletek />} />
+          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
         </Routes>
       </div>
       <Footer />
