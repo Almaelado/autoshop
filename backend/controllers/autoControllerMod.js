@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
@@ -281,10 +281,11 @@ async szuro(req, res, next) {
             res.json({ accessToken: newAccessToken , user: payload });
         });
     },
-    profil (req, res) { 
+    async profil (req, res) { 
             const user = req.user;  // req.user-t az authenticateToken middleware állítja be
-            console.log("Profil lekérdezés user:", user);
-        res.json(user);
+            const profil = await Auto.keresEmail(user.email);
+            //console.log("Profil lekérdezés user:", user);
+        res.json(profil);
     },
     logout (req, res) {
         res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
@@ -344,6 +345,33 @@ async szuro(req, res, next) {
             res.status(200).json(felhasznalok);
         } catch (error) {
             console.error("Error fetching users:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async felhasznaloModositas(req, res) {
+        try {
+            const data = req.body;
+            await Auto.felhasznaloModositas(data);
+            res.status(200).json({ success: true });
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async jelszoModositas(req, res) {
+        try {
+           const { email, oldPassword,newPassword } = req.body;    
+            const user = await Auto.validatePassword(email,oldPassword);
+
+            const isMatch = await bcrypt.compare(oldPassword, user.jelszo);
+            if (!isMatch) {
+                return res.status(403).json({ message: "Hibás régi jelszó" });
+            }
+
+            await Auto.jelszoModositas(email, newPassword);
+            res.status(200).json({ message: "Jelszó sikeresen módosítva" });
+        } catch (error) {
+            console.error("Error changing password:", error);
             res.status(500).json({ message: error.message });
         }
     },

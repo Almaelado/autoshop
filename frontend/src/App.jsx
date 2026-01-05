@@ -17,6 +17,7 @@ import VedettVonal from "./components/VedettVonal.jsx";
 import AdminVonal from "./components/AdminVonal.jsx";
 import AdminAutok from './components/AdminAutok.jsx';
 import AdminFelhasznalok from './components/AdminFelhasznalok.jsx';
+import ProfileSzerkesztes from './components/ProfileSzerkesztes.jsx';
 
 function App() {
   const [belepett, setBelepett] = useState(false);
@@ -117,6 +118,11 @@ function App() {
               <Profil accessToken={accessToken}/>
             </VedettVonal>
           } />
+          <Route path="/profil/szerkesztes" element={
+            <VedettVonal belepett={belepett}>
+              <ProfileSzerkesztes accessToken={accessToken}/>
+            </VedettVonal>
+          } />
           <Route path="/admin" element={
               <AdminVonal belepett={belepett} isAdmin={isAdmin}>
                 <Admin />
@@ -132,7 +138,7 @@ function App() {
                 <AdminFelhasznalok />
               </AdminVonal>
           } />
-          <Route path="/auto/:autoId" element={<Reszletek />} />
+          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
         </Routes>
       </div>
       <Footer />

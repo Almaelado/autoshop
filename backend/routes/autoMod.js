@@ -25,4 +25,6 @@ router.get('/felhasznalok', authenticateToken, autoController.felhasznalok);
 router.get('/ajanlott/:marka', autoController.ajanlott);
 router.post('/erdekel', authenticateToken, autoController.erdekel);
 router.get('/erdekeltek', authenticateToken, autoController.erdekeltek);
+router.put('/profilmodosit', authenticateToken, autoController.felhasznaloModositas);
+router.put('/jelszomodositas', authenticateToken, autoController.jelszoModositas);
 module.exports = router;

@@ -203,4 +203,30 @@ Auto.felhasznalok = async () => {
         throw error;
     }
 };
+Auto.felhasznaloModositas = async ( data) => {
+    try {
+        const { nev, email, lakcim, adoszam,id } = data;
+        await pool.execute(
+            'UPDATE vevok SET nev = ?, email = ?, lakcim = ?, adoszam = ? WHERE id = ?',
+            [nev, email, lakcim, adoszam, id]
+        );
+        return { id, ...data };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.jelszoModositas = async (email, newPassword) => {
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await pool.execute(
+            'UPDATE vevok SET jelszo = ? WHERE email = ?',
+            [hashedPassword, email]
+        );
+        return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 module.exports = Auto;
