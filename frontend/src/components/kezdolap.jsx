@@ -3,11 +3,13 @@ import Autokreszletek from "./autokreszletek.jsx";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import http from "../http-common";
 import "./FoOldal.css"; 
+import { useNavigate } from "react-router-dom";
 
 export default function FoOldal() {
   const [autok, setAutok] = useState([]);
   const [randomAutok, setRandomAutok] = useState([]);
   const [selectedAutoId, setSelectedAutoId] = useState(null);
+  const navigate = useNavigate();
 
   const fetchAutok = async () => {
     try {
@@ -71,7 +73,7 @@ export default function FoOldal() {
                 <Button
                   variant="primary"
                   className="car-btn"
-                  onClick={() => setSelectedAutoId(auto.id)}
+                  onClick={() => navigate(`/auto/${auto.id}`, { state: { fromKezdolap: true } })}
                 >
                   Részletek
                 </Button>
@@ -175,6 +177,12 @@ export default function FoOldal() {
           loading="lazy"
         ></iframe>
       </div>
+      <button
+      className="scroll-top-btn"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
+      ↑ 
+      </button>
     </div>
   );
 }

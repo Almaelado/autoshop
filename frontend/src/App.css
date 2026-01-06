@@ -46,15 +46,19 @@
 }
 
 .App {
+  min-height: 100vh;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  text-align: left;
-  gap: 32px;
-  padding-right: 32px;
-  background: #fafbfc;
-  margin:auto;
+  flex-direction: column;
 }
+
+.App > .App-content {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
 
 .autok-container {
   flex: 1;
