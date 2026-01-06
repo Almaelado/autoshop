@@ -115,18 +115,32 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
     <div className="auto-details-page">
       <button className="close-btn" onClick={() => navigate('/autok')}>X</button>
 
-      {/* Érdekel gomb */}
-      <div style={{ margin: '16px 0' }}>
-        <button className="erdekel-btn" onClick={handleErdekel} disabled={erdekelLoading}>
-          {erdekelLoading ? "Mentés..." : "Érdekel"}
-        </button>
-        {erdekelSuccess && <span style={{ color: 'green', marginLeft: 8 }}>Hozzáadva az érdeklődésekhez!</span>}
-        {showLoginPrompt && (
-          <div style={{ color: 'red', marginTop: 8 }}>
-            Jelentkezz be az érdeklődéshez!
-          </div>
-        )}
+      <div style={{ display: 'flex', alignItems: 'center', margin: '16px 0', justifyContent: 'space-between' }}>
+  {/* Bal oldali Érdekel gomb */}
+  <div>
+    <button className="erdekel-btn" onClick={handleErdekel} disabled={erdekelLoading} style={{ backgroundColor: '#28a745', color: 'white', border: 'none', padding: '8px 16px', borderRadius: 4 }}>
+      {erdekelLoading ? "Mentés..." : "Érdekel"}
+    </button>
+    {erdekelSuccess && <span style={{ color: 'green', marginLeft: 8 }}>Hozzáadva az érdeklődésekhez!</span>}
+    {showLoginPrompt && (
+      <div style={{ color: 'red', marginTop: 8 }}>
+        Jelentkezz be az érdeklődéshez!
       </div>
+    )}
+  </div>
+
+  {/* Jobb oldali Üzenet gomb */}
+  <div>
+    <button
+      className="uzenet-btn"
+      onClick={() => navigate(`/uzenet/${autoId}`)}
+      style={{ backgroundColor: '#007bff', color: 'white', border: 'none', padding: '8px 16px', borderRadius: 4 }}
+    >
+      Üzenet
+    </button>
+  </div>
+</div>
+
 
       {/* Carousel */}
       {kepek.length > 0 && (
