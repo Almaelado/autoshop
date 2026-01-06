@@ -25,11 +25,10 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken}) 
             <Nav.Link as={Link} to="/admin/felhasznalok">
               Felhasználók
             </Nav.Link>
-            <Nav.Link as={Link} to="/admin/uzenetek">
-              Üzenetek
+            <Nav.Link as={Link} to="/admin/autok">
+              Autók
             </Nav.Link>
           </Nav>
-
           {/* JOBB OLDAL */}
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/admin/uzenetek">

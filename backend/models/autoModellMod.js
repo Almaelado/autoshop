@@ -194,5 +194,13 @@ Auto.erdekeltekListaja = async (vevo_id) => {
         throw error;
     }
 };
-
+Auto.felhasznalok = async () => {
+    try {
+        const [rows] = await pool.execute('SELECT * FROM vevok');
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 module.exports = Auto;
