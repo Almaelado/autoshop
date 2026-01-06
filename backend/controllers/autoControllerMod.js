@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
@@ -220,15 +220,16 @@ async szuro(req, res, next) {
 
 ,
 
-    async login (req, res,next){   
-        const { email, password } = req.body;    
+    async login (req, res,next){
+        //console.log('Login request body:', req.body); // Debug log
+        const { email, password, admin } = req.body;
         const user = await Auto.validatePassword(email,password);
         console.log('Bejelentkezési kísérlet:', user);
 
         if(user!= false){
             // Csak az id-t és emailt tesszük a tokenbe!
-            const accessToken = generateAccessToken({ id: user.id, email: user.email });
-            const refreshToken = generateRefreshToken({ id: user.id, email: user.email });
+            const accessToken = generateAccessToken({ id: user.id, email: user.email , admin: user.admin});
+            const refreshToken = generateRefreshToken({ id: user.id, email: user.email, admin: user.admin});
             res.cookie('refreshToken', refreshToken, 
                 { httpOnly: true, 
                   secure: false, // true ha HTTPS-t használsz
@@ -281,10 +282,11 @@ async szuro(req, res, next) {
             res.json({ accessToken: newAccessToken , user: payload });
         });
     },
-    profil (req, res) { 
+    async profil (req, res) { 
             const user = req.user;  // req.user-t az authenticateToken middleware állítja be
-            console.log("Profil lekérdezés user:", user);
-        res.json(user);
+            const profil = await Auto.keresEmail(user.email);
+            //console.log("Profil lekérdezés user:", user);
+        res.json(profil);
     },
     logout (req, res) {
         res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
@@ -344,6 +346,67 @@ async szuro(req, res, next) {
             res.status(200).json(felhasznalok);
         } catch (error) {
             console.error("Error fetching users:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async felhasznaloModositas(req, res) {
+        try {
+            const data = req.body;
+            await Auto.felhasznaloModositas(data);
+            res.status(200).json({ success: true });
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async jelszoModositas(req, res) {
+        try {
+           const { email, oldPassword,newPassword } = req.body;    
+            const user = await Auto.validatePassword(email,oldPassword);
+
+            const isMatch = await bcrypt.compare(oldPassword, user.jelszo);
+            if (!isMatch) {
+                return res.status(403).json({ message: "Hibás régi jelszó" });
+            }
+
+            await Auto.jelszoModositas(email, newPassword);
+            res.status(200).json({ message: "Jelszó sikeresen módosítva" });
+        } catch (error) {
+            console.error("Error changing password:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetKuldes(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, uzenet } = req.body;
+            if (!user || !user.id || !autoId || !uzenet) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            await Auto.uzenetKuldes(user.id, autoId, uzenet);
+            res.status(201).json({ success: true });
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetekLekerdezese(req, res) {
+        try {
+            const user = req.user;
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+            const uzenetek = await Auto.uzenetekLekerdezese(user.id);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async AdminUzenetek(req, res) {
+        try {
+            const uzenetek = await Auto.AdminuzenetekLekerdezese();
+            res.status(200).json(uzenetek);
+        } catch (error) {
             res.status(500).json({ message: error.message });
         }
     },

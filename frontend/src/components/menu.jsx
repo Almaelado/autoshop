@@ -1,61 +1,44 @@
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import http from "../http-common";
 
-
-export default function Menu({belepett, setBelepett, setAdmin, setAccessToken}) {
+export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, isAdmin}) {
   const location = useLocation();
 
-  if (location.pathname.startsWith("/admin")) {
-  return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to="/admin">
-          Ndidi Autó kereskedés
-        </Navbar.Brand>
-
-        <Navbar.Toggle aria-controls="admin-nav" />
-        <Navbar.Collapse id="admin-nav">
-
-          {/* BAL OLDAL */}
-          <Nav>
-            <Nav.Link as={Link} to="/admin/felhasznalok">
-              Felhasználók
-            </Nav.Link>
-            <Nav.Link as={Link} to="/admin/autok">
-              Autók
-            </Nav.Link>
-          </Nav>
-          {/* JOBB OLDAL */}
-          <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/admin/uzenetek">
-              Üzenetek
-            </Nav.Link>
-            <NavDropdown title="Admin" id="admin-dropdown">
-              <NavDropdown.Item
-                onClick={async () => {
+  // Admin Navbar csak ha tényleg admin
+  if (location.pathname.startsWith("/admin") && isAdmin) {
+    return (
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand as={Link} to="/admin">Ndidi Autó kereskedés</Navbar.Brand>
+          <Navbar.Toggle aria-controls="admin-nav" />
+          <Navbar.Collapse id="admin-nav">
+            <Nav>
+              <Nav.Link as={Link} to="/admin/felhasznalok">Felhasználók</Nav.Link>
+              <Nav.Link as={Link} to="/admin/autok">Autók</Nav.Link>
+            </Nav>
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/admin/uzenetek">Üzenetek</Nav.Link>
+              <NavDropdown title="Admin" id="admin-dropdown">
+                <NavDropdown.Item onClick={async () => {
                   await http.post("/auto/logout", {}, { withCredentials: true });
-                  window.location.href = "/";
                   setBelepett(false);
                   setAdmin(false);
                   setAccessToken(null);
-                }}
-              >
-                Kijelentkezés
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+                  window.location.href = "/";
+                }}>Kijelentkezés</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    );
+  }
 
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
-}
-
-
+  // Normál Navbar
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
   <Container>

@@ -1,5 +1,6 @@
 import http from "../http-common";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
 export default function Profil({ accessToken }) {
   const [profilData, setProfilData] = useState(null);
@@ -51,6 +52,9 @@ export default function Profil({ accessToken }) {
   return (
     <div>
       <h1>Profilom</h1>
+      <Button onClick={() => {
+        window.location.href = "/profil/szerkesztes";
+      } }>Szerkesztés</Button>
       {profilData ? (
         <div>
           <p>Név: {profilData.nev}</p>
