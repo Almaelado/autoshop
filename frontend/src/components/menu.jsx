@@ -60,7 +60,15 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken}) 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
   <Container>
-    <Navbar.Brand as={Link} to="/">Ndidi Autó kereskedés</Navbar.Brand>
+    <Navbar.Brand as={Link} to="/"> 
+    <img
+      src="../img/autoshoplogo.png"
+      alt="Ndidi Autó kereskedés logo"
+      height="32"
+      className="me-2"
+    />
+      Ndidi Autó kereskedés
+    </Navbar.Brand>
     <Navbar.Toggle aria-controls="nav" />
     <Navbar.Collapse id="nav">
       
