@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import http from "../http-common.js";
 import { Carousel } from "react-bootstrap";
 
 export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
     const { autoId } = useParams(); // az URL-ből jön
     const navigate = useNavigate();
+    const location = useLocation();
     const [auto, setAuto] = useState(null);
     const [kepek, setKepek] = useState([]);
     const [error, setError] = useState(null);
@@ -113,7 +114,23 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
     return (
   <div className="auto-details-fullpage">
     <div className="auto-details-page">
-      <button className="close-btn" onClick={() => navigate('/autok')}>X</button>
+      <button
+        className="close-btn"
+        onClick={() => {
+          if (location.state?.fromKezdolap) {
+            navigate('/');
+          } else {
+            const prevId = location.state?.previousId;
+            if (prevId) {
+              navigate(`/auto/${prevId}`);
+            } else {
+              navigate('/autok');
+            }
+          }
+        }}
+      >
+        X
+      </button>
 
       <div style={{ display: 'flex', alignItems: 'center', margin: '16px 0', justifyContent: 'space-between' }}>
   {/* Bal oldali Érdekel gomb */}
@@ -196,11 +213,15 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
           <h3>Hasonló autók</h3>
           <div className="ajanlott-lista">
             {ajanlott.map((a) => (
-              <div key={a.id} className="ajanlott-card" onClick={() => {
-                if (a.id !== Number(autoId)) {
-                  navigate(`/auto/${a.id}`);
-                }
-              }}>
+              <div
+                key={a.id}
+                className="ajanlott-card"
+                onClick={() => {
+                  if (a.id !== Number(autoId)) {
+                    navigate(`/auto/${a.id}`, { state: { previousId: Number(autoId) } });
+                  }
+                }}
+              >
                 <img src={`/img/${a.id}_1.jpg`} alt={a.nev} className="ajanlott-img" />
                 <div className="ajanlott-info">
                   <div className="ajanlott-nev">{a.nev} {a.model}</div>
