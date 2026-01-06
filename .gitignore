@@ -30,11 +30,7 @@ frontend.pnp.js
 /mobil/node_modules/
 
 # Expo
-/mobil/.expo/
-/mobil/dist/
-/mobil/web-build/
-/mobil/expo-env.d.ts
-/mobil/.eas/
+
 
 # Native
 /mobil/ios
@@ -66,7 +62,7 @@ frontend.pnp.js
 
 /mobil/assets/images
    
-/mobil/.vscode/
+
 
 
 
