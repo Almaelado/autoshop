@@ -220,15 +220,16 @@ async szuro(req, res, next) {
 
 ,
 
-    async login (req, res,next){   
-        const { email, password } = req.body;    
+    async login (req, res,next){
+        //console.log('Login request body:', req.body); // Debug log
+        const { email, password, admin } = req.body;
         const user = await Auto.validatePassword(email,password);
         console.log('Bejelentkezési kísérlet:', user);
 
         if(user!= false){
             // Csak az id-t és emailt tesszük a tokenbe!
-            const accessToken = generateAccessToken({ id: user.id, email: user.email });
-            const refreshToken = generateRefreshToken({ id: user.id, email: user.email });
+            const accessToken = generateAccessToken({ id: user.id, email: user.email , admin: user.admin});
+            const refreshToken = generateRefreshToken({ id: user.id, email: user.email, admin: user.admin});
             res.cookie('refreshToken', refreshToken, 
                 { httpOnly: true, 
                   secure: false, // true ha HTTPS-t használsz
@@ -403,7 +404,7 @@ async szuro(req, res, next) {
     },
     async AdminUzenetek(req, res) {
         try {
-            const uzenetek = await Auto.AdminUzenetek();
+            const uzenetek = await Auto.AdminuzenetekLekerdezese();
             res.status(200).json(uzenetek);
         } catch (error) {
             res.status(500).json({ message: error.message });
