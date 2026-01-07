@@ -1,10 +1,12 @@
 import http from "../http-common";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function Profil({ accessToken }) {
   const [profilData, setProfilData] = useState(null);
   const [erdekeltek, setErdekeltek] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Profil komponens accessToken:", accessToken);  
@@ -27,6 +29,14 @@ export default function Profil({ accessToken }) {
 
     fetchProfil();
   }, [accessToken]); // dependency: accessToken
+
+  const handledoboz= (auto) => navigate(`/auto/${auto.id}`);
+
+  const handleGomb= (e, auto) => {
+    e.stopPropagation();
+    navigate(`/uzenet/${auto.id}`);
+  };
+
 
   useEffect(() => {
     if (!accessToken) return;
@@ -68,16 +78,53 @@ export default function Profil({ accessToken }) {
       <h2>Érdeklődéseim</h2>
       {erdekeltek.length > 0 ? (
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          {erdekeltek.map((auto) => (
-            <li key={auto.id} style={{ marginBottom: 16, border: '1px solid #ddd', borderRadius: 8, padding: 12, display: 'flex', alignItems: 'center' }}>
-              <img src={`/img/${auto.id}_1.jpg`} alt={auto.nev} style={{ width: 80, height: 60, objectFit: 'cover', borderRadius: 6, marginRight: 16 }} />
-              <div>
-                <div style={{ fontWeight: 'bold', fontSize: 16 }}>{auto.nev} {auto.model}</div>
-                <div style={{ color: '#666' }}>{auto.ar?.toLocaleString()} Ft</div>
-              </div>
-            </li>
-          ))}
-        </ul>
+  {erdekeltek.map((auto) => (
+    <li
+      key={auto.id}
+      onClick={() => handledoboz(auto)}
+      className="auto-card"
+    >
+      {/* Bal oldal: kép + szöveg */}
+      <img
+        src={`/img/${auto.id}_1.jpg`}
+        alt={auto.nev}
+        style={{
+          width: 80,
+          height: 60,
+          objectFit: 'cover',
+          borderRadius: 6,
+          marginRight: 16
+        }}
+      />
+
+      <div>
+        <div style={{ fontWeight: 'bold', fontSize: 16 }}>
+          {auto.nev} {auto.model}
+        </div>
+        <div style={{ color: '#666' }}>
+          {auto.ar?.toLocaleString()} Ft
+        </div>
+      </div>
+
+      {/* Jobb oldal: gomb */}
+      <button
+        style={{
+          marginLeft: 'auto',
+          padding: '8px 12px',
+          borderRadius: 6,
+          border: 'none',
+          backgroundColor: '#1976d2',
+          color: '#fff',
+          cursor: 'pointer'
+        }}
+        onClick={(event) => handleGomb(event, auto)}
+      >
+        Üzenet
+      </button>
+    </li>
+  ))}
+</ul>
+
       ) : (
         <p>Nincs még érdeklődésed.</p>
       )}
