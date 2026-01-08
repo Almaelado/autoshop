@@ -393,6 +393,7 @@ async szuro(req, res, next) {
     async uzenetekLekerdezese(req, res) {
         try {
             const user = req.user;
+            console.log( user);
             if (!user) {
                 return res.status(401).json({ message: "Nincs bejelentkezve" });
             }
@@ -410,6 +411,20 @@ async szuro(req, res, next) {
             res.status(500).json({ message: error.message });
         }
     },
-
+    async ChatAblak(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, vevoId } = req.query;
+            console.log("ChatAblak hívás:", { user, autoId, vevoId });
+            if (!user || !user.id || !autoId || !vevoId) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            const uzenetek = await Auto.ChatAblak(vevoId, autoId);
+            console.log("Lekérdezett üzenetek:", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 };
 module.exports=autoController;

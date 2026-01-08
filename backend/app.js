@@ -23,7 +23,7 @@ var corsOptionsMobile ={
   credentials:true
 }
 app.use(cors(corsOptions)); 
-app.use(cors(corsOptionsMobile));
+
 
 var autoModRouter = require('./routes/autoMod');
 var authRouter = require('./routes/authRouter');

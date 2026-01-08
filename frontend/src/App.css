@@ -308,3 +308,31 @@ footer {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
+.chat-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.chat-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+.message.left {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+}
+
+.message.right {
+    align-self: flex-end;
+    background-color: #cce5ff;
+    text-align: right;
+}

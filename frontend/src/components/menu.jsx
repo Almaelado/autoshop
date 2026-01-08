@@ -62,21 +62,25 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, i
 
       {/* JOBB OLDAL */}
       <Nav className="ms-auto">
+        
         {belepett ? (
-          <NavDropdown title="Saját fiók" id="basic-nav-dropdown">
-            <NavDropdown.Item as={Link} to="/profile">Profilom</NavDropdown.Item>
-            <NavDropdown.Item
-              onClick={async () => {
-                await http.post("/auto/logout", {}, { withCredentials: true });
-                window.location.href = "/";
-                setBelepett(false);
-                setAdmin(false);
-                setAccessToken(null);
-              }}
-            >
-              Kijelentkezés
-            </NavDropdown.Item>
-          </NavDropdown>
+          <>
+            <Nav.Link as={Link} to="/uzenetek">Üzenetek</Nav.Link>
+            <NavDropdown title="Saját fiók" id="basic-nav-dropdown">
+              <NavDropdown.Item as={Link} to="/profile">Profilom</NavDropdown.Item>
+              <NavDropdown.Item
+                onClick={async () => {
+                  await http.post("/auto/logout", {}, { withCredentials: true });
+                  window.location.href = "/";
+                  setBelepett(false);
+                  setAdmin(false);
+                  setAccessToken(null);
+                }}
+              >
+                Kijelentkezés
+              </NavDropdown.Item>
+            </NavDropdown>
+          </>
         ) : (
           <NavDropdown title="Bejelentkezés" id="basic-nav-dropdown">
             <NavDropdown.Item as={Link} to="/regisztracio">Regisztráció</NavDropdown.Item>

@@ -244,11 +244,10 @@ Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
 Auto.uzenetekLekerdezese = async (vevo_id) => {
     try {
         const [rows] = await pool.execute(
-            ` SELECT 
-                osszes_auto.nev,osszes_auto.model,osszes_auto.ar
-                FROM uzenet
-                JOIN osszes_auto ON uzenet.auto_id = osszes_auto.id
-                WHERE uzenet.vevo_id = ?
+            ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
+ FROM uzenet
+                inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
+                WHERE uzenet.vevo_id = '7'
                 GROUP by auto_id;`,
             [vevo_id]
         );
@@ -274,6 +273,17 @@ Auto.AdminuzenetekLekerdezese = async () => {
         throw error;
     }
 };
-
+Auto.ChatAblak = async (vevo_id, auto_id) => {
+    try {
+        const [rows] = await pool.execute(
+            `SELECT * FROM uzenet WHERE vevo_id = ? AND auto_id = ?`,
+            [vevo_id, auto_id]
+        );
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
 module.exports = Auto;

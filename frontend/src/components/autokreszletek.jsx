@@ -85,6 +85,16 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen }) {
       setShowLoginPrompt(false);
       setErdekelSuccess(false);
       try {
+        const erdeklestettAutok = await http.get('auto/erdekeltek', {
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        console.log('Érdeklődött autók:', erdeklestettAutok.data);
+        if (erdeklestettAutok.data.some(a => a.id === Number(autoId))) {
+          alert('Már érdeklődtél ez iránt az autó iránt!');
+          setErdekelLoading(false);
+          return;
+        }
         await http.post(
           "/auto/erdekel",
           { autoId: Number(autoId) },
