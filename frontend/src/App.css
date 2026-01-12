@@ -1,15 +1,14 @@
 #Szures {
-  position: absolute;   /* nagyon fontos */
+  position: fixed;   
   left: 0;
   top: 0;
   z-index: 9999;
   background-color: rgb(46, 44, 44);
   width: 400px;
   padding: 20px;
-  min-height: 100vh;    /* ne legyen 816 fixen */
-
-    transform: translateX(-100%); 
-  transition: 0.3s ease;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
 }
 
 #Szures.nyitva {
@@ -46,7 +45,7 @@
 }
 
 .App {
-  min-height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
 }
