@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import http from "../http-common.js";
 
-export default function Chatablak({ accessToken }) {
+export default function Chatablak({ accessToken , admin}) {
     const vevoId = new URLSearchParams(window.location.search).get('vevoId');
     const autoId = new URLSearchParams(window.location.search).get('autoId');
+    if(admin){
+        const uzenetId = new URLSearchParams(window.location.search).get('uzenetId');
+    } 
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true); // kezdéskor true
     const [rendezett, setRendezett] = useState([]);
+    const [ujUzenet, setUjUzenet] = useState("");
     
     useEffect(() => {
         fetchChatMessages();
@@ -24,6 +28,50 @@ export default function Chatablak({ accessToken }) {
     console.log(rendezett);
 
 }, [messages]);
+
+
+    const kuldUzenet = async () => {
+    if (!ujUzenet.trim()) return;
+
+    try {
+        if(admin){
+            await http.post(
+                "/auto/admin/chatablak",
+                {
+                    uzenetId,
+                    vevoId,
+                    autoId,
+                    uzenet_text: ujUzenet
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            );
+        }else{
+            await http.post(
+                "/auto/felhasznalo/chatablak",
+                {
+                    vevoId,
+                    autoId,
+                    uzenet_text: ujUzenet
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            );
+        }
+
+        setUjUzenet("");         // üzenet mező ürítése
+ 
+        fetchChatMessages(); // frissíti a chatet
+    } catch (error) {
+        console.error("Hiba az üzenet küldésekor:", error);
+    }
+};
 
 
     const fetchChatMessages = async () => {
@@ -53,21 +101,39 @@ export default function Chatablak({ accessToken }) {
 
     return (
         <div className="chat-container">
-            <h2>Chatablak</h2>
-            {messages.map((msg) => (
-                <div key={msg.id} className="chat-row">
-                    <div className="message left">
-                        <p>{msg.uzenet_text}</p>
-                        <small>{msg.elkuldve}</small>
-                    </div>
-                    {msg.valasz && (
-                        <div className="message right">
-                            <p>{msg.valasz}</p>
-                            <small>{msg.valasz_datum}</small>
-                        </div>
-                    )}
+    <div className="chat-header">
+        <h2>Chatablak</h2>
+    </div>
+
+    <div className="chat-messages">
+        {messages.map((msg) => (
+            <div key={msg.id} className="chat-row">
+                <div className="message left">
+                    <p>{msg.uzenet_text}</p>
+                    <small>{msg.elkuldve}</small>
                 </div>
-            ))}
-        </div>
+
+                {msg.valasz && (
+                    <div className="message right">
+                        <p>{msg.valasz}</p>
+                        <small>{msg.valasz_datum}</small>
+                    </div>
+                )}
+            </div>
+        ))}
+    </div>
+
+    <div className="chat-input">
+        <input
+            type="text"
+            placeholder="Írj egy üzenetet..."
+            value={ujUzenet}
+            onChange={(e) => setUjUzenet(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && kuldUzenet()}
+        />
+        <button onClick={kuldUzenet}>Küldés</button>
+    </div>
+</div>
+
     );
 }
