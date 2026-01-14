@@ -452,4 +452,5 @@ async szuro(req, res, next) {
         }
     }
 };
+
 module.exports=autoController;

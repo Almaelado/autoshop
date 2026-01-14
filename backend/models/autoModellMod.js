@@ -316,4 +316,5 @@ Auto.ChatAblakFelhasznalo = async (vevo_id, auto_id, uzenet_text) => {
         throw error;
     }
 };
+
 module.exports = Auto;
