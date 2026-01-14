@@ -296,6 +296,7 @@ Auto.ChatAblak = async (vevo_id, auto_id) => {
 };
 Auto.ChatAblakAdmin = async (uzenetId, uzenet_text) => {
     try {
+        console.log("Admin válasz küldése:", uzenetId, uzenet_text);
         await pool.execute(
             `UPDATE uzenet
 SET valasz = ?,

@@ -4,9 +4,11 @@ import http from "../http-common.js";
 export default function Chatablak({ accessToken , admin}) {
     const vevoId = new URLSearchParams(window.location.search).get('vevoId');
     const autoId = new URLSearchParams(window.location.search).get('autoId');
+    console.log("admin chatablak:", admin);
     if(admin){
-        const uzenetId = new URLSearchParams(window.location.search).get('uzenetId');
+        var uzenetId = new URLSearchParams(window.location.search).get('uzenetId');
     } 
+    //console.log("vevoId:", vevoId, " autoId:", autoId, " uzenetId:", uzenetId);
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true); // kezdéskor true
     const [rendezett, setRendezett] = useState([]);
@@ -98,7 +100,7 @@ export default function Chatablak({ accessToken , admin}) {
     if (messages.length === 0) {
         return <div>Nincsenek üzenetek.</div>; // üres chat kezelése
     }
-
+    console.log("Üzenetek:", rendezett);
     return (
         <div className="chat-container">
     <div className="chat-header">
@@ -106,19 +108,12 @@ export default function Chatablak({ accessToken , admin}) {
     </div>
 
     <div className="chat-messages">
-        {messages.map((msg) => (
-            <div key={msg.id} className="chat-row">
+        {rendezett.map((msg,index) => (
+            <div key={index} className="chat-row">
                 <div className="message left">
-                    <p>{msg.uzenet_text}</p>
-                    <small>{msg.elkuldve}</small>
+                    <p>{msg[0]}</p>
+                    <small>{msg[1]}</small>
                 </div>
-
-                {msg.valasz && (
-                    <div className="message right">
-                        <p>{msg.valasz}</p>
-                        <small>{msg.valasz_datum}</small>
-                    </div>
-                )}
             </div>
         ))}
     </div>
