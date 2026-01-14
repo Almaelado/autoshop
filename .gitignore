@@ -59,9 +59,7 @@ frontend.pnp.js
 
 # TypeScript
 /mobil/*.tsbuildinfo
-
-   
-
+/mobil/expo-env.d.ts
 
 
 
