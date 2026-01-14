@@ -60,13 +60,6 @@ function App() {
 
   refreshAccessToken();
 }, []);
-  useEffect(() => {
-  console.log("isAdmin változott:", isAdmin);
-}, [isAdmin]);
-
-useEffect(() => {
-  console.log("belepett változott:", belepett);
-}, [belepett]);
 
 
   // Betöltés amíg nem tudjuk az admin státuszt
