@@ -14,6 +14,7 @@ export default function Chatablak({ accessToken , admin}) {
     const [rendezett, setRendezett] = useState([]);
     const [ujUzenet, setUjUzenet] = useState("");
     
+    
     useEffect(() => {
         fetchChatMessages();
     }, []);
