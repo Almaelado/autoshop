@@ -23,7 +23,6 @@ export default function Uzenet({ accessToken }) {
             });
             setSuccess(true);
             setError(null);
-            navigate(`/uzenetek`);
         } catch (err) {
             console.error(err);
             setError("Nem sikerült elküldeni az üzenetet");

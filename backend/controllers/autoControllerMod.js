@@ -393,7 +393,6 @@ async szuro(req, res, next) {
     async uzenetekLekerdezese(req, res) {
         try {
             const user = req.user;
-            console.log( user);
             if (!user) {
                 return res.status(401).json({ message: "Nincs bejelentkezve" });
             }

@@ -1,15 +1,14 @@
 #Szures {
-  position: absolute;   /* nagyon fontos */
+  position: fixed;   
   left: 0;
   top: 0;
   z-index: 9999;
   background-color: rgb(46, 44, 44);
   width: 400px;
   padding: 20px;
-  min-height: 100vh;    /* ne legyen 816 fixen */
-
-    transform: translateX(-100%); 
-  transition: 0.3s ease;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
 }
 
 #Szures.nyitva {
@@ -46,7 +45,7 @@
 }
 
 .App {
-  min-height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
 }
@@ -291,116 +290,4 @@ footer {
     width: 90vw;
     min-width: unset;
   }
-}
-
-.auto-card {
-  margin-bottom: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.auto-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
-}
-/* ===== CHAT ===== */
-
-.chat-container {
-    max-width: 600px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    height: 70vh;
-    background: #f7f7f7;
-    border-radius: 12px;
-    padding: 10px;
-}
-.chat-header {
-    padding: 6px 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-
-/* FONTOS: engedjük zsugorodni */
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-    min-height: 0;   /* <<< EZ OLDJA MEG */
-}
-
-
-/* Egy üzenet sor */
-.chat-row {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.message {
-    max-width: 70%;
-    padding: 10px 12px;
-    border-radius: 12px;
-    margin: 4px 0;
-    font-size: 14px;
-    word-wrap: break-word;
-}
-
-.message.left {
-    align-self: flex-start;
-    background-color: #e0e0e0;
-}
-
-.message.right {
-    align-self: flex-end;
-    background-color: #cce5ff;
-    text-align: right;
-}
-
-/* Input rész ALUL */
-.chat-input {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    background: #fff;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 10px 12px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    outline: none;
-}
-
-.chat-input input:focus {
-    border-color: #4a90e2;
-}
-
-.chat-input button {
-    padding: 10px 16px;
-    border-radius: 20px;
-    border: none;
-    background: #4a90e2;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.chat-input button:hover {
-    background: #357abd;
-}
-
-/* Mobil optimalizálás */
-@media (max-width: 600px) {
-    .chat-container {
-        height: 80vh;
-        border-radius: 0;
-    }
 }

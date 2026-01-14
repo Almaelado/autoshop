@@ -244,10 +244,11 @@ Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
 Auto.uzenetekLekerdezese = async (vevo_id) => {
     try {
         const [rows] = await pool.execute(
-            ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
- FROM uzenet
-                inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
-                WHERE uzenet.vevo_id = '7'
+            ` SELECT 
+                osszes_auto.nev,osszes_auto.model,osszes_auto.ar
+                FROM uzenet
+                JOIN osszes_auto ON uzenet.auto_id = osszes_auto.id
+                WHERE uzenet.vevo_id = ?
                 GROUP by auto_id;`,
             [vevo_id]
         );
@@ -260,21 +261,12 @@ Auto.uzenetekLekerdezese = async (vevo_id) => {
 Auto.AdminuzenetekLekerdezese = async () => {
     try {
         const [rows] = await pool.execute(
-            `SELECT u.id,v.nev,u.vevo_id,u.auto_id,a.model,a.ar,u.uzenet_text,u.elkuldve,u.valasz
-FROM uzenet u
-JOIN (
-    SELECT vevo_id, auto_id, MAX(elkuldve) AS max_elkuldve
-    FROM uzenet
-    WHERE valasz IS NULL
-    GROUP BY vevo_id, auto_id
-) ut ON ut.vevo_id = u.vevo_id
-     AND ut.auto_id = u.auto_id
-     AND ut.max_elkuldve = u.elkuldve
-JOIN osszes_auto a ON u.auto_id = a.id
-JOIN vevok v ON u.vevo_id = v.id
-ORDER BY u.elkuldve DESC;
-
-`
+            ` SELECT vevok.nev,osszes_auto.model,osszes_auto.ar,uzenet.uzenet_text,uzenet.elkuldve,uzenet.valasz
+                FROM uzenet
+                JOIN osszes_auto ON uzenet.auto_id = osszes_auto.id
+                JOIN vevok ON uzenet.vevo_id = vevok.id
+                where valasz is null
+                ORDER by  uzenet.elkuldve DESC;`
         );
         return rows;
     } catch (error) {
