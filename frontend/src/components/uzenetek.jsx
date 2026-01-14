@@ -39,6 +39,7 @@ export default function Uzenetek({ accessToken }) {
         );
     }
 
+    
     return (
         <div className="container mt-4">
             <h2>Üzenetek az érdeklődőktől</h2>

@@ -8,6 +8,7 @@ import http from "../http-common";
 export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, isAdmin}) {
   const location = useLocation();
 
+  
   // Admin Navbar csak ha tényleg admin
   if (location.pathname.startsWith("/admin") && isAdmin) {
     return (

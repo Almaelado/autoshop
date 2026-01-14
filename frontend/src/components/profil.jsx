@@ -2,6 +2,7 @@ import http from "../http-common";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
+
 export default function Profil({ accessToken }) {
   const [profilData, setProfilData] = useState(null);
   const [erdekeltek, setErdekeltek] = useState([]);
