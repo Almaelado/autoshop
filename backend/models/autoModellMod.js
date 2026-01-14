@@ -274,6 +274,46 @@ Auto.AdminuzenetekLekerdezese = async () => {
         throw error;
     }
 };
+Auto.ChatAblak = async (vevo_id, auto_id) => {
+    try {
+        const [rows] = await pool.execute(
+            `SELECT * FROM uzenet WHERE vevo_id = ? AND auto_id = ?`,
+            [vevo_id, auto_id]
+        );
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
-
+Auto.ChatAblakAdmin = async (uzenetId, uzenet_text) => {
+    try {
+        console.log("Admin válasz küldése:", uzenetId, uzenet_text);
+        await pool.execute(
+            `UPDATE uzenet
+SET valasz = ?,
+    valasz_datum = ?
+WHERE id = ?;
+`,
+            [uzenet_text, new Date(), uzenetId]
+        );
+        return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.ChatAblakFelhasznalo = async (vevo_id, auto_id, uzenet_text) => {
+    try {
+        await pool.execute(
+            'INSERT INTO uzenet (vevo_id, auto_id, uzenet_text, elkuldve) VALUES (?, ?, ?, ?)',
+            [vevo_id, auto_id, uzenet_text, new Date()]
+        );
+        return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 module.exports = Auto;
