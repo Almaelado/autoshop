@@ -18,12 +18,7 @@ var corsOptions ={
   origin:'http://localhost:5173',
   credentials:true           
 }
-var corsOptionsMobile ={
-  origin:'http://localhost:8081',
-  credentials:true
-}
 app.use(cors(corsOptions)); 
-
 
 var autoModRouter = require('./routes/autoMod');
 var authRouter = require('./routes/authRouter');
