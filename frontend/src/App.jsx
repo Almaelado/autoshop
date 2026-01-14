@@ -21,6 +21,7 @@ import ProfileSzerkesztes from './components/ProfileSzerkesztes.jsx';
 import Uzenet from './components/uzenet.jsx';
 import Uzenetek from './components/uzenetek.jsx';
 import AdminUzenetek from './components/AdminUzenetek.jsx';
+import Chatablak from './components/Chatablak.jsx';
 
 function App() {
   const [belepett, setBelepett] = useState(false);
@@ -102,10 +103,12 @@ useEffect(() => {
           <Route path="/admin/autok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminAutok /></AdminVonal>} />
           <Route path="/admin/felhasznalok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminFelhasznalok /></AdminVonal>} />
           <Route path="/admin/uzenetek" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminUzenetek accessToken={accessToken} /></AdminVonal>} />
+          <Route path="/admin/chatablak" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Chatablak accessToken={accessToken} admin={true} /></AdminVonal>} />
 
           <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
           <Route path="/uzenet/:autoId" element={<Uzenet accessToken={accessToken} />} />
           <Route path="/uzenetek" element={<Uzenetek accessToken={accessToken} />} />
+          <Route path="/uzenetablak" element={<Chatablak accessToken={accessToken} admin={false} />} />
         </Routes>
       </div>
       <Footer />
