@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import http from "../http-common";
-
+import {useNavigate} from "react-router-dom";
 
 export default function AdminUzenetek({ accessToken }) {
     const [uzenetek, setUzenetek] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchUzenetek = async () => {
             setLoading(true);
@@ -45,7 +46,7 @@ export default function AdminUzenetek({ accessToken }) {
             ) : (
                 <div className="list-group">
                     {uzenetek.map((uzenet, index) => (
-                        <div key={index} className="list-group-item">
+                        <div key={index} className="list-group-item" onClick={() => {navigate(`/admin/chatablak?autoId=${uzenet.auto_id}&vevoId=${uzenet.vevo_id}&uzenetId=${uzenet.id}`)}} style={{cursor: 'pointer'}}>
                             {/* FEJLÉC: NÉV + MODELL + ÁR */}
                             <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
                                 <h4 className="mb-1">
