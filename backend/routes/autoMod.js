@@ -33,4 +33,6 @@ router.post('/adminuzenetek', authenticateToken, autoController.AdminUzenetek);
 router.get('/chatablak', authenticateToken, autoController.ChatAblak);
 router.post('/admin/chatablak', authenticateToken, autoController.ChatAblakAdmin);
 router.post('/felhasznalo/chatablak', authenticateToken, autoController.ChatAblakFelhasznalo);
+
+
 module.exports = router;
