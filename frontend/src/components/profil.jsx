@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Profil({ accessToken }) {
   const [profilData, setProfilData] = useState(null);
   const [erdekeltek, setErdekeltek] = useState([]);

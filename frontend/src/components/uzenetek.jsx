@@ -46,6 +46,7 @@ export default function Uzenetek({ accessToken }) {
         );
     }
 
+    
     return (
         <div className="container mt-4">
             <h2>Üzeneteim</h2>
