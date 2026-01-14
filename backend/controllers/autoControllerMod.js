@@ -392,10 +392,13 @@ async szuro(req, res, next) {
     },
     async uzenetekLekerdezese(req, res) {
         try {
+console.log("asd");
             const user = req.user;
+            console.log("Uzenetek lekérdezése user:", user);
             if (!user) {
                 return res.status(401).json({ message: "Nincs bejelentkezve" });
             }
+
             const uzenetek = await Auto.uzenetekLekerdezese(user.id);
             res.status(200).json(uzenetek);
         } catch (error) {
@@ -428,9 +431,9 @@ async szuro(req, res, next) {
     
     async ChatAblakAdmin(req, res) {
         try {
-            console.log("req.body:", req.body);
+            //console.log("req.body:", req.body);
             const uzenetek = await Auto.ChatAblakAdmin(req.body.uzenetId, req.body.uzenet_text);
-            console.log("Lekérdezett üzenetek (Admin):", uzenetek);
+            //console.log("Lekérdezett üzenetek (Admin):", uzenetek);
             res.status(200).json(uzenetek);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -439,13 +442,13 @@ async szuro(req, res, next) {
     async ChatAblakFelhasznalo(req, res) {
         try {
             const user = req.user;
-            const { autoId, vevoId } = req.body;
-            console.log("ChatAblakFelhasznalo hívás:", { user, autoId, vevoId });
+            const { autoId, vevoId,uzenet_text } = req.body;
+            //console.log("ChatAblakFelhasznalo hívás:", { user, autoId, vevoId });
             if (!user || !user.id || !autoId || !vevoId) {
                 return res.status(400).json({ message: "Hiányzó adat!" });
             }
-            const uzenetek = await Auto.ChatAblakFelhasznalo(vevoId, autoId);
-            console.log("Lekérdezett üzenetek (Felhasználó):", uzenetek);
+            const uzenetek = await Auto.ChatAblakFelhasznalo(vevoId, autoId,uzenet_text);
+            //console.log("Lekérdezett üzenetek (Felhasználó):", uzenetek);
             res.status(200).json(uzenetek);
         } catch (error) {
             res.status(500).json({ message: error.message });
