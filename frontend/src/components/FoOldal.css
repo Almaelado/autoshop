@@ -1,108 +1,317 @@
-/* ---------- FŐ OLDAL ---------- */
+/* ===== FŐ OLDAL ===== */
 #fo-oldal {
-  max-width: 1200px;       /* teljes oldal max szélessége */
+  max-width: 1400px;
   width: 100%;
-  margin: 0 auto;          /* középre igazítás */
+  margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
 }
 
-/* ---------- HERO ---------- */
+/* ===== HERO SZEKCIÓ ===== */
 .hero {
-  margin-top: 10px;
+  margin-top: 0;
   width: 100%;
-  height: 60vh;
-  background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70")
-    center/cover no-repeat;
+  height: 65vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
+    url("https://images.unsplash.com/photo-1503376780353-7e6692767b70") center/cover no-repeat;
+  background-blend-mode: multiply;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.4) 0%, rgba(255, 107, 53, 0.4) 100%);
+  z-index: 1;
 }
 
 .hero-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 40px;
+  background: rgba(26, 26, 46, 0.8);
+  padding: 50px;
   color: white;
-  border-radius: 15px;
+  border-radius: 20px;
   text-align: center;
   max-width: 700px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 2;
+  animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---------- KIEMELT AUTÓK ---------- */
+.hero-overlay h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-overlay p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #e9ecef;
+  margin-bottom: 30px;
+}
+
+.hero-overlay button {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  font-size: 1.05rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
+}
+
+.hero-overlay button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
+}
+
+/* ===== KIEMELT AUTÓK SZEKCIÓ ===== */
 .section-title {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 2rem;
+  margin-bottom: 50px;
+  font-size: 2.3rem;
   font-weight: 700;
+  color: #1a1a2e;
+  position: relative;
+  padding-bottom: 20px;
 }
 
-/* Grid a kártyákhoz */
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 5px;
+  background: linear-gradient(90deg, #0066ff 0%, #00d4ff 100%);
+  border-radius: 3px;
+}
+
+/* GRID */
 .car-grid {
-  display: flex;          /* egymás mellett */
-  justify-content: center; /* középre igazítás */
-  flex-wrap: wrap;        /* ha nem fér ki, új sorba kerül */
-  gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 60px;
 }
 
+/* KÁRTYA */
 .car-card {
-  width: 100%;
-  max-width: 300px;       /* minden kártya azonos szélesség */
-  border-radius: 15px !important;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  transition: 0.3s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  background: white;
+  border: 2px solid transparent;
 }
 
 .car-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 0 25px 50px rgba(0, 102, 255, 0.15);
+  border-color: #0066ff;
 }
 
 .car-card img {
-  height: 200px;
+  height: 240px;
   object-fit: cover;
+  transition: transform 0.4s ease;
+  width: 100%;
+  background: linear-gradient(135deg, #e9ecef, #f5f7fa);
+}
+
+.car-card:hover img {
+  transform: scale(1.12);
+}
+
+.car-card .card-body {
+  padding: 1.5rem;
+}
+
+.car-card .card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.8rem;
+}
+
+.car-card .card-text {
+  color: #6c757d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
 }
 
 .car-price {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #0d6efd;
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .car-btn {
   width: 100%;
+  padding: 12px;
+  border: 2px solid #0066ff;
+  background: transparent;
+  color: #0066ff;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* ---------- RÓLUNK ---------- */
+.car-btn:hover {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ===== RÓLUNK SZEKCIÓ ===== */
 .rolunk-section {
-  background: #f8f9fa;
-  padding: 60px 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  padding: 60px 40px;
   text-align: center;
   border-radius: 20px;
-  max-width: 900px;       /* blokk középre */
-  margin: 50px auto;
+  max-width: 1000px;
+  margin: 60px auto;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  border: 2px solid rgba(0, 102, 255, 0.1);
 }
 
 .rolunk-section h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 20px;
+  color: #1a1a2e;
+  font-weight: 700;
 }
 
 .rolunk-section p {
   max-width: 700px;
   margin: auto;
-  font-size: 1.15rem;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #495057;
 }
 
-/* ---------- TÉRKÉP ---------- */
-.terkep-container {
-  text-align: center;
-  margin-top: 40px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+/* ===== ANIMÁCIÓK ===== */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .car-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .hero {
+    height: 55vh;
+  }
+
+  .hero-overlay {
+    padding: 40px;
+  }
+
+  .hero-overlay h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .car-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .hero {
+    height: 45vh;
+    border-radius: 12px;
+  }
+
+  .hero-overlay {
+    padding: 30px;
+    max-width: 90%;
+  }
+
+  .hero-overlay h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-overlay p {
+    font-size: 1rem;
+  }
+
+  .rolunk-section {
+    padding: 40px 25px;
+    margin: 40px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  #fo-oldal {
+    padding: 0 10px;
+  }
+
+  .hero {
+    height: 35vh;
+    margin-top: 0;
+  }
+
+  .hero-overlay {
+    padding: 20px;
+  }
+
+  .hero-overlay h1 {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .car-price {
+    font-size: 1.3rem;
+  }
+
+  .rolunk-section {
+    padding: 30px 15px;
+    margin: 30px 10px;
+    border-radius: 12px;
+  }
 }
 
 .terkep-container h3 {

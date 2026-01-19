@@ -1,0 +1,127 @@
+/* ===== CHECKBOX STYLES ===== */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.checkbox-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 102, 255, 0.4);
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.checkbox-input:hover {
+  border-color: #0066ff;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.checkbox-input:checked {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  border-color: #0066ff;
+}
+
+.checkbox-input:checked::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+}
+
+.checkbox-label {
+  cursor: pointer;
+  user-select: none;
+  color: #1a1a2e;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.checkbox-container:hover .checkbox-label {
+  color: #0066ff;
+}
+
+/* ===== RANGE SLIDER STYLES ===== */
+.range-slider {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.range-label {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.range-value {
+  color: #0066ff;
+  font-weight: 700;
+}
+
+input[type='range'] {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #e9ecef 0%, #e9ecef 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  width: 28px;
+  height: 28px;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4);
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+}
+
+input[type='range']::-moz-range-thumb:hover {
+  width: 28px;
+  height: 28px;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4);
+}
+
+input[type='range']::-moz-range-track {
+  background: transparent;
+  border: none;
+}
