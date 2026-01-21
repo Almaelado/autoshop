@@ -135,19 +135,12 @@
     .autok-grid {
         grid-template-columns: 1fr;
     }
-}
-    .autok-card {
-        width: 45%; /* kisebb képernyőn 2 oszlop */
-    }
     .autok-card .card-img-top {
         height: 140px;
     }
 }
 
 @media (max-width: 576px) {
-    .autok-card {
-        width: 90%; /* mobilon 1 oszlop */
-    }
     .autok-card .card-img-top {
         height: 120px;
     }
