@@ -34,6 +34,6 @@ router.get('/chatablak', authenticateToken, autoController.ChatAblak);
 router.post('/admin/chatablak', authenticateToken, autoController.ChatAblakAdmin);
 router.post('/felhasznalo/chatablak', authenticateToken, autoController.ChatAblakFelhasznalo);
 router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
-
+router.get('/random',autoController.randomautok);
 
 module.exports = router;

@@ -466,6 +466,15 @@ console.log("asd");
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+    async randomautok(req,res){
+        try {
+            const randomAutok =  await Auto.random();
+            res.status(200).json(randomAutok);
+            
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 };
 

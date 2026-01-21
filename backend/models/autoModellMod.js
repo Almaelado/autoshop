@@ -341,5 +341,18 @@ Auto.szamlaAdatok = async () => {
         throw error;
     }
 };
+Auto.random = async ()=>{
+    try {
+        const [result] = await pool.execute(`SELECT *
+FROM osszes_auto
+ORDER BY RAND()
+LIMIT 6;
+`);
+return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 
 module.exports = Auto;
