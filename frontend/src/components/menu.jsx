@@ -18,7 +18,7 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, i
           <Navbar.Toggle aria-controls="admin-nav" />
           <Navbar.Collapse id="admin-nav">
             <Nav>
-              <Nav.Link as={Link} to="/admin/felhasznalok">Felhasználók</Nav.Link>
+              <Nav.Link as={Link} to="/admin/nyomtatvanyok">Nyomtatványok</Nav.Link>
               <Nav.Link as={Link} to="/admin/autok">Autók</Nav.Link>
             </Nav>
             <Nav className="ms-auto">

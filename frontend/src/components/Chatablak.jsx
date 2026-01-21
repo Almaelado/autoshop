@@ -42,7 +42,7 @@ export default function Chatablak({ accessToken , admin}) {
         alert("Üzenet mező nem lehet üres!");
         return;
     }
-    if(rendezett[rendezett.length - 1][2]===true){
+    if(rendezett[rendezett.length - 1][2]===true && admin===true){
         alert("Válasz már érkezett az utolsó üzenetre, nem küldhető újabb üzenet!");
         return;
     }
