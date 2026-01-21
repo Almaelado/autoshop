@@ -7,7 +7,6 @@ export default function Nyomtatvanyok({accessToken}) {
   const printAdasveteli = () => {
   const win = window.open("/adasveteli.pdf", "_blank");
   win.onload = () => {
-    win.print();
   };
 };
 

@@ -13,6 +13,7 @@ export default function Szamla({ accessToken }) {
   const [fizetesimodLista, setFizetesimodLista] = useState([]);
   const [vevokLista, setVevokLista] = useState([]);
   const [egesz,setEgesz] = useState("");
+  const [fizetesimod,setFizetesimod] = useState("");
 
   useEffect(() => {
     // Példa: Vevő adatok lekérése API-ból
@@ -59,6 +60,17 @@ export default function Szamla({ accessToken }) {
                 }
                 console.log("Beállított vevő név:", jsonData.vevok[i].nev);
                 console.log("Beállított vevő cím:", jsonData.vevok[i].lakcim);
+                break;
+            }
+        }
+    }
+
+    const handleFizetesimodValasztas = (valasztott) => {
+        console.log("Kiválasztott fizetési mód:", valasztott);
+        const jsonData = JSON.parse(egesz);
+        for(let i = 0 ; i<jsonData.fizetesimod.length;i++){
+            if(jsonData.fizetesimod[i].nev === valasztott[0]){
+                setFizetesimod(valasztott[0]);
                 break;
             }
         }
@@ -181,6 +193,7 @@ export default function Szamla({ accessToken }) {
       <TypeaheadComponent
         label="Fizetési mód"
         options={fizetesimodLista}
+        onChange={handleFizetesimodValasztas}
       />
 
       <button onClick={generatePDF}>Számla letöltése (PDF)</button>
