@@ -1,13 +1,68 @@
-import { useState } from "react";
+import { use, useState,useEffect } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import http from "../http-common";
+import TypeaheadComponent from './typeahead.jsx';
 
-export default function Szamla() {
+export default function Szamla({ accessToken }) {
   const [vevoNev, setVevoNev] = useState("");
   const [vevoCim, setVevoCim] = useState("");
   const [termek, setTermek] = useState("");
   const [mennyiseg, setMennyiseg] = useState(1);
   const [egysegar, setEgysegar] = useState(0);
+  const [fizetesimodLista, setFizetesimodLista] = useState([]);
+  const [vevokLista, setVevokLista] = useState([]);
+  const [egesz,setEgesz] = useState("");
+
+  useEffect(() => {
+    // Példa: Vevő adatok lekérése API-ból
+    const fetchVevoAdatok = async () => {
+        try {
+            //console.log("Lekérem a vevő adatait az accessToken segítségével:", accessToken);
+            const res = await http.get('/auto/szamla', { headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }});
+                    console.log("Vevő adatok sikeresen lekérve:", res.data);
+                    setEgesz(JSON.stringify(res.data));
+            const vevokLista = [];
+            for(let i = 0;i<res.data.vevok.length;i++){
+                vevokLista.push(res.data.vevok[i].email);
+            }
+            setVevokLista(vevokLista);
+            const fizetesimodLista = [];
+            for(let i = 0;i<res.data.fizetesimod.length;i++){
+                fizetesimodLista.push(res.data.fizetesimod[i].mod);
+            }
+            setFizetesimodLista(fizetesimodLista);
+            console.log("Vevők lista:", vevokLista);
+            console.log("Fizetési módok lista:", fizetesimodLista);
+        } catch (err) {
+            console.error("Hiba a vevő adatok lekérésekor:", err);
+        }
+    };
+
+    fetchVevoAdatok();
+}, []);
+
+    const handleVevoValasztas = (valasztott) => {
+        //console.log("Kiválasztott vevő:", valasztott);
+        const jsonData = JSON.parse(egesz);
+        //console.log("Teljes JSON adat:", jsonData);
+        for(let i = 0;i<jsonData.vevok.length;i++){
+            if(jsonData.vevok[i].email === valasztott[0]){
+                //console.log("Talált vevő adatok:", jsonData.vevok[i].nev, jsonData.vevok[i].lakcim);
+                if(jsonData.vevok[i].lakcim){
+                    setVevoCim(jsonData.vevok[i].lakcim);
+                }
+                if(jsonData.vevok[i].nev){
+                    setVevoNev(jsonData.vevok[i].nev);
+                }
+                console.log("Beállított vevő név:", jsonData.vevok[i].nev);
+                console.log("Beállított vevő cím:", jsonData.vevok[i].lakcim);
+                break;
+            }
+        }
+    }
 
   const generatePDF = () => {
   const doc = new jsPDF();
@@ -84,7 +139,11 @@ export default function Szamla() {
   return (
     <div>
       <h2>Számla készítése</h2>
-
+      <TypeaheadComponent
+        label="Vevők"
+        options={vevokLista}
+        onChange={handleVevoValasztas}
+      />
       <h4>Vevő adatai</h4>
       <input
         placeholder="Vevő neve"
@@ -118,6 +177,11 @@ export default function Szamla() {
         value={egysegar}
         onChange={e => setEgysegar(Number(e.target.value))}
       /><br /><br />
+
+      <TypeaheadComponent
+        label="Fizetési mód"
+        options={fizetesimodLista}
+      />
 
       <button onClick={generatePDF}>Számla letöltése (PDF)</button>
     </div>

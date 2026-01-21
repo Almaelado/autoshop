@@ -324,5 +324,22 @@ Auto.ChatAblakFelhasznalo = async (vevo_id, auto_id, uzenet_text) => {
         throw error;
     }
 };
+Auto.szamlaAdatok = async () => {
+    try {
+        const jsonData = {};
+        const [vevok] = await pool.execute(
+            `SELECT id,nev,lakcim,adoszam,email FROM vevok where admin!=1`,
+        );
+        const [fizetesimod] = await pool.execute(
+            `SELECT * FROM fizmodo`,
+        );
+        jsonData.vevok = vevok;
+        jsonData.fizetesimod = fizetesimod;
+        return jsonData;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
 module.exports = Auto;

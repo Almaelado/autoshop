@@ -94,7 +94,7 @@ function App() {
           {/* Admin utak */}
           <Route path="/admin" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Admin /></AdminVonal>} />
           <Route path="/admin/autok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminAutok /></AdminVonal>} />
-          <Route path="/admin/nyomtatvanyok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Nyomtatvanyok /></AdminVonal>} />
+          <Route path="/admin/nyomtatvanyok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Nyomtatvanyok accessToken={accessToken} /></AdminVonal>} />
           <Route path="/admin/uzenetek" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminUzenetek accessToken={accessToken} /></AdminVonal>} />
           <Route path="/admin/chatablak" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Chatablak accessToken={accessToken} admin={true} /></AdminVonal>} />
 

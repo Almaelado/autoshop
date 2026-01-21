@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Szamla from "./Szamla";
 
-export default function Nyomtatvanyok() {
+export default function Nyomtatvanyok({accessToken}) {
   const [nyomtatvanyok, setNyomtatvanyok] = useState("");
 
   const printAdasveteli = () => {
@@ -23,7 +23,7 @@ export default function Nyomtatvanyok() {
       )}
       {nyomtatvanyok === "szamla" && (
         <div>
-          <Szamla />
+          <Szamla accessToken={accessToken} />
         </div>
       )}
     </div>

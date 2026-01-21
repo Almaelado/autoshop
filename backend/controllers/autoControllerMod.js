@@ -453,6 +453,19 @@ console.log("asd");
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+    async szamlaAdatok(req, res) {
+        try {
+            const user = req.user;
+            if (!user || !user.id) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+
+            const szamlaAdatok = await Auto.szamlaAdatok(user.id);
+            res.status(200).json(szamlaAdatok);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 };
 
