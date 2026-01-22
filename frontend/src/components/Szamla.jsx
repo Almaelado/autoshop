@@ -5,6 +5,7 @@ import http from "../http-common";
 import TypeaheadComponent from './typeahead.jsx';
 
 export default function Szamla({ accessToken }) {
+  const LIMIT = 10;
   const [vevoNev, setVevoNev] = useState("");
   const [vevoCim, setVevoCim] = useState("");
   const [termek, setTermek] = useState("");
@@ -14,6 +15,16 @@ export default function Szamla({ accessToken }) {
   const [vevokLista, setVevokLista] = useState([]);
   const [egesz,setEgesz] = useState("");
   const [fizetesimod,setFizetesimod] = useState("");
+  const [autokLista, setAutokLista] = useState([]);
+const [autokLathato, setAutokLathato] = useState(false);
+const [kivalasztottAutoId, setKivalasztottAutoId] = useState(null);
+  
+const [offset, setOffset] = useState(0);
+const [betolt, setBetolt] = useState(false);
+const [vanTobb, setVanTobb] = useState(true);
+
+
+
 
   useEffect(() => {
     // Példa: Vevő adatok lekérése API-ból
@@ -41,6 +52,7 @@ export default function Szamla({ accessToken }) {
             console.error("Hiba a vevő adatok lekérésekor:", err);
         }
     };
+    
 
     fetchVevoAdatok();
 }, []);
@@ -75,6 +87,62 @@ export default function Szamla({ accessToken }) {
             }
         }
     }
+    const fetchAutok = async () => {
+  if (betolt || !vanTobb) return;
+
+  setBetolt(true);
+
+  try {
+    const res = await http.get(
+      `/auto/minden?limit=${LIMIT}&offset=${offset}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const ujAutok = res.data;
+
+    setAutokLista(prev => [...prev, ...ujAutok]);
+    setOffset(prev => prev + LIMIT);
+
+    // ha kevesebb jött vissza, mint a limit → nincs több adat
+    if (ujAutok.length < LIMIT) {
+      setVanTobb(false);
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setBetolt(false);
+  }
+};
+
+    const handleAutokMegjelenitese = () => {
+  setAutokLista([]);
+  setOffset(0);
+  setVanTobb(true);
+  fetchAutok();
+};
+
+const handleAutoKivalasztas = (auto) => {
+  setKivalasztottAutoId(auto.id);
+  setTermek(`${auto.marka} ${auto.tipus}`);
+  setEgysegar(auto.ar);
+  setMennyiseg(1);
+  setAutokLathato(false);
+};
+const handleScroll = (e) => {
+  const { scrollTop, scrollHeight, clientHeight } = e.target;
+
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    fetchAutok();
+  }
+};
+
+  useEffect(()=>{
+    console.log(autokLista);
+  },[autokLista])
 
   const generatePDF = () => {
   const doc = new jsPDF();
@@ -151,12 +219,12 @@ export default function Szamla({ accessToken }) {
   return (
     <div>
       <h2>Számla készítése</h2>
+      <h4>Vevő adatai</h4>
       <TypeaheadComponent
-        label="Vevők"
+        label="Felhsználók:"
         options={vevokLista}
         onChange={handleVevoValasztas}
       />
-      <h4>Vevő adatai</h4>
       <input
         placeholder="Vevő neve"
         value={vevoNev}
@@ -170,6 +238,65 @@ export default function Szamla({ accessToken }) {
       /><br />
 
       <h4>Számla tételek</h4>
+      <button onClick={handleAutokMegjelenitese}>
+  Autók megjelenítése
+</button>
+
+      <div
+  style={{
+    maxHeight: "300px",
+    overflowY: "auto",
+    border: "1px solid #ccc",
+    marginTop: "10px",
+  }}
+  onScroll={handleScroll}
+>
+
+      {autokLathato && (
+  <div
+    style={{ maxHeight: "300px", overflowY: "auto" }}
+    onScroll={handleScroll}
+  >
+    <table width="100%" border="1" cellPadding="5">
+  <thead>
+    <tr>
+      <th>Márka</th>
+      <th>Modell</th>
+      <th>Szín</th>
+      <th>Ajtók</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {autok.map(auto => (
+      <tr key={auto.id}>
+        <td>{auto.nev}</td>
+        <td>{auto.model}</td>
+        <td>{auto.szin_nev}</td>
+        <td>{auto.ajtoszam}</td>
+        <td>
+          <button onClick={() => handleAutoKivalasztas(auto)}>
+            Kiválaszt
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+{loading && <p style={{ textAlign: "center" }}>Betöltés...</p>}
+{!hasMore && <p style={{ textAlign: "center" }}>Nincs több adat</p>}
+
+
+    {betolt && <p style={{ textAlign: "center" }}>Betöltés...</p>}
+    {!vanTobb && (
+      <p style={{ textAlign: "center" }}>Nincs több adat</p>
+    )}
+  </div>
+)}
+
+</div>
+
       <input
         placeholder="Termék / Szolgáltatás"
         value={termek}

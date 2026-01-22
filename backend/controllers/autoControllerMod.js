@@ -16,7 +16,8 @@ function generateRefreshToken(user) {
 const autoController={
     async osszes(req, res) {
         try {
-            const autos =  await Auto.osszes();
+            console.log(req.query);
+            const autos =  await Auto.osszes(req.query);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);

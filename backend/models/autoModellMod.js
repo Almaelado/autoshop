@@ -2,9 +2,9 @@ const pool = require('../config/db.js');
 const bcrypt = require('bcrypt');
 const Auto = {};
 
-Auto.osszes = async () => {
+Auto.osszes = async (data) => {
     try {
-        const [rows] = await pool.execute('SELECT * FROM osszes_auto');
+        const [rows] = await pool.execute('SELECT * FROM osszes_auto limit ? offset ?',[data.limit,data.offset]);
         return rows;
     } catch (error) {
         console.error(error);
