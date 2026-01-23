@@ -23,6 +23,14 @@ const [offset, setOffset] = useState(0);
 const [betolt, setBetolt] = useState(false);
 const [vanTobb, setVanTobb] = useState(true);
 
+const [autokKereses, setAutokKereses] = useState("");
+
+const szurtAutokLista = autokLista.filter(auto =>
+  auto.nev.toLowerCase().includes(autokKereses.toLowerCase()) ||
+  auto.model.toLowerCase().includes(autokKereses.toLowerCase()) ||
+  auto.szin_nev.toLowerCase().includes(autokKereses.toLowerCase())
+);
+
 
 
 
@@ -57,6 +65,18 @@ const [vanTobb, setVanTobb] = useState(true);
     fetchVevoAdatok();
 }, []);
 
+    const handleAutokToggle = () => {
+  if (autokLathato) {
+    setAutokLathato(false);
+  } else {
+    setOffset(0);
+    setVanTobb(true);
+    setAutokLathato(true);
+    fetchAutok(true); // reset=true → tiszta lista
+  }
+};
+
+
     const handleVevoValasztas = (valasztott) => {
         //console.log("Kiválasztott vevő:", valasztott);
         const jsonData = JSON.parse(egesz);
@@ -87,7 +107,7 @@ const [vanTobb, setVanTobb] = useState(true);
             }
         }
     }
-    const fetchAutok = async () => {
+    const fetchAutok = async (reset = false) => {
   if (betolt || !vanTobb) return;
 
   setBetolt(true);
@@ -104,10 +124,16 @@ const [vanTobb, setVanTobb] = useState(true);
 
     const ujAutok = res.data;
 
-    setAutokLista(prev => [...prev, ...ujAutok]);
+    setAutokLista(prev => {
+      if (reset) return [...ujAutok]; // ha reset, csak az új adat
+      // különben add hozzá, de csak egyedi ID-k
+      const ids = new Set(prev.map(a => a.id));
+      const uniqueAutok = ujAutok.filter(a => !ids.has(a.id));
+      return [...prev, ...uniqueAutok];
+    });
+
     setOffset(prev => prev + LIMIT);
 
-    // ha kevesebb jött vissza, mint a limit → nincs több adat
     if (ujAutok.length < LIMIT) {
       setVanTobb(false);
     }
@@ -118,16 +144,11 @@ const [vanTobb, setVanTobb] = useState(true);
   }
 };
 
-    const handleAutokMegjelenitese = () => {
-  setAutokLista([]);
-  setOffset(0);
-  setVanTobb(true);
-  fetchAutok();
-};
+
 
 const handleAutoKivalasztas = (auto) => {
   setKivalasztottAutoId(auto.id);
-  setTermek(`${auto.marka} ${auto.tipus}`);
+  setTermek(`${auto.nev} ${auto.model}`);
   setEgysegar(auto.ar);
   setMennyiseg(1);
   setAutokLathato(false);
@@ -140,12 +161,9 @@ const handleScroll = (e) => {
   }
 };
 
-  useEffect(()=>{
-    console.log(autokLista);
-  },[autokLista])
-
   const generatePDF = () => {
   const doc = new jsPDF();
+
 
   const datum = new Date().toLocaleDateString("hu-HU");
   const szamlaSzam = `SZ-${Math.floor(Math.random() * 100000)}`;
@@ -167,7 +185,7 @@ const handleScroll = (e) => {
 
   // ===== VEVŐ =====
   doc.setFontSize(12);
-  doc.text("Vevő adatai:", 14, 50);
+  doc.text("Vásárló adatai:", 14, 50);
   doc.setFontSize(10);
   doc.text(`Név: ${vevoNev}`, 14, 56);
   doc.text(`Cím: ${vevoCim}`, 14, 61);
@@ -195,13 +213,15 @@ const handleScroll = (e) => {
 
   const y = doc.lastAutoTable.finalY + 10;
 
-  doc.setFontSize(10);
-  doc.text(`Nettó összesen: ${netto.toLocaleString("hu-HU")} Ft`, 140, y);
-  doc.text(`ÁFA (27%): ${afa.toLocaleString("hu-HU")} Ft`, 140, y + 6);
+doc.setFontSize(10);
+doc.text(`Fizetési mód: ${fizetesimod}`, 140, y);
+doc.text(`Nettó összesen: ${netto.toLocaleString("hu-HU")} Ft`, 140, y + 6);
+doc.text(`ÁFA (27%): ${afa.toLocaleString("hu-HU")} Ft`, 140, y + 12);
+
 
   doc.setFontSize(12);
   doc.setFont(undefined, "bold");
-  doc.text(`Bruttó összesen: ${brutto.toLocaleString("hu-HU")} Ft`, 140, y + 14);
+  doc.text(`Bruttó összesen: ${brutto.toLocaleString("hu-HU")} Ft`, 140, y + 18);
   doc.setFont(undefined, "normal");
 
   // ===== LÁBLÉC =====
@@ -238,9 +258,10 @@ const handleScroll = (e) => {
       /><br />
 
       <h4>Számla tételek</h4>
-      <button onClick={handleAutokMegjelenitese}>
-  Autók megjelenítése
+      <button onClick={handleAutokToggle}>
+  {autokLathato ? "Vissza" : "Autók megjelenítése"}
 </button>
+
 
       <div
   style={{
@@ -257,6 +278,13 @@ const handleScroll = (e) => {
     style={{ maxHeight: "300px", overflowY: "auto" }}
     onScroll={handleScroll}
   >
+    <input 
+      type="text"
+      placeholder="Keresés..."
+      value={autokKereses}
+      onChange={(e)=>setAutokKereses(e.target.value)}
+      style={{width:"100%",marginBottom:"10px",padding: "5px"}}
+     />
     <table width="100%" border="1" cellPadding="5">
   <thead>
     <tr>
@@ -264,16 +292,18 @@ const handleScroll = (e) => {
       <th>Modell</th>
       <th>Szín</th>
       <th>Ajtók</th>
+      <th>KM</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    {autok.map(auto => (
+    {szurtAutokLista.map(auto => (
       <tr key={auto.id}>
         <td>{auto.nev}</td>
         <td>{auto.model}</td>
         <td>{auto.szin_nev}</td>
         <td>{auto.ajtoszam}</td>
+        <td>{auto.km}</td>
         <td>
           <button onClick={() => handleAutoKivalasztas(auto)}>
             Kiválaszt
@@ -284,8 +314,9 @@ const handleScroll = (e) => {
   </tbody>
 </table>
 
-{loading && <p style={{ textAlign: "center" }}>Betöltés...</p>}
-{!hasMore && <p style={{ textAlign: "center" }}>Nincs több adat</p>}
+{betolt && <p style={{ textAlign: "center" }}>Betöltés...</p>}
+{!vanTobb && <p style={{ textAlign: "center" }}>Nincs több adat</p>}
+
 
 
     {betolt && <p style={{ textAlign: "center" }}>Betöltés...</p>}
