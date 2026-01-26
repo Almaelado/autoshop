@@ -35,5 +35,6 @@ router.post('/admin/chatablak', authenticateToken, autoController.ChatAblakAdmin
 router.post('/felhasznalo/chatablak', authenticateToken, autoController.ChatAblakFelhasznalo);
 router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
 router.get('/random',autoController.randomautok);
+router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
 
 module.exports = router;

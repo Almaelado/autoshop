@@ -97,14 +97,16 @@ function App() {
           <Route path="/admin/nyomtatvanyok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Nyomtatvanyok accessToken={accessToken} /></AdminVonal>} />
           <Route path="/admin/uzenetek" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminUzenetek accessToken={accessToken} /></AdminVonal>} />
           <Route path="/admin/chatablak" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Chatablak accessToken={accessToken} admin={true} /></AdminVonal>} />
+          <Route path="/admin/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={isAdmin} />} />
 
-          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
+          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={false} />} />
           <Route path="/uzenet/:autoId" element={<Uzenet accessToken={accessToken} />} />
           <Route path="/uzenetek" element={<Uzenetek accessToken={accessToken} />} />
           <Route path="/uzenetablak" element={<Chatablak accessToken={accessToken} admin={false} />} />
         </Routes>
       </div>
       <Footer />
+      
     </BrowserRouter>
   );
 }

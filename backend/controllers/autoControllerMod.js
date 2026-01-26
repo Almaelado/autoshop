@@ -393,7 +393,7 @@ async szuro(req, res, next) {
     },
     async uzenetekLekerdezese(req, res) {
         try {
-console.log("asd");
+            console.log("asd");
             const user = req.user;
             console.log("Uzenetek lekérdezése user:", user);
             if (!user) {
@@ -475,6 +475,54 @@ console.log("asd");
             
         } catch (error) {
             res.status(500).json({ message: error.message });
+        }
+    },
+    async Szerkesztes(req,res){
+        try {
+            const data = req.body;
+            //console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+
+            //console.log(autosMarka);
+            //console.log(autosUzemanyag);
+            //console.log(autosValto);
+            //console.log(autosSzin);
+
+            autosMarka.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            });
+
+            autosUzemanyag.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+
+            const autoModosit = await Auto.Szerkesztes(data);
+            res.status(200).json(autoModosit);
+        } catch (error) {
+            res.status(500).json({ message: error.message });       
         }
     }
 };
