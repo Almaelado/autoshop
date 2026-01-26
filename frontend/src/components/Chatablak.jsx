@@ -4,7 +4,7 @@ import http from "../http-common.js";
 export default function Chatablak({ accessToken , admin}) {
     const vevoId = new URLSearchParams(window.location.search).get('vevoId');
     const autoId = new URLSearchParams(window.location.search).get('autoId');
-    console.log("admin chatablak:", admin);
+    //console.log("admin chatablak:", admin);
     if(admin){
         var uzenetId = new URLSearchParams(window.location.search).get('uzenetId');
     } 
@@ -21,9 +21,13 @@ export default function Chatablak({ accessToken , admin}) {
     useEffect(() => {
     const ujRendezett = [];
     for (let i = 0; i < messages.length; i++) {
-        ujRendezett.push([messages[i].uzenet_text, messages[i].elkuldve]);
+        console.log("Üzenet:", messages[i]);
         if (messages[i].valasz) {
-            ujRendezett.push([messages[i].valasz, messages[i].valasz_datum]);
+            ujRendezett.push([messages[i].uzenet_text, messages[i].elkuldve,false]);
+            ujRendezett.push([messages[i].valasz, messages[i].valasz_datum,true]);
+        }
+        else{
+            ujRendezett.push([messages[i].uzenet_text, messages[i].elkuldve,false]);
         }
     }
     ujRendezett.sort((a, b) => new Date(a[1]) - new Date(b[1]));
@@ -34,8 +38,14 @@ export default function Chatablak({ accessToken , admin}) {
 
 
     const kuldUzenet = async () => {
-    if (!ujUzenet.trim()) return;
-
+    if (!ujUzenet.trim()){
+        alert("Üzenet mező nem lehet üres!");
+        return;
+    }
+    if(rendezett[rendezett.length - 1][2]===true && admin===true){
+        alert("Válasz már érkezett az utolsó üzenetre, nem küldhető újabb üzenet!");
+        return;
+    }
     try {
         if(admin){
             await http.post(
@@ -101,7 +111,7 @@ export default function Chatablak({ accessToken , admin}) {
     if (messages.length === 0) {
         return <div>Nincsenek üzenetek.</div>; // üres chat kezelése
     }
-    console.log("Üzenetek:", rendezett);
+    //console.log("Üzenetek:", rendezett);
     return (
         <div className="chat-container">
     <div className="chat-header">
@@ -109,14 +119,26 @@ export default function Chatablak({ accessToken , admin}) {
     </div>
 
     <div className="chat-messages">
-        {rendezett.map((msg,index) => (
-            <div key={index} className="chat-row">
-                <div className="message left">
-                    <p>{msg[0]}</p>
-                    <small>{msg[1]}</small>
+        {rendezett.map((msg,index) => {
+            if(msg[2]===true){
+                return (
+                    <div key={index} className="chat-row">
+                        <div className="message right">
+                            <p>{msg[0]}</p>
+                            <small>{msg[1]}</small>
+                        </div>
+                    </div>
+                );
+            }
+            return (
+                <div key={index} className="chat-row">
+                    <div className="message left">
+                        <p>{msg[0]}</p>
+                        <small>{msg[1]}</small>
+                    </div>
                 </div>
-            </div>
-        ))}
+            );
+        })}
     </div>
 
     <div className="chat-input">

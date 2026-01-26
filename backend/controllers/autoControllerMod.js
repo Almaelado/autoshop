@@ -16,7 +16,8 @@ function generateRefreshToken(user) {
 const autoController={
     async osszes(req, res) {
         try {
-            const autos =  await Auto.osszes();
+            console.log(req.query);
+            const autos =  await Auto.osszes(req.query);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -392,10 +393,13 @@ async szuro(req, res, next) {
     },
     async uzenetekLekerdezese(req, res) {
         try {
+            console.log("asd");
             const user = req.user;
+            console.log("Uzenetek lekérdezése user:", user);
             if (!user) {
                 return res.status(401).json({ message: "Nincs bejelentkezve" });
             }
+
             const uzenetek = await Auto.uzenetekLekerdezese(user.id);
             res.status(200).json(uzenetek);
         } catch (error) {
@@ -428,9 +432,9 @@ async szuro(req, res, next) {
     
     async ChatAblakAdmin(req, res) {
         try {
-            console.log("req.body:", req.body);
+            //console.log("req.body:", req.body);
             const uzenetek = await Auto.ChatAblakAdmin(req.body.uzenetId, req.body.uzenet_text);
-            console.log("Lekérdezett üzenetek (Admin):", uzenetek);
+            //console.log("Lekérdezett üzenetek (Admin):", uzenetek);
             res.status(200).json(uzenetek);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -439,16 +443,86 @@ async szuro(req, res, next) {
     async ChatAblakFelhasznalo(req, res) {
         try {
             const user = req.user;
-            const { autoId, vevoId } = req.body;
-            console.log("ChatAblakFelhasznalo hívás:", { user, autoId, vevoId });
+            const { autoId, vevoId,uzenet_text } = req.body;
+            //console.log("ChatAblakFelhasznalo hívás:", { user, autoId, vevoId });
             if (!user || !user.id || !autoId || !vevoId) {
                 return res.status(400).json({ message: "Hiányzó adat!" });
             }
-            const uzenetek = await Auto.ChatAblakFelhasznalo(vevoId, autoId);
-            console.log("Lekérdezett üzenetek (Felhasználó):", uzenetek);
+            const uzenetek = await Auto.ChatAblakFelhasznalo(vevoId, autoId,uzenet_text);
+            //console.log("Lekérdezett üzenetek (Felhasználó):", uzenetek);
             res.status(200).json(uzenetek);
         } catch (error) {
             res.status(500).json({ message: error.message });
+        }
+    },
+    async szamlaAdatok(req, res) {
+        try {
+            const user = req.user;
+            if (!user || !user.id) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+
+            const szamlaAdatok = await Auto.szamlaAdatok(user.id);
+            res.status(200).json(szamlaAdatok);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async randomautok(req,res){
+        try {
+            const randomAutok =  await Auto.random();
+            res.status(200).json(randomAutok);
+            
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async Szerkesztes(req,res){
+        try {
+            const data = req.body;
+            //console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+
+            //console.log(autosMarka);
+            //console.log(autosUzemanyag);
+            //console.log(autosValto);
+            //console.log(autosSzin);
+
+            autosMarka.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            });
+
+            autosUzemanyag.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+
+            const autoModosit = await Auto.Szerkesztes(data);
+            res.status(200).json(autoModosit);
+        } catch (error) {
+            res.status(500).json({ message: error.message });       
         }
     }
 };

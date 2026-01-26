@@ -2,9 +2,9 @@ const pool = require('../config/db.js');
 const bcrypt = require('bcrypt');
 const Auto = {};
 
-Auto.osszes = async () => {
+Auto.osszes = async (data) => {
     try {
-        const [rows] = await pool.execute('SELECT * FROM osszes_auto');
+        const [rows] = await pool.execute('SELECT * FROM osszes_auto limit ? offset ?',[data.limit,data.offset]);
         return rows;
     } catch (error) {
         console.error(error);
@@ -90,7 +90,7 @@ Auto.getfelhasz = async (username) =>{
 }
 Auto.getValto = async () => {
     try {
-        const [rows] = await pool.execute('SELECT váltó FROM osszes_auto GROUP BY váltó');
+        const [rows] = await pool.execute('SELECT * FROM valtok');
         return rows;
     } catch (error) {
         console.error(error);
@@ -324,5 +324,45 @@ Auto.ChatAblakFelhasznalo = async (vevo_id, auto_id, uzenet_text) => {
         throw error;
     }
 };
+Auto.szamlaAdatok = async () => {
+    try {
+        const jsonData = {};
+        const [vevok] = await pool.execute(
+            `SELECT id,nev,lakcim,adoszam,email FROM vevok where admin!=1`,
+        );
+        const [fizetesimod] = await pool.execute(
+            `SELECT * FROM fizmodo`,
+        );
+        jsonData.vevok = vevok;
+        jsonData.fizetesimod = fizetesimod;
+        return jsonData;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+Auto.random = async ()=>{
+    try {
+        const [result] = await pool.execute(`SELECT *
+FROM osszes_auto
+ORDER BY RAND()
+LIMIT 6;
+`);
+return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.Szerkesztes = async (data) =>{
+    try {
+        console.log(data.nev,data.model,data.váltó,data.kiadasiev,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtoszam,data.szemelyek,data.szin_nev,data.irat,data.leírás,data.id);
+        const [result] =await pool.execute(`Update autok set marka_id = ? , model = ? , valto_id = ? ,kiadasiev = ? , uzemanyag_id = ? , motormeret = ? , km = ? , ar = ? , ajtoszam = ? , szemelyek = ? , szin_id = ? , irat = ? , leiras = ? WHERE id = ?;`,[data.nev,data.model,data.váltó,data.kiadasiev,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtoszam,data.szemelyek,data.szin_nev,data.irat,data.leírás,data.id])
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 
 module.exports = Auto;

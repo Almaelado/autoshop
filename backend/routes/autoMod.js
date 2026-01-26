@@ -28,11 +28,13 @@ router.get('/erdekeltek', authenticateToken, autoController.erdekeltek);
 router.put('/profilmodosit', authenticateToken, autoController.felhasznaloModositas);
 router.put('/jelszomodositas', authenticateToken, autoController.jelszoModositas);
 router.post('/uzenet', authenticateToken, autoController.uzenetKuldes);
-router.post('/uzenetek', authenticateToken, autoController.uzenetekLekerdezese);
+router.get('/uzenetek', authenticateToken, autoController.uzenetekLekerdezese);
 router.post('/adminuzenetek', authenticateToken, autoController.AdminUzenetek);
 router.get('/chatablak', authenticateToken, autoController.ChatAblak);
 router.post('/admin/chatablak', authenticateToken, autoController.ChatAblakAdmin);
 router.post('/felhasznalo/chatablak', authenticateToken, autoController.ChatAblakFelhasznalo);
-
+router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
+router.get('/random',autoController.randomautok);
+router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
 
 module.exports = router;

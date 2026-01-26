@@ -6,7 +6,7 @@ import "./FoOldal.css";
 import { useNavigate } from "react-router-dom";
 
 export default function FoOldal() {
-  const [autok, setAutok] = useState([]);
+
   const [randomAutok, setRandomAutok] = useState([]);
   const [selectedAutoId, setSelectedAutoId] = useState(null);
   const navigate = useNavigate();
@@ -14,9 +14,9 @@ export default function FoOldal() {
   const fetchAutok = async () => {
     try {
       const response = await http.get("/auto/minden");
-      setAutok(response.data);
-      const shuffled = [...response.data].sort(() => 0.5 - Math.random());
-      setRandomAutok(shuffled.slice(0, 6)); 
+      const response2 = await http.get("/auto/random");
+
+      setRandomAutok(response2.data); 
     } catch (error) {
       console.error("Error fetching autok:", error);
     }
@@ -25,6 +25,9 @@ export default function FoOldal() {
   useEffect(() => {
     fetchAutok();
   }, []);
+
+
+
 
   if (selectedAutoId !== null) {
     return (
