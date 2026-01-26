@@ -1,37 +1,91 @@
+/* MODERN COLOR PALETTE */
+:root {
+  --primary: #0066ff;
+  --primary-dark: #0052cc;
+  --secondary: #00d4ff;
+  --accent: #ff6b35;
+  --success: #00b381;
+  --danger: #ff3333;
+  --dark: #1a1a2e;
+  --light: #f5f7fa;
+  --gray: #6c757d;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
+  --radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+}
+
+/* SZŰRÉS PANEL */
 #Szures {
   position: fixed;   
   left: 0;
   top: 0;
   z-index: 9999;
-  background-color: rgb(46, 44, 44);
-  width: 400px;
-  padding: 20px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  width: 380px;
+  padding: 30px 20px;
   height: 100vh;
   transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
 }
 
 #Szures.nyitva {
   transform: translateX(0);
 }
+
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 9998;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
+
+#Szures.nyitva ~ .overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .bezar-btn {
   background: none;
-  color: white;
+  color: #00d4ff;
   border: none;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 20px;
+  top: 20px;
+  transition: var(--transition);
+  padding: 8px;
+}
+
+.bezar-btn:hover {
+  color: #00f2ff;
+  transform: rotate(90deg);
 }
 
 .Hargita {
@@ -41,13 +95,15 @@
 
 .auto-details-page #Szures {  
   width: auto !important;
-  max-width: 400px !important; /* vagy amit akarsz */
+  max-width: 400px !important;
 }
 
 .App {
   height: auto;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  min-height: 100vh;
 }
 
 .App > .App-content {
@@ -56,8 +112,17 @@
 
 footer {
   margin-top: auto;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #e9ecef;
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 2px solid rgba(0, 102, 255, 0.2);
 }
 
+footer p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
 
 .autok-container {
   flex: 1;
@@ -67,149 +132,186 @@ footer {
 }
 
 #Szures p {
-  color: white;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  color: #e9ecef;
+  margin-top: 15px;
+  margin-bottom: 15px;
   cursor: pointer;
+  padding: 12px 15px;
+  border-radius: 8px;
+  transition: var(--transition);
+  font-weight: 500;
 }
 
-#fo-oldal {
-  background-color: #fafbfc;
-  padding: 20px;
-  margin-top: 20px;
+#Szures p:hover {
+  background: rgba(0, 102, 255, 0.2);
+  color: #00d4ff;
+  transform: translateX(5px);
 }
 
-/* Fullpage overlay helyett egyszerű flex wrapper */
+/* ===== AUTÓ RÉSZLETEK OLDAL ===== */
 .auto-details-fullpage {
-  position: relative; /* nem fixed! */
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* a weboldal közepéhez igazítva */
+  align-items: flex-start;
   width: 100%;
   padding: 40px 20px;
   box-sizing: border-box;
-  background: transparent; /* nincs szürke háttér */
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  min-height: 100vh;
 }
 
-/* A doboz középre, de a weboldal flow-ján belül */
 .auto-details-page {
   width: 100%;
-  max-width: 900px;
-  background: #fafbfc;
-  border-radius: 16px;
+  max-width: 1000px;
+  background: #ffffff;
+  border-radius: 20px;
   overflow-y: auto;
-  padding: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(0, 102, 255, 0.1);
 }
 
-/* Wrapper a tartalomnak */
 .auto-details-wrapper {
   width: 100%;
 }
 
-/* Carousel */
+/* ===== CAROUSEL ===== */
 .carousel-container {
-  background: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
   border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-}
-
-.carousel-img-wrapper {
-  height: 520px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.carousel-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-/* Autó adatok */
-.auto-info {
-  margin-top: 30px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.auto-info h2 {
-  font-weight: 700;
-  margin-bottom: 15px;
-}
-
-.auto-info p {
-  color: #666;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
+  border: 2px solid rgba(0, 102, 255, 0.05);
 }
 
-/* Specifikációk */
-.auto-specs {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.auto-specs div {
-  flex: 1;
-  min-width: 200px;
-}
-
-.label {
-  font-size: 14px;
-  color: #999;
-}
-
-.value {
-  font-weight: 600;
-}
-
-.value:last-child {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 10100;
-  color: #333;
-}
-
-/* Carousel képek teljesen kitöltik a dobozt */
 .carousel-img-wrapper {
-  width: 100%;
-  height: 520px; /* vagy tetszőleges magasság */
+  height: 550px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e9ecef, #f5f7fa);
 }
 
 .carousel-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* teljesen kitölti a carousel-t */
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.carousel-container:hover .carousel-img {
+  transform: scale(1.05);
+}
+
+/* ===== AUTÓ ADATOK ===== */
+.auto-info {
+  margin-top: 30px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  border: 2px solid rgba(0, 102, 255, 0.1);
+}
+
+.auto-info h2 {
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  color: #1a1a2e;
+}
+
+.auto-info p {
+  color: #6c757d;
+  margin-bottom: 30px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ===== SPECIFIKÁCIÓK ===== */
+.auto-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid rgba(0, 102, 255, 0.1);
+}
+
+.auto-specs div {
+  background: linear-gradient(135deg, #f8fafc 0%, #e9ecef 100%);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 102, 255, 0.05);
+  transition: var(--transition);
+}
+
+.auto-specs div:hover {
+  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.1);
+  transform: translateY(-4px);
+}
+
+.label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.value {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 1rem;
+}
+
+.value:last-child {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 28px;
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  border: none;
+  cursor: pointer;
+  z-index: 10100;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.close-btn:hover {
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
 }
 
 .spinner { 
-  width: 40px; 
-  height: 40px; 
-  border: 4px solid #ccc; 
-  border-top: 4px solid #333; 
+  width: 50px; 
+  height: 50px; 
+  border: 5px solid rgba(0, 102, 255, 0.2); 
+  border-top: 5px solid #0066ff; 
   border-radius: 50%; 
   animation: spin 1s linear infinite; 
-  margin: auto; 
+  margin: 50px auto; 
 }
 
 @keyframes spin { 
@@ -218,68 +320,92 @@ footer {
   } 
 }
 
-/* Ajánlott autók szekció */
+/* AJÁNLOTT AUTÓK SZEKCIÓ */
 .ajanlott-autok {
-  margin-top: 40px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px #0001;
-  padding: 24px 18px 18px 18px;
+  margin-top: 50px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 40px 30px 30px;
+  border: 1px solid rgba(0, 102, 255, 0.1);
 }
+
 .ajanlott-autok h3 {
-  margin-bottom: 18px;
-  font-size: 1.3em;
-  color: #2a3a4a;
+  margin-bottom: 30px;
+  font-size: 1.8em;
+  color: var(--dark);
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 .ajanlott-lista {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .ajanlott-card {
   cursor: pointer;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 10px 8px 12px 8px;
-  width: 170px;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 12px;
+  width: 190px;
   min-width: 150px;
-  background: #f8fafc;
-  transition: box-shadow .2s, transform .2s;
-  box-shadow: 0 1px 4px #0001;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .ajanlott-card:hover {
-  box-shadow: 0 4px 16px #0002;
-  transform: translateY(-2px) scale(1.03);
-  border-color: #b3c6e0;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px) scale(1.05);
+  border-color: var(--primary);
+  background: linear-gradient(135deg, #ffffff 0%, #e3f2ff 100%);
 }
+
 .ajanlott-img {
   width: 100%;
-  height: 100px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 6px;
-  background: #eaeaea;
-  margin-bottom: 8px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e9ecef, #f5f7fa);
+  margin-bottom: 12px;
+  transition: var(--transition);
 }
+
+.ajanlott-card:hover .ajanlott-img {
+  transform: scale(1.08);
+}
+
 .ajanlott-info {
-  margin-top: 2px;
+  margin-top: 8px;
   font-size: 1em;
-  color: #222;
+  color: var(--dark);
+  width: 100%;
 }
+
 .ajanlott-nev {
-  font-weight: 600;
-  font-size: 1.05em;
-  margin-bottom: 2px;
-}
-.ajanlott-ar {
-  color: #1a7b3b;
   font-weight: 700;
-  font-size: 1.08em;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+  color: var(--dark);
+}
+
+.ajanlott-ar {
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 1.15em;
 }
 @media (max-width: 700px) {
   .ajanlott-lista {
@@ -294,113 +420,170 @@ footer {
 
 .auto-card {
   margin-bottom: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 15px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: var(--transition);
+  background: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .auto-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  transform: translateX(8px);
+  border-color: #0066ff;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
-/* ===== CHAT ===== */
-
+/* ===== CHAT SZEKCIÓ ===== */
 .chat-container {
-    max-width: 600px;
-    margin: auto;
+    max-width: 700px;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
-    height: 70vh;
-    background: #f7f7f7;
-    border-radius: 12px;
-    padding: 10px;
+    height: 75vh;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(0, 102, 255, 0.1);
+    overflow: hidden;
 }
+
 .chat-header {
-    padding: 6px 10px;
-    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+    border-bottom: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
-
-/* FONTOS: engedjük zsugorodni */
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 10px;
-    min-height: 0;   /* <<< EZ OLDJA MEG */
+    padding: 20px;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-
-/* Egy üzenet sor */
+/* ÜZENET SOR */
 .chat-row {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .message {
-    max-width: 70%;
-    padding: 10px 12px;
-    border-radius: 12px;
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 16px;
     margin: 4px 0;
-    font-size: 14px;
+    font-size: 0.95rem;
     word-wrap: break-word;
+    animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    line-height: 1.4;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .message.left {
     align-self: flex-start;
-    background-color: #e0e0e0;
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    color: #1a1a2e;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .message.right {
     align-self: flex-end;
-    background-color: #cce5ff;
-    text-align: right;
+    background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* Input rész ALUL */
+/* INPUT RÉSZ */
 .chat-input {
     display: flex;
-    gap: 10px;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    background: #fff;
+    gap: 12px;
+    padding: 15px 20px;
+    border-top: 2px solid rgba(0, 102, 255, 0.1);
+    background: #ffffff;
 }
 
 .chat-input input {
     flex: 1;
-    padding: 10px 12px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
+    padding: 12px 16px;
+    border-radius: 50px;
+    border: 2px solid rgba(0, 102, 255, 0.2);
     outline: none;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
 
 .chat-input input:focus {
-    border-color: #4a90e2;
+    border-color: #0066ff;
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
 }
 
 .chat-input button {
-    padding: 10px 16px;
-    border-radius: 20px;
+    padding: 12px 24px;
+    border-radius: 50px;
     border: none;
-    background: #4a90e2;
+    background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
 }
 
 .chat-input button:hover {
-    background: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
 }
 
-/* Mobil optimalizálás */
-@media (max-width: 600px) {
+.chat-input button:active {
+    transform: translateY(0);
+}
+
+/* MOBIL OPTIMALIZÁLÁS */
+@media (max-width: 768px) {
     .chat-container {
         height: 80vh;
+        border-radius: 12px;
+        margin: 20px;
+    }
+
+    .message {
+        max-width: 85%;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-container {
+        max-width: 100%;
+        height: 85vh;
         border-radius: 0;
+        margin: 0;
+    }
+
+    .message {
+        max-width: 90%;
     }
 }
 

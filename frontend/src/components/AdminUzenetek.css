@@ -1,0 +1,225 @@
+/* ===== ADMIN ÜZENETEK ===== */
+.admin-uzenetek-container {
+  padding: 30px;
+}
+
+.admin-uzenetek-title {
+  font-size: 2rem;
+  color: #1a1a2e;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.messages-table-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 2px solid rgba(0, 102, 255, 0.1);
+  margin-top: 30px;
+}
+
+.messages-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.messages-table th {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  padding: 16px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.messages-table td {
+  padding: 16px;
+  border-top: 1px solid rgba(0, 102, 255, 0.1);
+  color: #1a1a2e;
+}
+
+.messages-table tr:hover {
+  background: #f8fafc;
+  transition: background 0.3s ease;
+}
+
+.message-sender-info {
+  font-weight: 600;
+}
+
+.message-content-preview {
+  color: #6c757d;
+  font-size: 0.9rem;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-date {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.message-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-new {
+  background: linear-gradient(135deg, #00b381 0%, #00d4a8 100%);
+  color: white;
+}
+
+.status-read {
+  background: linear-gradient(135deg, #999 0%, #bbb 100%);
+  color: white;
+}
+
+.message-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.message-view-btn,
+.message-delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.message-view-btn {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+}
+
+.message-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.message-delete-btn {
+  background: linear-gradient(135deg, #ff3333 0%, #ff6b35 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 51, 51, 0.2);
+}
+
+.message-delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 51, 51, 0.3);
+}
+
+/* MESSAGE MODAL */
+.message-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.message-modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.message-modal-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 20px;
+}
+
+.message-modal-body {
+  color: #495057;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 102, 255, 0.1);
+}
+
+.message-modal-close {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.message-modal-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-uzenetek-container {
+    padding: 20px;
+  }
+
+  .messages-table {
+    font-size: 0.85rem;
+  }
+
+  .messages-table td,
+  .messages-table th {
+    padding: 12px 8px;
+  }
+
+  .message-content-preview {
+    max-width: 150px;
+  }
+
+  .message-actions {
+    flex-direction: column;
+  }
+}
