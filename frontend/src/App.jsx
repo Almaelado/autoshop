@@ -16,7 +16,7 @@ import Admin from './components/admin.jsx';
 import VedettVonal from "./components/VedettVonal.jsx";
 import AdminVonal from "./components/AdminVonal.jsx";
 import AdminAutok from './components/AdminAutok.jsx';
-import AdminFelhasznalok from './components/AdminFelhasznalok.jsx';
+import Nyomtatvanyok from './components/Nyomtatvanyok.jsx';
 import ProfileSzerkesztes from './components/ProfileSzerkesztes.jsx';
 import Uzenet from './components/uzenet.jsx';
 import Uzenetek from './components/uzenetek.jsx';
@@ -44,7 +44,7 @@ function App() {
       if (res.data?.accessToken) {
         setAccessToken(res.data.accessToken);
         setBelepett(true);
-        console.log("res.data.user.admin:", res.data.user);
+        console.log("res.data.user.admin:", Boolean(Number(res.data.user.admin)));
         setIsAdmin(Boolean(Number(res.data.user.admin)));
       } else {
         setBelepett(false);
@@ -60,13 +60,6 @@ function App() {
 
   refreshAccessToken();
 }, []);
-  useEffect(() => {
-  console.log("isAdmin változott:", isAdmin);
-}, [isAdmin]);
-
-useEffect(() => {
-  console.log("belepett változott:", belepett);
-}, [belepett]);
 
 
   // Betöltés amíg nem tudjuk az admin státuszt
@@ -101,17 +94,19 @@ useEffect(() => {
           {/* Admin utak */}
           <Route path="/admin" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Admin /></AdminVonal>} />
           <Route path="/admin/autok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminAutok /></AdminVonal>} />
-          <Route path="/admin/felhasznalok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminFelhasznalok /></AdminVonal>} />
+          <Route path="/admin/nyomtatvanyok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Nyomtatvanyok accessToken={accessToken} /></AdminVonal>} />
           <Route path="/admin/uzenetek" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminUzenetek accessToken={accessToken} /></AdminVonal>} />
           <Route path="/admin/chatablak" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Chatablak accessToken={accessToken} admin={true} /></AdminVonal>} />
+          <Route path="/admin/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={isAdmin} />} />
 
-          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} />} />
+          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={false} />} />
           <Route path="/uzenet/:autoId" element={<Uzenet accessToken={accessToken} />} />
           <Route path="/uzenetek" element={<Uzenetek accessToken={accessToken} />} />
           <Route path="/uzenetablak" element={<Chatablak accessToken={accessToken} admin={false} />} />
         </Routes>
       </div>
       <Footer />
+      
     </BrowserRouter>
   );
 }

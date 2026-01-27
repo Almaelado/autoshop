@@ -33,7 +33,7 @@ export default function TypeaheadComponent({ options, value, onChange, label, la
 
   return (
     <div className="mb-3">
-      <label className="form-label text-white m-0">{label || "Kiválasztott:"}</label>
+      <label className="form-label m-0">{label || "Kiválasztott:"}</label>
       <div className="mb-2">
         {selectedValues.map((item) => (
           <span
