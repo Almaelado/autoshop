@@ -1,20 +1,22 @@
 import { useState } from "react";
 import Szamla from "./Szamla";
+import "./Nyomtatvanyok.css";
 
-export default function Nyomtatvanyok({accessToken}) {
+export default function Nyomtatvanyok({ accessToken }) {
   const [nyomtatvanyok, setNyomtatvanyok] = useState("");
 
   const printAdasveteli = () => {
-  const win = window.open("/adasveteli.pdf", "_blank");
-  win.onload = () => {
+    window.open("/adasveteli.pdf", "_blank");
+    setNyomtatvanyok("adasveteli");
   };
-};
-
 
   return (
-    <div>
+    <div className="nyomtatvanyok-container">
       <h1>Admin Nyomtatványok Kezelése</h1>
-      <p><button onClick={printAdasveteli}>Adásvételi</button> <button onClick={() => setNyomtatvanyok("szamla")}>Számla</button></p>
+      <div className="nyomtatvanyok-actions">
+        <button onClick={printAdasveteli}>Adásvételi</button>
+        <button onClick={() => setNyomtatvanyok("szamla")}>Számla</button>
+      </div>
       {nyomtatvanyok === "adasveteli" && (
         <div>
           <h2>Átirányítás Adásvételi Nyomtatványra</h2>
