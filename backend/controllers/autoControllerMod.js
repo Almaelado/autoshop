@@ -37,28 +37,6 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-
-    async hozzaad(req, res) {
-        try {
-            const autoData = req.body;
-            const ujAuto = await Auto.hoozzaad(autoData);
-            res.status(201).json(ujAuto);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-
-    async modosit(req, res) {
-        try {
-            const id = req.params.id;
-            const autoData = req.body;
-            const frissitettAuto = await Auto.modosit(id, autoData);
-            res.status(200).json(frissitettAuto);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-
     async torol(req, res) {
         try {
             const id = req.params.id;
@@ -524,7 +502,52 @@ async szuro(req, res, next) {
         } catch (error) {
             res.status(500).json({ message: error.message });       
         }
-    }
+    },
+    async UjAuto(req,res){
+        try {
+            const data = req.body;
+            console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+            //console.log(autosMarka);
+            //console.log(autosUzemanyag);
+            //console.log(autosValto);
+            //console.log(autosSzin);
+            autosMarka.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            }
+            );
+            autosUzemanyag.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+            //console.log("Final data for new car:", data);
+            const ujAuto = await Auto.UjAuto(data);
+            res.status(200).json(ujAuto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
 };
 
 module.exports=autoController;

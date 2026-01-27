@@ -5,8 +5,6 @@ var autoController = require('../controllers/autoControllerMod');
 
 router.get('/minden', autoController.osszes);
 router.get('/egy/:id', autoController.egy);
-router.post('/hozzad', autoController.hozzaad);
-router.put('/modosit/:id', autoController.modosit);
 router.delete('/torol/:id', autoController.torol);
 router.get('/marka', autoController.getMarka);
 router.get('/szin', autoController.getSzin);
@@ -36,5 +34,6 @@ router.post('/felhasznalo/chatablak', authenticateToken, autoController.ChatAbla
 router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
 router.get('/random',autoController.randomautok);
 router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
+router.post('/ujauto',authenticateToken,autoController.UjAuto);
 
 module.exports = router;

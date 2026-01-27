@@ -20,6 +20,7 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, i
             <Nav>
               <Nav.Link as={Link} to="/admin/nyomtatvanyok">Nyomtatványok</Nav.Link>
               <Nav.Link as={Link} to="/admin/autok">Autók</Nav.Link>
+              <Nav.Link as={Link} to="/admin/ujauto">Új autó</Nav.Link>
             </Nav>
             <Nav className="ms-auto">
               <Nav.Link as={Link} to="/admin/uzenetek">Üzenetek</Nav.Link>

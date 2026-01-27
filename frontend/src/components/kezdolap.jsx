@@ -13,7 +13,6 @@ export default function FoOldal() {
 
   const fetchAutok = async () => {
     try {
-      const response = await http.get("/auto/minden");
       const response2 = await http.get("/auto/random");
 
       setRandomAutok(response2.data); 
