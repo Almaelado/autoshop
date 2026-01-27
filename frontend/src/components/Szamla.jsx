@@ -170,11 +170,11 @@ const handleScroll = (e) => {
 
   // ===== CÉG ADATOK =====
   doc.setFontSize(14);
-  doc.text("Példa Kft.", 14, 20);
+  doc.text("Ndidi Auto Kft.", 14, 20);
   doc.setFontSize(10);
-  doc.text("1234 Budapest, Példa utca 12.", 14, 26);
-  doc.text("Adószám: 12345678-1-42", 14, 31);
-  doc.text("Email: info@peldaceg.hu", 14, 36);
+  doc.text("5400 Mezőtúr, XXIII utca 4.", 14, 26);
+  doc.text("Adószám: 88472717-4-32", 14, 31);
+  doc.text("Email: info@ndidiauto.hu", 14, 36);
 
   // ===== FEJLÉC =====
   doc.setFontSize(18);
