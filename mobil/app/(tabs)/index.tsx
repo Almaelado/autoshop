@@ -1,98 +1,158 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const BACKEND_URL = 'http://localhost:5000'; // Állítsd be a backend URL-t
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const [autok, setAutok] = useState([]);
+  const [randomAutok, setRandomAutok] = useState([]);
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/auto/minden`)
+      .then(res => res.json())
+      .then(data => {
+        setAutok(data);
+        const shuffled = [...data].sort(() => 0.5 - Math.random());
+        setRandomAutok(shuffled.slice(0, 6));
+      })
+      .catch(err => console.error('Error fetching autok:', err));
+  }, []);
+
+  return (
+    <ScrollView style={styles.container}>
+      {/* HERO BANNER */}
+      <View style={styles.hero}>
+        <View style={styles.heroOverlay}>
+          <Text style={styles.heroTitle}>Ndidi Autókereskedés</Text>
+          <Text style={styles.heroSubtitle}>Minőségi autók elérhető áron • Megbízhatóság • Szakértelem</Text>
+          <TouchableOpacity
+            style={styles.heroBtn}
+            onPress={() => {}}>
+            <Text style={styles.heroBtnText}>Fedezd fel az autókat</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* KIEMELT AUTÓK */}
+      <Text style={styles.sectionTitle}>Kiemelt autóink</Text>
+      <View style={styles.carGrid}>
+        {randomAutok.map(auto => (
+          <View key={auto.id} style={styles.carCard}>
+            <Image
+              source={{ uri: `${BACKEND_URL}/img/${auto.id}_1.jpg` }}
+              style={styles.carImg}
+              resizeMode="cover"
+            />
+            <Text style={styles.carName}>{auto.nev} {auto.model}</Text>
+            <Text style={styles.carPrice}>{auto.ar.toLocaleString()} Ft</Text>
+            <TouchableOpacity
+              style={styles.detailsBtn}
+              onPress={() => {}}>
+              <Text style={styles.detailsBtnText}>Részletek</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      {/* RÓLUNK */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Rólunk</Text>
+        <Text style={styles.sectionText}>
+          Üdvözlünk az <Text style={{ fontWeight: 'bold' }}>Ndidi Autókereskedésnél</Text>! Több mint egy évtizede foglalkozunk minőségi autók értékesítésével. Célunk, hogy minden ügyfelünk olyan autót találjon, amely árban és megbízhatóságban is tökéletes számára.
+        </Text>
+        <Text style={styles.sectionText}>
+          Folyamatosan frissülő kínálatunkban csak gondosan átvizsgált, tiszta és kiváló állapotú járműveket találsz. Köszönjük, hogy minket választasz!
+        </Text>
+      </View>
+
+      {/* MIÉRT MINKET VÁLASSZ? */}
+      <Text style={styles.sectionTitle}>Miért válassz minket?</Text>
+      <View style={styles.whyUsGrid}>
+        <View style={styles.whyUsCard}>
+          <Text style={styles.whyUsIcon}>🚗</Text>
+          <Text style={styles.whyUsTitle}>100% átvizsgált autók</Text>
+          <Text style={styles.whyUsText}>Minden jármű teljes körű ellenőrzésen megy keresztül.</Text>
+        </View>
+        <View style={styles.whyUsCard}>
+          <Text style={styles.whyUsIcon}>⏱️</Text>
+          <Text style={styles.whyUsTitle}>Valós kilométeróra</Text>
+          <Text style={styles.whyUsText}>Teljesen megbízható km-óra állások minden autón.</Text>
+        </View>
+        <View style={styles.whyUsCard}>
+          <Text style={styles.whyUsIcon}>💸</Text>
+          <Text style={styles.whyUsTitle}>Kedvező árak</Text>
+          <Text style={styles.whyUsText}>Versenyképes árak, mindenki számára elérhető autók.</Text>
+        </View>
+        <View style={styles.whyUsCard}>
+          <Text style={styles.whyUsIcon}>🛠️</Text>
+          <Text style={styles.whyUsTitle}>Garancia & szerviz</Text>
+          <Text style={styles.whyUsText}>Minden autónkhoz garancia és átvizsgált szerviztörténet jár.</Text>
+        </View>
+      </View>
+
+      {/* VÁSÁRLÓI VÉLEMÉNYEK */}
+      <Text style={styles.sectionTitle}>Vásárlóink mondták</Text>
+      <View style={styles.testimonialsGrid}>
+        <View style={styles.testimonialCard}>
+          <Text style={styles.testimonialText}>
+            „Nagyon korrekt cég, az autó tökéletes állapotban volt, minden kérdésemre válaszoltak.”
+          </Text>
+          <Text style={styles.testimonialAuthor}>– Kovács Péter</Text>
+        </View>
+        <View style={styles.testimonialCard}>
+          <Text style={styles.testimonialText}>
+            „Gyors és egyszerű vásárlás, az autó kiváló állapotban érkezett. Csak ajánlani tudom!”
+          </Text>
+          <Text style={styles.testimonialAuthor}>– Szabó Anna</Text>
+        </View>
+        <View style={styles.testimonialCard}>
+          <Text style={styles.testimonialText}>
+            „Nagyon kedves személyzet, profi kiszolgálás és tiszta autók. Biztosan visszatérek!”
+          </Text>
+          <Text style={styles.testimonialAuthor}>– Tóth Gábor</Text>
+        </View>
+      </View>
+
+      {/* TÉRKÉP */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Hol találsz minket?</Text>
+        <TouchableOpacity
+          style={styles.mapBtn}
+          onPress={() => Linking.openURL('https://goo.gl/maps/4JvQwQwQwQwQwQwQ8')}>
+          <Text style={styles.mapBtnText}>Mezőtúr térkép megnyitása</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  container: { backgroundColor: '#f8fafc', flex: 1 },
+  hero: { height: 220, backgroundColor: '#0066ff', justifyContent: 'center' },
+  heroOverlay: { alignItems: 'center', padding: 24 },
+  heroTitle: { fontSize: 32, fontWeight: 'bold', color: '#fff', marginBottom: 8 },
+  heroSubtitle: { fontSize: 16, color: '#e0e0e0', marginBottom: 16, textAlign: 'center' },
+  heroBtn: { backgroundColor: '#fff', paddingHorizontal: 24, paddingVertical: 10, borderRadius: 24 },
+  heroBtnText: { color: '#0066ff', fontWeight: 'bold', fontSize: 16 },
+  sectionTitle: { fontSize: 24, fontWeight: 'bold', marginVertical: 20, color: '#0066ff', textAlign: 'center' },
+  carGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' },
+  carCard: { backgroundColor: '#fff', borderRadius: 16, margin: 8, padding: 12, width: 160, alignItems: 'center', elevation: 2 },
+  carImg: { width: 120, height: 80, borderRadius: 8, marginBottom: 8 },
+  carName: { fontWeight: 'bold', fontSize: 16, marginBottom: 4, color: '#1a1a2e' },
+  carPrice: { color: '#0066ff', fontWeight: 'bold', marginBottom: 8 },
+  detailsBtn: { backgroundColor: '#0066ff', borderRadius: 24, paddingHorizontal: 16, paddingVertical: 6 },
+  detailsBtnText: { color: '#fff', fontWeight: 'bold' },
+  section: { paddingHorizontal: 16, marginVertical: 16 },
+  sectionText: { fontSize: 15, color: '#333', marginBottom: 8 },
+  whyUsGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 16 },
+  whyUsCard: { backgroundColor: '#e8f0ff', borderRadius: 16, padding: 12, margin: 8, width: 150, alignItems: 'center' },
+  whyUsIcon: { fontSize: 32, marginBottom: 8 },
+  whyUsTitle: { fontWeight: 'bold', fontSize: 15, marginBottom: 4, color: '#1a1a2e' },
+  whyUsText: { fontSize: 13, color: '#333', textAlign: 'center' },
+  testimonialsGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 16 },
+  testimonialCard: { backgroundColor: '#f0f5ff', borderRadius: 16, padding: 12, margin: 8, width: 180, alignItems: 'center', elevation: 1 },
+  testimonialText: { fontSize: 14, color: '#333', marginBottom: 8, fontStyle: 'italic', textAlign: 'center' },
+  testimonialAuthor: { fontWeight: 'bold', color: '#0066ff' },
+  mapBtn: { backgroundColor: '#0066ff', borderRadius: 24, padding: 12, alignItems: 'center', marginTop: 8 },
+  mapBtnText: { color: '#fff', fontWeight: 'bold' },
 });

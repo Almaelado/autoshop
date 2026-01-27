@@ -133,6 +133,7 @@ export default function Szures({ value, onSearch,nyitva,setNyitva }) {
         ✖ Bezár
       </button>
       <TypeaheadComponent
+        className="SzamlaTypeahead"
         label="Gyártányok"
         options={markaList}
         labelKey="nev"

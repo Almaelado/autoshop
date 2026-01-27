@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
@@ -16,7 +16,8 @@ function generateRefreshToken(user) {
 const autoController={
     async osszes(req, res) {
         try {
-            const autos =  await Auto.osszes();
+            console.log(req.query);
+            const autos =  await Auto.osszes(req.query);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -220,15 +221,16 @@ async szuro(req, res, next) {
 
 ,
 
-    async login (req, res,next){   
-        const { email, password } = req.body;    
+    async login (req, res,next){
+        //console.log('Login request body:', req.body); // Debug log
+        const { email, password, admin } = req.body;
         const user = await Auto.validatePassword(email,password);
         console.log('Bejelentkezési kísérlet:', user);
 
         if(user!= false){
             // Csak az id-t és emailt tesszük a tokenbe!
-            const accessToken = generateAccessToken({ id: user.id, email: user.email });
-            const refreshToken = generateRefreshToken({ id: user.id, email: user.email });
+            const accessToken = generateAccessToken({ id: user.id, email: user.email , admin: user.admin});
+            const refreshToken = generateRefreshToken({ id: user.id, email: user.email, admin: user.admin});
             res.cookie('refreshToken', refreshToken, 
                 { httpOnly: true, 
                   secure: false, // true ha HTTPS-t használsz
@@ -281,10 +283,11 @@ async szuro(req, res, next) {
             res.json({ accessToken: newAccessToken , user: payload });
         });
     },
-    profil (req, res) { 
+    async profil (req, res) { 
             const user = req.user;  // req.user-t az authenticateToken middleware állítja be
-            console.log("Profil lekérdezés user:", user);
-        res.json(user);
+            const profil = await Auto.keresEmail(user.email);
+            //console.log("Profil lekérdezés user:", user);
+        res.json(profil);
     },
     logout (req, res) {
         res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
@@ -347,6 +350,181 @@ async szuro(req, res, next) {
             res.status(500).json({ message: error.message });
         }
     },
+    async felhasznaloModositas(req, res) {
+        try {
+            const data = req.body;
+            await Auto.felhasznaloModositas(data);
+            res.status(200).json({ success: true });
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async jelszoModositas(req, res) {
+        try {
+           const { email, oldPassword,newPassword } = req.body;    
+            const user = await Auto.validatePassword(email,oldPassword);
 
+            const isMatch = await bcrypt.compare(oldPassword, user.jelszo);
+            if (!isMatch) {
+                return res.status(403).json({ message: "Hibás régi jelszó" });
+            }
+
+            await Auto.jelszoModositas(email, newPassword);
+            res.status(200).json({ message: "Jelszó sikeresen módosítva" });
+        } catch (error) {
+            console.error("Error changing password:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetKuldes(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, uzenet } = req.body;
+            if (!user || !user.id || !autoId || !uzenet) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            await Auto.uzenetKuldes(user.id, autoId, uzenet);
+            res.status(201).json({ success: true });
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetekLekerdezese(req, res) {
+        try {
+            console.log("asd");
+            const user = req.user;
+            console.log("Uzenetek lekérdezése user:", user);
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+
+            const uzenetek = await Auto.uzenetekLekerdezese(user.id);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async AdminUzenetek(req, res) {
+        try {
+            const uzenetek = await Auto.AdminuzenetekLekerdezese();
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async ChatAblak(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, vevoId } = req.query;
+            console.log("ChatAblak hívás:", { user, autoId, vevoId });
+            if (!user || !user.id || !autoId || !vevoId) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            const uzenetek = await Auto.ChatAblak(vevoId, autoId);
+            console.log("Lekérdezett üzenetek:", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    
+    async ChatAblakAdmin(req, res) {
+        try {
+            //console.log("req.body:", req.body);
+            const uzenetek = await Auto.ChatAblakAdmin(req.body.uzenetId, req.body.uzenet_text);
+            //console.log("Lekérdezett üzenetek (Admin):", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async ChatAblakFelhasznalo(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, vevoId,uzenet_text } = req.body;
+            //console.log("ChatAblakFelhasznalo hívás:", { user, autoId, vevoId });
+            if (!user || !user.id || !autoId || !vevoId) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            const uzenetek = await Auto.ChatAblakFelhasznalo(vevoId, autoId,uzenet_text);
+            //console.log("Lekérdezett üzenetek (Felhasználó):", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async szamlaAdatok(req, res) {
+        try {
+            const user = req.user;
+            if (!user || !user.id) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+
+            const szamlaAdatok = await Auto.szamlaAdatok(user.id);
+            res.status(200).json(szamlaAdatok);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async randomautok(req,res){
+        try {
+            const randomAutok =  await Auto.random();
+            res.status(200).json(randomAutok);
+            
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async Szerkesztes(req,res){
+        try {
+            const data = req.body;
+            //console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+
+            //console.log(autosMarka);
+            //console.log(autosUzemanyag);
+            //console.log(autosValto);
+            //console.log(autosSzin);
+
+            autosMarka.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            });
+
+            autosUzemanyag.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+
+            const autoModosit = await Auto.Szerkesztes(data);
+            res.status(200).json(autoModosit);
+        } catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    }
 };
+
 module.exports=autoController;

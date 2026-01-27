@@ -7,16 +7,21 @@ import Menu from './components/menu.jsx';
 import Reszletek from './components/autokreszletek.jsx';
 import Kezdolap from './components/kezdolap.jsx';
 import Footer from './components/footer.jsx';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Profil from './components/profil.jsx';
 import http from "./http-common";
 import Admin from './components/admin.jsx';
 import VedettVonal from "./components/VedettVonal.jsx";
 import AdminVonal from "./components/AdminVonal.jsx";
 import AdminAutok from './components/AdminAutok.jsx';
-import AdminFelhasznalok from './components/AdminFelhasznalok.jsx';
+import Nyomtatvanyok from './components/Nyomtatvanyok.jsx';
+import ProfileSzerkesztes from './components/ProfileSzerkesztes.jsx';
+import Uzenet from './components/uzenet.jsx';
+import Uzenetek from './components/uzenetek.jsx';
+import AdminUzenetek from './components/AdminUzenetek.jsx';
+import Chatablak from './components/Chatablak.jsx';
 
 function App() {
   const [belepett, setBelepett] = useState(false);
@@ -25,119 +30,86 @@ function App() {
   const [szuroNyitva, setSzuroNyitva] = useState(false);
   const [loading, setLoading] = useState(true);
 
+
   const [szur, setSzur] = useState(JSON.stringify({
-            markak:[],      
-            uzemanyag:[],       
-            szin:[],               
-            arRange:[],
-            kmRange:[],
-            evjarat:[],
-            irat:false,
-            valto:[],                  
-            motormeret:0,
-            ajto:[],                           
-            szemely:[]                         
-        }));
-  
-        useEffect(() => {
-          const refreshAccessToken = async () => {
-            try {
-              const response = await http.post('/auto/refresh', {}, { withCredentials: true });
+    markak:[], uzemanyag:[], szin:[], arRange:[], kmRange:[],
+    evjarat:[], irat:false, valto:[], motormeret:0, ajto:[], szemely:[]
+  }));
 
-              if (response.data?.accessToken) {
-                setAccessToken(response.data.accessToken);
-                setBelepett(true);
-                
-                if (response.data.user.admin === 1) {
-                  setIsAdmin(true);
-                } else {
-                  setIsAdmin(false);
-                }
-              } else {
-                // nincs token, tehát user nem bejelentkezett
-                setAccessToken(null);
-                setBelepett(false);
-              }
-            } catch (err) {
-              console.error(err);
-              setAccessToken(null);
-              setBelepett(false);
-            } finally {
-              setLoading(false);
-            }
+  // Refresh token
+ useEffect(() => {
+  const refreshAccessToken = async () => {
+    try {
+      const res = await http.post('/auto/refresh', {}, { withCredentials: true });
+      if (res.data?.accessToken) {
+        setAccessToken(res.data.accessToken);
+        setBelepett(true);
+        console.log("res.data.user.admin:", Boolean(Number(res.data.user.admin)));
+        setIsAdmin(Boolean(Number(res.data.user.admin)));
+      } else {
+        setBelepett(false);
+        setIsAdmin(false);
+      }
+    } catch (err) {
+      setBelepett(false);
+      setIsAdmin(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-          };
-
-          refreshAccessToken();
-        }, []);
+  refreshAccessToken();
+}, []);
 
 
-  if (loading) {
-    return <div>Betöltés...</div>;
-  }
+  // Betöltés amíg nem tudjuk az admin státuszt
+  if (loading) return <div>Betöltés...</div>;
+
+
   return (
     <BrowserRouter>
-      <Menu belepett={belepett} setAdmin={setIsAdmin} setAccessToken={setAccessToken} setBelepett={setBelepett}/>
+      <Menu
+        belepett={belepett}
+        setAdmin={setIsAdmin}
+        setAccessToken={setAccessToken}
+        setBelepett={setBelepett}
+        isAdmin={isAdmin} // passzoljuk a Menu-nak
+      />
       <div className="App">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Kezdolap />
-              </>
-            }
-          />
-          <Route
-            path="/autok"
-            element={
-              <div className='Hargita'>
-                <button 
-                  className="szuro-gomb" 
-                  onClick={() => setSzuroNyitva(prev => !prev)}
-                >
-                  Szűrő
-                </button>
-                {szuroNyitva && <div className="overlay" onClick={() => setSzuroNyitva(false)} />}
-                <Szures 
-                  onSearch={(filter) => setSzur(filter)} 
-                  nyitva={szuroNyitva}
-                  setNyitva={setSzuroNyitva}
-                />
-
-                <Autok szuro={szur} admin={isAdmin} />
-              </div>
-            }
-          />
-
+          <Route path="/" element={<Kezdolap />} />
+          <Route path="/autok" element={
+            <div className='Hargita'>
+              <button className="szuro-gomb" onClick={() => setSzuroNyitva(prev => !prev)}>Szűrő</button>
+              {szuroNyitva && <div className="overlay" onClick={() => setSzuroNyitva(false)} />}
+              <Szures onSearch={filter => setSzur(filter)} nyitva={szuroNyitva} setNyitva={setSzuroNyitva} />
+              <Autok szuro={szur} admin={isAdmin} />
+            </div>
+          } />
           <Route path="/regisztracio" element={<Regisztracio />} />
           <Route path="/bejelentkez" element={<Bejelentkez setBelepett={setBelepett} setAccessToken={setAccessToken} setAdmin={setIsAdmin}/>} />
-          <Route path="/profile" element={
-            <VedettVonal belepett={belepett}>
-              <Profil accessToken={accessToken}/>
-            </VedettVonal>
-          } />
-          <Route path="/admin" element={
-              <AdminVonal belepett={belepett} isAdmin={isAdmin}>
-                <Admin />
-              </AdminVonal>
-          } />
-          <Route path="/admin/autok" element={
-              <AdminVonal belepett={belepett} isAdmin={isAdmin}>
-                <AdminAutok />
-              </AdminVonal>
-          } />
-          <Route path="/admin/felhasznalok" element={
-              <AdminVonal belepett={belepett} isAdmin={isAdmin}>
-                <AdminFelhasznalok />
-              </AdminVonal>
-          } />
-          <Route path="/auto/:autoId" element={<Reszletek />} />
+          <Route path="/profile" element={<VedettVonal belepett={belepett}><Profil accessToken={accessToken}/></VedettVonal>} />
+          <Route path="/profil/szerkesztes" element={<VedettVonal belepett={belepett}><ProfileSzerkesztes accessToken={accessToken}/></VedettVonal>} />
+
+          {/* Admin utak */}
+          <Route path="/admin" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Admin /></AdminVonal>} />
+          <Route path="/admin/autok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminAutok /></AdminVonal>} />
+          <Route path="/admin/nyomtatvanyok" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Nyomtatvanyok accessToken={accessToken} /></AdminVonal>} />
+          <Route path="/admin/uzenetek" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><AdminUzenetek accessToken={accessToken} /></AdminVonal>} />
+          <Route path="/admin/chatablak" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Chatablak accessToken={accessToken} admin={true} /></AdminVonal>} />
+          <Route path="/admin/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={isAdmin} />} />
+
+          <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={false} />} />
+          <Route path="/uzenet/:autoId" element={<Uzenet accessToken={accessToken} />} />
+          <Route path="/uzenetek" element={<Uzenetek accessToken={accessToken} />} />
+          <Route path="/uzenetablak" element={<Chatablak accessToken={accessToken} admin={false} />} />
         </Routes>
       </div>
       <Footer />
+      
     </BrowserRouter>
   );
 }
+
 
 export default App;
