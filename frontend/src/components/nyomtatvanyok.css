@@ -1,0 +1,61 @@
+
+
+.nyomtatvanyok-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+.nyomtatvanyok-container h1 {
+  color: #0066ff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.nyomtatvanyok-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.nyomtatvanyok-actions button {
+  background: linear-gradient(90deg, #0066ff 0%, #00d4ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,102,255,0.08);
+}
+
+.nyomtatvanyok-actions button:hover,
+.nyomtatvanyok-actions button:focus {
+  background: linear-gradient(90deg, #0052cc 0%, #00bfff 100%);
+  outline: 2px solid #00d4ff;
+}
+
+.nyomtatvanyok-container h2 {
+  color: #1a1a2e;
+  font-size: 1.2rem;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .nyomtatvanyok-container {
+    padding: 14px 4px;
+  }
+  .nyomtatvanyok-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
