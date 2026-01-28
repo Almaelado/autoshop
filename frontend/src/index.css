@@ -30,7 +30,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  background: #f4f4f4;
   color: #1a1a2e;
 }
 

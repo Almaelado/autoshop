@@ -2,6 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import http from '../http-common';
+import './regisztracio.css';
 
 export default function Regisztracio() {
     const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ export default function Regisztracio() {
         }
 
         try {
-            const response = await http.post('/auto/regisztracio', { email, password });
+            await http.post('/auto/regisztracio', { email, password });
             setSuccess("Sikeres regisztráció! Most be tudsz jelentkezni.");
             setEmail('');
             setPassword('');
@@ -36,46 +37,55 @@ export default function Regisztracio() {
     };
 
     return (
-    <div className="container mt-5" style={{ maxWidth: "500px" }}>
-        <Form onSubmit={handleSubmit}>
+        <div className="register-container">
+            <Form className="register-form" onSubmit={handleSubmit}>
+                <h2>Regisztráció</h2>
+                <p>Csatlakozz hozzánk, móka és kacagás vár!</p>
 
-            <Form.Group controlId="regEmail">
-                <Form.Label>Email cím</Form.Label>
-                <Form.Control
-                    type="email"
-                    placeholder="Írd be az email címed"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </Form.Group>
+                <Form.Group className="form-group" controlId="regEmail">
+                    <Form.Label>Email cím</Form.Label>
+                    <Form.Control
+                        type="email"
+                        placeholder="Írd be az email címed"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </Form.Group>
 
-            <Form.Group controlId="regPassword">
-                <Form.Label>Jelszó</Form.Label>
-                <Form.Control
-                    type="password"
-                    placeholder="Írd be a jelszavad"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </Form.Group>
+                <Form.Group className="form-group" controlId="regPassword">
+                    <Form.Label>Jelszó</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Írd be a jelszavad"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </Form.Group>
 
-            <Form.Group controlId="regConfirmPassword">
-                <Form.Label>Jelszó megerősítése</Form.Label>
-                <Form.Control
-                    type="password"
-                    placeholder="Írd be újra a jelszavad"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-            </Form.Group>
+                <Form.Group className="form-group" controlId="regConfirmPassword">
+                    <Form.Label>Jelszó megerősítése</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Írd be újra a jelszavad"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                </Form.Group>
 
-            {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
-            {success && <div style={{ color: "green", marginTop: "10px" }}>{success}</div>}
+                {error && <div style={{ color: "#ff6f91", marginTop: "10px", fontWeight: "bold" }}>{error}</div>}
+                {success && <div style={{ color: "#6a89cc", marginTop: "10px", fontWeight: "bold" }}>{success}</div>}
 
-            <Button variant="primary" type="submit" className="mt-3">
-                Regisztráció
-            </Button>
-        </Form>
-    </div>
+                <Button className="register-button" type="submit">
+                    Regisztráció
+                </Button>
+
+                <div className="register-link">
+                    Már van fiókod? <a href="/login">Jelentkezz be!</a>
+                </div>
+            </Form>
+        </div>
     );
 }

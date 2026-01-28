@@ -1,5 +1,6 @@
 import http from "../http-common";
 import { useEffect, useState } from "react";
+import './ProfileSzerkesztes.css';
 
 export default function ProfileSzerkesztes({ accessToken }) {
   const [profilData, setProfilData] = useState(null);
@@ -11,7 +12,7 @@ export default function ProfileSzerkesztes({ accessToken }) {
   });
 
   // Mely mezőket rejtsük el
-  const hiddenFields = ["admin","jelszo", "id"];
+  const hiddenFields = ["admin", "jelszo", "id"];
 
   useEffect(() => {
     if (!accessToken) return;
@@ -42,7 +43,6 @@ export default function ProfileSzerkesztes({ accessToken }) {
     setEditValues(prev => ({ ...prev, [key]: value }));
   };
 
-  // Profil adatok frissítése egy gombbal
   const handleUpdateAll = async () => {
     try {
       const payload = {
@@ -66,12 +66,10 @@ export default function ProfileSzerkesztes({ accessToken }) {
     }
   };
 
-  // Jelszó mezők kezelése
   const handlePasswordChange = (field, value) => {
     setPasswordFields(prev => ({ ...prev, [field]: value }));
   };
 
-  // Jelszó frissítése a backend /jelszomodositas végpontján
   const handlePasswordUpdate = async () => {
     if (passwordFields.newPassword !== passwordFields.confirmPassword) {
       alert("Az új jelszavak nem egyeznek!");
@@ -80,7 +78,7 @@ export default function ProfileSzerkesztes({ accessToken }) {
 
     try {
       const payload = {
-        email: editValues.email,               // az aktuális emailt küldjük
+        email: editValues.email,
         oldPassword: passwordFields.oldPassword,
         newPassword: passwordFields.newPassword
       };
@@ -98,63 +96,88 @@ export default function ProfileSzerkesztes({ accessToken }) {
     }
   };
 
-  if (!profilData) return <div>Betöltés...</div>;
+  if (!profilData) return <div className="profile-edit-container"><div className="profile-edit-form"><div>Betöltés...</div></div></div>;
 
   return (
-    <div>
+  <div className="profile-edit-container">
+    <form className="profile-edit-form" onSubmit={e => e.preventDefault()}>
       <h1>Profil Szerkesztése</h1>
       <p>
         Cég esetében csak az adószám megadása kötelező, magánszemélynél nem.<br />
         A lakcím mezőnél pontos cím megadása kötelező, cég esetén a székhelyet kell megadni.
       </p>
-
-      {/* Profil mezők */}
-      {Object.keys(profilData)
-        .filter(key => !hiddenFields.includes(key))
-        .map(key => (
-          <div key={key} style={{ marginBottom: "10px" }}>
-            <label style={{ marginRight: "10px" }}>
-              {key}:
-              {(key === "lakcim" || key === "adoszam") && <span style={{ color: "red" }}> *</span>}
-            </label>
-            <input
-              type="text"
-              value={editValues[key] ?? ""}
-              onChange={(e) => handleChange(key, e.target.value)}
-              style={{ marginRight: "10px" }}
-            />
+      <div className="profile-edit-columns">
+        <div className="profile-edit-left">
+          {/* Profil mezők */}
+          {Object.keys(profilData)
+            .filter(key => !hiddenFields.includes(key))
+            .map(key => (
+              <div className="profile-field" key={key}>
+                <label>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                  {(key === "lakcim" || key === "adoszam") && <span className="required">*</span>}
+                </label>
+                <input
+                  type="text"
+                  value={editValues[key] ?? ""}
+                  onChange={e => handleChange(key, e.target.value)}
+                  autoComplete="off"
+                />
+              </div>
+            ))}
+          <button
+            type="button"
+            className="profile-edit-btn"
+            onClick={handleUpdateAll}
+          >
+            Módosít
+          </button>
+        </div>
+        <div className="profile-edit-right">
+          {/* Jelszó mezők */}
+          <div className="password-section">
+            <h3>Jelszó módosítása</h3>
+            <div className="profile-field">
+              <label>Régi jelszó</label>
+              <input
+                type="password"
+                placeholder="Régi jelszó"
+                value={passwordFields.oldPassword}
+                onChange={e => handlePasswordChange("oldPassword", e.target.value)}
+                autoComplete="current-password"
+              />
+            </div>
+            <div className="profile-field">
+              <label>Új jelszó</label>
+              <input
+                type="password"
+                placeholder="Új jelszó"
+                value={passwordFields.newPassword}
+                onChange={e => handlePasswordChange("newPassword", e.target.value)}
+                autoComplete="new-password"
+              />
+            </div>
+            <div className="profile-field">
+              <label>Új jelszó ismét</label>
+              <input
+                type="password"
+                placeholder="Új jelszó ismét"
+                value={passwordFields.confirmPassword}
+                onChange={e => handlePasswordChange("confirmPassword", e.target.value)}
+                autoComplete="new-password"
+              />
+            </div>
+            <button
+              type="button"
+              className="profile-edit-btn"
+              onClick={handlePasswordUpdate}
+            >
+              Jelszó módosít
+            </button>
           </div>
-        ))}
-
-      {/* Egy gomb, ami egyszerre frissíti az összes mezőt */}
-      <button onClick={handleUpdateAll} style={{ marginTop: "10px" }}>Módosít</button>
-
-      {/* Jelszó mezők */}
-      <div style={{ marginTop: "20px", borderTop: "1px solid #ccc", paddingTop: "10px" }}>
-        <h3>Jelszó módosítása</h3>
-        <input
-          type="password"
-          placeholder="Régi jelszó"
-          value={passwordFields.oldPassword}
-          onChange={(e) => handlePasswordChange("oldPassword", e.target.value)}
-          style={{ marginRight: "10px", marginBottom: "5px" }}
-        /><br />
-        <input
-          type="password"
-          placeholder="Új jelszó"
-          value={passwordFields.newPassword}
-          onChange={(e) => handlePasswordChange("newPassword", e.target.value)}
-          style={{ marginRight: "10px", marginBottom: "5px" }}
-        /><br />
-        <input
-          type="password"
-          placeholder="Új jelszó ismét"
-          value={passwordFields.confirmPassword}
-          onChange={(e) => handlePasswordChange("confirmPassword", e.target.value)}
-          style={{ marginRight: "10px", marginBottom: "5px" }}
-        /><br />
-        <button onClick={handlePasswordUpdate}>Jelszó módosít</button>
+        </div>
       </div>
-    </div>
-  );
+    </form>
+  </div>
+);
 }
