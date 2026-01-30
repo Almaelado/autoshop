@@ -174,3 +174,26 @@ button {
 body {
   background: linear-gradient(120deg, #e3f2fd 0%, #f1f8e9 100%);
 }
+
+.profile-edit-back {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.profile-edit-back-btn {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,102,255,0.13);
+  transition: background 0.2s, transform 0.2s;
+}
+.profile-edit-back-btn:hover {
+  background: linear-gradient(135deg, #0052cc 0%, #00b4d8 100%);
+  transform: translateY(-2px) scale(1.03);
+}

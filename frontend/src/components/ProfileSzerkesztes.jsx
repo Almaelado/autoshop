@@ -1,10 +1,13 @@
 import http from "../http-common";
 import { useEffect, useState } from "react";
 import './ProfileSzerkesztes.css';
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ProfileSzerkesztes({ accessToken }) {
   const [profilData, setProfilData] = useState(null);
   const [editValues, setEditValues] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
   const [passwordFields, setPasswordFields] = useState({
     oldPassword: "",
     newPassword: "",
@@ -101,6 +104,21 @@ export default function ProfileSzerkesztes({ accessToken }) {
   return (
   <div className="profile-edit-container">
     <form className="profile-edit-form" onSubmit={e => e.preventDefault()}>
+      <div className="profile-edit-back">
+        <button
+          type="button"
+          className="profile-edit-back-btn"
+          onClick={() => {
+            if (location.state?.from) {
+              navigate(location.state.from);
+            } else {
+              navigate("/profil");
+            }
+          }}
+        >
+          &#8592; Vissza
+        </button>
+      </div>
       <h1>Profil Szerkesztése</h1>
       <p>
         Cég esetében csak az adószám megadása kötelező, magánszemélynél nem.<br />
