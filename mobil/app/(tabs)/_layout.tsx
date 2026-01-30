@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 
+import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
@@ -24,10 +25,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="Autok"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Autók',
+          tabBarIcon: ({ color }) => <Ionicons name="car" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="BejReg"
+        options={{
+          title: 'Bejelentkezés/Regisztráció',
+          tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
         }}
       />
     </Tabs>
