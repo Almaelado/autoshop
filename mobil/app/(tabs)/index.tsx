@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
+import axios from 'axios';
 
-const BACKEND_URL = 'http://localhost:5000'; // Állítsd be a backend URL-t
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL; // Állítsd be a backend URL-t
 
 export default function HomeScreen() {
   const [autok, setAutok] = useState([]);
-  const [randomAutok, setRandomAutok] = useState([]);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/auto/minden`)
-      .then(res => res.json())
-      .then(data => {
-        setAutok(data);
-        const shuffled = [...data].sort(() => 0.5 - Math.random());
-        setRandomAutok(shuffled.slice(0, 6));
-      })
-      .catch(err => console.error('Error fetching autok:', err));
+    const fetchAutok = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/auto/random`);
+        setAutok(response.data);
+      } catch (error) {
+        console.error("Hiba az autók betöltésekor:", error);
+      }
+    };
+
+    fetchAutok();
   }, []);
+
+  useEffect(() => {
+    console.log("Autók betöltve:", autok);
+  }, [autok]);
 
   return (
     <ScrollView style={styles.container}>
@@ -36,7 +42,7 @@ export default function HomeScreen() {
       {/* KIEMELT AUTÓK */}
       <Text style={styles.sectionTitle}>Kiemelt autóink</Text>
       <View style={styles.carGrid}>
-        {randomAutok.map(auto => (
+        {autok.map(auto => (
           <View key={auto.id} style={styles.carCard}>
             <Image
               source={{ uri: `${BACKEND_URL}/img/${auto.id}_1.jpg` }}
