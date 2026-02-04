@@ -1,68 +1,173 @@
-/* ===== SZŰRÉS KOMPONENS ===== */
-.szures-container {
-  padding: 20px;
-  background: #f8fafc;
-  border-radius: 12px;
-  margin-bottom: 20px;
+/* ===== SZŰRÉS – MODERN, EGYSÉGESÍTETT ===== */
+
+#Szures {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 380px;
+  height: 100vh;
+  padding: 30px 24px;
+  background: linear-gradient(180deg, var(--dark) 0%, #16213e 100%);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+  transform: translateX(-100%);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow-y: auto;
 }
 
+#Szures.nyitva {
+  transform: translateX(0);
+}
+
+/* ===== OVERLAY ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#Szures.nyitva ~ .overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== BEZÁRÁS GOMB ===== */
+.bezar-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 6px;
+}
+
+.bezar-btn:hover {
+  color: #00f2ff;
+}
+
+/* ===== SZŰRÉS BLOKK ===== */
+.szures-container {
+  margin-top: 50px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 102, 255, 0.15);
+}
+
+/* ===== CÍM ===== */
 .szures-title {
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 15px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* ===== SZŰRŐ ELEM ===== */
 .szures-item {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .szures-item label {
   display: block;
-  color: #e9ecef;
-  font-weight: 600;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray);
+  margin-bottom: 6px;
 }
 
+/* ===== INPUT & SELECT ===== */
 .szures-item input,
 .szures-item select {
   width: 100%;
-  padding: 10px 12px;
-  border: 2px solid rgba(0, 102, 255, 0.2);
-  border-radius: 8px;
-  background: white;
-  color: #1a1a2e;
+  padding: 11px 14px;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 102, 255, 0.2);
+  background: #ffffff;
+  color: var(--dark);
+  transition: var(--transition);
+}
+
+.szures-item input::placeholder {
+  color: #adb5bd;
 }
 
 .szures-item input:focus,
 .szures-item select:focus {
   outline: none;
-  border-color: #0066ff;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  border-color: var(--primary);
   background: #f8fafc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
 }
 
+/* ===== SZŰRÉS GOMB ===== */
 .szures-button {
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
   margin-top: 10px;
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  box-shadow: 0 6px 16px rgba(0, 102, 255, 0.35);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .szures-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
+  transform: translateY(-3px); /* ha akarod, lehet hagyni csak Y mozgás */
+  box-shadow: 0 10px 26px rgba(0, 102, 255, 0.45);
+}
+
+.szures-button:active {
+  transform: translateY(0);
+}
+
+/* ===== KATTINTHATÓ SZŰRŐ SOROK (p) ===== */
+#Szures p {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #e9ecef;
+  transition: var(--transition);
+}
+
+#Szures p:hover {
+  background: rgba(0, 102, 255, 0.2);
+  color: var(--secondary);
+  transform: translateX(6px);
+}
+
+/* ===== MOBIL ===== */
+@media (max-width: 480px) {
+  #Szures {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .szures-container {
+    padding: 20px;
+  }
 }
