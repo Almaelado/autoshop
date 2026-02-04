@@ -528,6 +528,17 @@ async szuro(req, res, next) {
             res.status(500).json({ message: error.message });       
         }
     },
+    async UjSzamla(req,res){
+        try {
+            const data = req.body;
+            console.log("UjSzamla data:", data);
+            const ujSzamla = await Auto.UjSzamla(data);
+            res.status(200).json(ujSzamla);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
 };
 
 module.exports=autoController;

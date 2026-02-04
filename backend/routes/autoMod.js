@@ -34,5 +34,5 @@ router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
 router.get('/random',autoController.randomautok);
 router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
 router.post('/ujauto',authenticateToken,autoController.UjAuto);
-
+router.post('/szamla',authenticateToken,autoController.UjSzamla);
 module.exports = router;

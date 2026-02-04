@@ -336,5 +336,16 @@ Auto.UjAuto = async (data) =>{
         throw error;
     }
 }
+Auto.UjSzamla = async (data) =>{
+    try {
+        console.log("Számla adatbázisba mentése:", data.adatok);
+        //const [result] =await pool.execute(`INSERT INTO szamla (szamlaszam, vevo_id, datum, fizetesimod, autok_id) VALUES (?,?,?,?,?);`,[data.szamlaSzam,data.vevoId,data.datum,data.fizetesimod,data.autokId])
+        //return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 
 module.exports = Auto;
