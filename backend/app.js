@@ -15,16 +15,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const cors = require('cors');
 var corsOptions ={
-  origin:'http://localhost:5173',
-  credentials:true           
+  origin:true,
+  "credentials":true           
 }
 app.use(cors(corsOptions)); 
 
 var autoModRouter = require('./routes/autoMod');
-var authRouter = require('./routes/authRouter');
 var authMiddleware = require('./middleware/authAuto');
 
-app.use('/auth', authRouter);
 app.use('/auto' ,autoModRouter);
 
 

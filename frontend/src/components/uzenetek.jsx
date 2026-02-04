@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import http from "../http-common.js";
 import { useNavigate} from 'react-router-dom';
+import './uzenetek.css';
 
 
 export default function Uzenetek({ accessToken }) {

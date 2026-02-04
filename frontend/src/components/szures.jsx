@@ -5,6 +5,7 @@ import Checkbox from "./checkbox.jsx";
 import Button from 'react-bootstrap/Button';
 import http from "../http-common";
 import {useSearchParams} from "react-router-dom"; 
+import './szures.css';
 
 export default function Szures({ value, onSearch,nyitva,setNyitva }) {
   const [searchParams, setSearchParams] = useSearchParams();

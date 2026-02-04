@@ -70,7 +70,7 @@ const Autok = ({ szuro, admin }) => {
     const handleDelete = async (id) => {
         if (!window.confirm("Biztos törlöd az autót?")) return;
         try {
-            await http.delete(`/auto/${id}`);
+            await http.delete(`/auto/torol/${id}`);
             setAutok(prev => prev.filter(auto => auto.id !== id));
         } catch (err) {
             console.error("Törlés hiba:", err);
@@ -113,7 +113,7 @@ const Autok = ({ szuro, admin }) => {
                         className="autok-card"
                         key={auto.id}
                         ref={autok.length === index + 1 ? lastItemRef : null}
-                        onClick={() => admin ?  navigate(`/admin/auto/${auto.id}`):navigate(`/auto/${auto.id}`)}
+                        onClick={() => admin==false ? navigate(`/auto/${auto.id}`) : null}
                     >
                         <Card.Img variant="top" src={`/img/${auto.id}_1.jpg`} />
 

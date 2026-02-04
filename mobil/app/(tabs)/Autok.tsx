@@ -1,4 +1,3 @@
-//React Native-ben NINCS IntersectionObserver → FlatList.onEndReached-et kell használni.
 import React, { useEffect, useState } from 'react';
 import {View, Text, Image, Button, ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import axios from 'axios';
@@ -35,8 +34,8 @@ const ListazoInfinite = () => {
         `${backendUrl}/auto/minden`,
         {
           params: {
-            page: pageNum,
-            //limit: PAGE_SIZE,
+            offset: (pageNum - 1) * PAGE_SIZE,
+            limit: PAGE_SIZE,
           },
           timeout: 5000,
         }
@@ -84,7 +83,7 @@ const ListazoInfinite = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.htext}>Terméklista</Text>
+      <Text style={styles.htext}>Autóink</Text>
 
       <FlatList
         data={data}

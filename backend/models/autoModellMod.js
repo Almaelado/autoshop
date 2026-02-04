@@ -21,37 +21,9 @@ Auto.egy = async (id) => {
         throw error;
     }
 };
-
-Auto.hoozzaad = async (autoData) => {
-    try {
-        const { marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras } = autoData;
-        const [result] = await pool.execute(
-            'INSERT INTO osszes_auto (marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras]
-        );
-        return { id: result.insertId, ...autoData };
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-Auto.modosit = async (id, autoData) => {
-    try {
-        const { marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras } = autoData;
-        await pool.execute(
-            'UPDATE osszes_auto SET marka_id = ?, model = ?, valto_id = ?, kiadasiev = ?, uzemanyag_id = ?, motormeret = ?, km = ?, ar = ?, ajtoszam = ?, szemelyek = ?, szin_id = ?, irat = ?, leiras = ? WHERE id = ?',
-            [marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras, id]
-        );
-        return { id, ...autoData };
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
 Auto.torol = async (id) => {
     try {
-        await pool.execute('DELETE FROM osszes_auto WHERE id = ?', [id]);
+        await pool.execute('DELETE FROM autok WHERE id = ?', [id]);
     } catch (error) {
         console.error(error);
         throw error;
@@ -84,10 +56,6 @@ Auto.getUzemanyag = async () => {
         throw error;
     }
 };
-Auto.getfelhasz = async (username) =>{
-    const [rows] = await pool.query("SELECT * FROM user WHERE username = ?", [username]);
-    return rows[0];
-}
 Auto.getValto = async () => {
     try {
         const [rows] = await pool.execute('SELECT * FROM valtok');
@@ -115,14 +83,6 @@ Auto.getSzemely = async () => {
         throw error;
     }
 };
-Auto.validatePassword = async (username, password) =>{
-    const user = await Auto.getfelhasz(username);
-    if (!user) {
-        return false;
-    }
-    const match = await bcrypt.compare(password, user.password);
-    return match ? user : false;
-}
 Auto.szuro = async (sql, values) => {
     try {
         const [rows] = await pool.execute(sql, values);
@@ -171,7 +131,7 @@ Auto.validatePassword = async (email,password) =>{
 Auto.erdekelHozzaad = async (vevo_id, auto_id) => {
     try {
         await pool.execute(
-            "INSERT IGNORE INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
+            "INSERT INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
             [vevo_id, auto_id]
         );
         return true;
@@ -242,13 +202,15 @@ Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
     }
 };
 Auto.uzenetekLekerdezese = async (vevo_id) => {
+    console.log(vevo_id);
     try {
         const [rows] = await pool.execute(
             ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
- FROM uzenet
+                FROM uzenet
                 inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
-                WHERE uzenet.vevo_id = '7'
-                GROUP by auto_id;`,
+                WHERE uzenet.vevo_id = ?
+                GROUP BY auto_id, vevo_id, osszes_auto.nev, osszes_auto.model, osszes_auto.ar
+`,
             [vevo_id]
         );
         return rows;
@@ -358,6 +320,16 @@ Auto.Szerkesztes = async (data) =>{
     try {
         console.log(data.nev,data.model,data.váltó,data.kiadasiev,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtoszam,data.szemelyek,data.szin_nev,data.irat,data.leírás,data.id);
         const [result] =await pool.execute(`Update autok set marka_id = ? , model = ? , valto_id = ? ,kiadasiev = ? , uzemanyag_id = ? , motormeret = ? , km = ? , ar = ? , ajtoszam = ? , szemelyek = ? , szin_id = ? , irat = ? , leiras = ? WHERE id = ?;`,[data.nev,data.model,data.váltó,data.kiadasiev,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtoszam,data.szemelyek,data.szin_nev,data.irat,data.leírás,data.id])
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.UjAuto = async (data) =>{
+    try {
+        console.log(data);
+        const [result] =await pool.execute(`INSERT INTO autok (marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);`,[data.nev,data.modell,data.váltó,data.evjarat,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtok,data.szemelyek,data.szin_nev,data.irat,data.leiras])
         return result;
     } catch (error) {
         console.error(error);

@@ -133,3 +133,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+.auto-card {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.auto-card:hover {
+  box-shadow: 0 6px 24px rgba(25, 118, 210, 0.13);
+  transform: translateY(-2px) scale(1.01);
+  background: #e3eafc;
+}
