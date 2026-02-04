@@ -46,17 +46,6 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-
-    async szinkeres(req,res){
-        try {
-            const szin_id=req.params.szin_id;
-            const autos=await Auto.szinkeres(szin_id);
-            res.status(200).json(autos);
-        } catch (error) {
-            res.status(500).json({message:error.message});
-        }
-    },
-
     async getMarka(req, res) {
         try {
             const autos =  await Auto.getMarka();
@@ -316,15 +305,6 @@ async szuro(req, res, next) {
             const lista = await Auto.erdekeltekListaja(user.id);
             res.status(200).json(lista);
         } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-    async felhasznalok(req, res) {
-        try {
-            const felhasznalok = await Auto.felhasznalok();
-            res.status(200).json(felhasznalok);
-        } catch (error) {
-            console.error("Error fetching users:", error);
             res.status(500).json({ message: error.message });
         }
     },

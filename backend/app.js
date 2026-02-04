@@ -21,10 +21,8 @@ var corsOptions ={
 app.use(cors(corsOptions)); 
 
 var autoModRouter = require('./routes/autoMod');
-var authRouter = require('./routes/authRouter');
 var authMiddleware = require('./middleware/authAuto');
 
-app.use('/auth', authRouter);
 app.use('/auto' ,autoModRouter);
 
 
