@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import http from "../http-common.js";
 import { Carousel } from "react-bootstrap";
+import './autokreszletek.css';
 
 export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) {
     const { autoId } = useParams(); // az URL-ből jön

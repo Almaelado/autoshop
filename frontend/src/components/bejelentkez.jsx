@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import http from '../http-common';
 import { useNavigate } from 'react-router-dom';
+import './bejelentkez.css';
 
 
 export default function Bejelentkez( {setBelepett,setAccessToken,setAdmin} ) {

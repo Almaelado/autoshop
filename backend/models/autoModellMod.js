@@ -56,10 +56,6 @@ Auto.getUzemanyag = async () => {
         throw error;
     }
 };
-Auto.getfelhasz = async (username) =>{
-    const [rows] = await pool.query("SELECT * FROM user WHERE username = ?", [username]);
-    return rows[0];
-}
 Auto.getValto = async () => {
     try {
         const [rows] = await pool.execute('SELECT * FROM valtok');
@@ -87,14 +83,6 @@ Auto.getSzemely = async () => {
         throw error;
     }
 };
-Auto.validatePassword = async (username, password) =>{
-    const user = await Auto.getfelhasz(username);
-    if (!user) {
-        return false;
-    }
-    const match = await bcrypt.compare(password, user.password);
-    return match ? user : false;
-}
 Auto.szuro = async (sql, values) => {
     try {
         const [rows] = await pool.execute(sql, values);
@@ -143,7 +131,7 @@ Auto.validatePassword = async (email,password) =>{
 Auto.erdekelHozzaad = async (vevo_id, auto_id) => {
     try {
         await pool.execute(
-            "INSERT IGNORE INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
+            "INSERT INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
             [vevo_id, auto_id]
         );
         return true;
@@ -214,13 +202,15 @@ Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
     }
 };
 Auto.uzenetekLekerdezese = async (vevo_id) => {
+    console.log(vevo_id);
     try {
         const [rows] = await pool.execute(
             ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
- FROM uzenet
+                FROM uzenet
                 inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
-                WHERE uzenet.vevo_id = '7'
-                GROUP by auto_id;`,
+                WHERE uzenet.vevo_id = ?
+                GROUP BY auto_id, vevo_id, osszes_auto.nev, osszes_auto.model, osszes_auto.ar
+`,
             [vevo_id]
         );
         return rows;

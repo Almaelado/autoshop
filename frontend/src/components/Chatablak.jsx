@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import http from "../http-common.js";
+import './Chatablak.css';
 
 export default function Chatablak({ accessToken , admin}) {
     const vevoId = new URLSearchParams(window.location.search).get('vevoId');
