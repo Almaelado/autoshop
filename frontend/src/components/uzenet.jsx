@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common.js";
+import './uzenet.css';
 
 export default function Uzenet({ accessToken }) {
     const { autoId } = useParams();

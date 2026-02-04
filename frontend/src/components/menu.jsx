@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import http from "../http-common";
+import './menu.css';
 
 export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, isAdmin}) {
   const location = useLocation();
