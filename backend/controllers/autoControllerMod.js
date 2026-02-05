@@ -539,6 +539,51 @@ async szuro(req, res, next) {
             res.status(500).json({ message: error.message });       
         }
     },
+    async AddSzin(req,res){
+        try {
+            const { szin } = req.body;
+            console.log("AddSzin data:", szin);
+            const ujSzin = await Auto.AddSzin(szin);
+            res.status(200).json(ujSzin);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddUzemanyag(req,res){
+        try {
+            const { uzemanyag } = req.body;
+            console.log("AddUzemanyag data:", uzemanyag);
+            const ujUzemanyag = await Auto.AddUzemanyag(uzemanyag);
+            res.status(200).json(ujUzemanyag);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddModell(req,res){
+        try {
+            const { modell } = req.body;
+            console.log("AddModell data:", modell);
+            const ujModell = await Auto.AddModell(modell);
+            res.status(200).json(ujModell);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddValto(req,res){
+        try {
+            const { valto } = req.body;
+            console.log("AddValto data:", valto);
+            const ujValto = await Auto.AddValto(valto);
+            res.status(200).json(ujValto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+
 };
 
 module.exports=autoController;

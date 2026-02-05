@@ -35,4 +35,8 @@ router.get('/random',autoController.randomautok);
 router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
 router.post('/ujauto',authenticateToken,autoController.UjAuto);
 router.post('/szamla',authenticateToken,autoController.UjSzamla);
+router.post('/addszin', authenticateToken, autoController.AddSzin);
+router.post('/adduzemanyag', authenticateToken, autoController.AddUzemanyag);
+router.post('/addmodell', authenticateToken, autoController.AddModell);
+router.post('/addvalto', authenticateToken, autoController.AddValto);
 module.exports = router;

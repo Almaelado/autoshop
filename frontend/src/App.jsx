@@ -101,7 +101,7 @@ function App() {
           <Route path="/admin/chatablak" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Chatablak accessToken={accessToken} admin={true} /></AdminVonal>} />
           <Route path="/admin/auto/:autoId" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Reszletek accessToken={accessToken} admin={isAdmin} /></AdminVonal>} />
           <Route path="/admin/ujauto" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><Ujauto accessToken={accessToken} /></AdminVonal>} />
-          <Route path="/admin/egyeb" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><EgyebMod /></AdminVonal>} />
+          <Route path="/admin/egyeb" element={<AdminVonal belepett={belepett} isAdmin={isAdmin}><EgyebMod accessToken={accessToken} /></AdminVonal>} />
 
           <Route path="/auto/:autoId" element={<Reszletek accessToken={accessToken} admin={false} />} />
           <Route path="/uzenet/:autoId" element={<Uzenet accessToken={accessToken} />} />
