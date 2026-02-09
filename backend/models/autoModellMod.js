@@ -339,10 +339,11 @@ Auto.UjAuto = async (data) =>{
 Auto.UjSzamla = async (data) =>{
     try {
         console.log("Számla adatbázisba mentése:", data.adatok);
-        //const [result1] = await pool.execute(`Insert Into rendeles (autok_id) VALUES (?);`, [data.autokId]);
-        //const [result2] =await pool.execute(`INSERT INTO szamla (szamlaid, vevo_id, datum, fizetesimod, autok_id) VALUES (?,?,?,?,?);`,[data.szamlaSzam,data.vevoId,data.datum,data.fizetesimod,data.autokId])
+        const [result1] =await pool.execute(`INSERT INTO szamla (szamlaid, felhasz_id, kelt_datum,tel_datum,fiz_datim,fiz_id) VALUES (?,?,?,?,?,?);`,[data.adatok.szamlaSzam,data.adatok.vevoId,data.adatok.datum,data.adatok.datum,data.adatok.datum,data.adatok.fizetesimod])
+        const [result2] = await pool.execute(`Insert Into rendeles (szid,auto_id) VALUES (?,?);`, [data.adatok.szamlaSzam,data.adatok.autokId]);
         
-        //return result;
+
+        return {result1,result2};
     }
     catch (error) {
         console.error(error);
