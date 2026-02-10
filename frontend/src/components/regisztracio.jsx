@@ -83,7 +83,7 @@ export default function Regisztracio() {
                 </Button>
 
                 <div className="register-link">
-                    Már van fiókod? <a href="/login">Jelentkezz be!</a>
+                    Már van fiókod? <a href="/bejelentkez">Jelentkezz be!</a>
                 </div>
             </Form>
         </div>

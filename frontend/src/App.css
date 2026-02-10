@@ -141,6 +141,9 @@ footer p {
   transition: var(--transition);
   font-weight: 500;
 }
+#Szures .form-label {
+  color: #ffffff;
+}
 
 #Szures p:hover {
   background: rgba(0, 102, 255, 0.2);
