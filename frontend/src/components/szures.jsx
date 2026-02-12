@@ -29,7 +29,7 @@ export default function Szures({ value, onSearch,nyitva,setNyitva }) {
     const maxKm = 200000;
     const [kmRange, setKmRange] = useState([0,maxKm]);
 
-    const maxAr = 3000000;
+    const maxAr = 24000000;
     const [arRange, setArRange] = useState([0, maxAr]); // kétvégű csúszka
 
     const [motormeret, setMotormeret] = useState(0);

@@ -79,13 +79,13 @@ body {
   position: absolute;
   right: 20px;
   top: 20px;
-  transition: var(--transition);
+  transition: color 0.3s ease, background-color 0.3s ease;
   padding: 8px;
 }
 
 .bezar-btn:hover {
   color: #00f2ff;
-  transform: rotate(90deg);
+  transform: none;
 }
 
 .Hargita {
@@ -140,6 +140,9 @@ footer p {
   border-radius: 8px;
   transition: var(--transition);
   font-weight: 500;
+}
+#Szures .form-label {
+  color: #ffffff;
 }
 
 #Szures p:hover {
@@ -300,7 +303,7 @@ footer p {
 }
 
 .close-btn:hover {
-  transform: rotate(90deg) scale(1.1);
+  transform: scale(1.1);
   box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
 }
 

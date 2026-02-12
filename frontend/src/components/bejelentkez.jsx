@@ -35,35 +35,44 @@ export default function Bejelentkez( {setBelepett,setAccessToken,setAdmin} ) {
     };
 
     return (
-    <div className="container mt-5" style={{ maxWidth: "500px" }}>
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="userEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Írd be az email címed"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </Form.Group>
+  <div className="login-container">
+    <div className="login-form">
+      <h2>Bejelentkezés</h2>
+      <p>Üdv újra! Jelentkezz be a folytatáshoz.</p>
 
-            <Form.Group controlId="userPassword">
-                <Form.Label>Jelszó</Form.Label>
-                <Form.Control
-                    type="password"
-                    placeholder="Írd be a jelszavad"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </Form.Group>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="form-group">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Írd be az email címed"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
 
-            {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
+        <Form.Group className="form-group">
+          <Form.Label>Jelszó</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Írd be a jelszavad"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3">
-                Bejelentkezés
-            </Button>
-        </Form>
+        {error && (
+          <div style={{ color: "#ff3333", marginTop: "10px", fontWeight: "500" }}>
+            {error}
+          </div>
+        )}
+
+        <button type="submit" className="form-button">
+          Bejelentkezés
+        </button>
+      </Form>
     </div>
-    );
+  </div>
+);
 }
 
