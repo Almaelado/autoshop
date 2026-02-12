@@ -336,5 +336,64 @@ Auto.UjAuto = async (data) =>{
         throw error;
     }
 }
+Auto.UjSzamla = async (data) =>{
+    try {
+        console.log("Számla adatbázisba mentése:", data.adatok);
+        const [result1] =await pool.execute(`INSERT INTO szamla (szamlaid, felhasz_id, kelt_datum,tel_datum,fiz_datim,fiz_id) VALUES (?,?,?,?,?,?);`,[data.adatok.szamlaSzam,data.adatok.vevoId,data.adatok.datum,data.adatok.datum,data.adatok.datum,data.adatok.fizetesimod])
+        const [result2] = await pool.execute(`Insert Into rendeles (szid,auto_id) VALUES (?,?);`, [data.adatok.szamlaSzam,data.adatok.autokId]);
+        
+
+        return {result1,result2};
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddSzin = async (szin) =>{
+    try {
+        console.log("Új szín hozzáadása:", szin);
+        const [result] = await pool.execute(`INSERT INTO szin (nev) VALUES (?);`, [szin]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddUzemanyag = async (uzemanyag) =>{
+    try {
+        console.log("Új üzemanyag hozzáadása:", uzemanyag);
+        const [result] = await pool.execute(`INSERT INTO uzemanyag (nev) VALUES (?);`, [uzemanyag]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddModell = async (modell) =>{
+    try {
+        console.log("Új modell hozzáadása:", modell);
+        const [result] = await pool.execute(`INSERT INTO marka (nev) VALUES (?);`, [modell]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddValto = async (valto) =>{
+    try {
+        console.log("Új váltó hozzáadása:", valto);
+        const [result] = await pool.execute(`INSERT INTO valtok (nev) VALUES (?);`, [valto]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
 
 module.exports = Auto;

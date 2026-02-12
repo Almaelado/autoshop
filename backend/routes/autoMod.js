@@ -1,7 +1,24 @@
 var express = require('express');
+var fs = require('fs');
 var router = express.Router();
 var authenticateToken = require('../middleware/authAuto');
 var autoController = require('../controllers/autoControllerMod');
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = 'tmp/';
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
 
 router.get('/minden', autoController.osszes);
 router.get('/egy/:id', autoController.egy);
@@ -34,5 +51,11 @@ router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
 router.get('/random',autoController.randomautok);
 router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
 router.post('/ujauto',authenticateToken,autoController.UjAuto);
-
+router.post('/szamla',authenticateToken,autoController.UjSzamla);
+router.post('/addszin', authenticateToken, autoController.AddSzin);
+router.post('/adduzemanyag', authenticateToken, autoController.AddUzemanyag);
+router.post('/addmodell', authenticateToken, autoController.AddModell);
+router.post('/addvalto', authenticateToken, autoController.AddValto);
+router.delete("/kepek/:autoId/:index",authenticateToken, autoController.KepTorles);
+router.post("/kepek/:autoId", authenticateToken,upload.single('file'), autoController.KepFeltoltes);
 module.exports = router;

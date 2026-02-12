@@ -8,6 +8,7 @@ export default function Szamla({ accessToken }) {
   const LIMIT = 10;
   const [vevoNev, setVevoNev] = useState("");
   const [vevoCim, setVevoCim] = useState("");
+  const [vevoId, setVevoId] = useState(null);
   const [termek, setTermek] = useState("");
   const [mennyiseg, setMennyiseg] = useState(1);
   const [egysegar, setEgysegar] = useState(0);
@@ -90,6 +91,7 @@ const szurtAutokLista = autokLista.filter(auto =>
                 if(jsonData.vevok[i].nev){
                     setVevoNev(jsonData.vevok[i].nev);
                 }
+                setVevoId(jsonData.vevok[i].id);
                 console.log("Beállított vevő név:", jsonData.vevok[i].nev);
                 console.log("Beállított vevő cím:", jsonData.vevok[i].lakcim);
                 break;
@@ -98,11 +100,11 @@ const szurtAutokLista = autokLista.filter(auto =>
     }
 
     const handleFizetesimodValasztas = (valasztott) => {
-        console.log("Kiválasztott fizetési mód:", valasztott);
+       // console.log("Kiválasztott fizetési mód:", valasztott[0]);
         const jsonData = JSON.parse(egesz);
         for(let i = 0 ; i<jsonData.fizetesimod.length;i++){
-            if(jsonData.fizetesimod[i].nev === valasztott[0]){
-                setFizetesimod(valasztott[0]);
+            if(jsonData.fizetesimod[i].mod === valasztott[0]){
+                setFizetesimod(jsonData.fizetesimod[i].mod);
                 break;
             }
         }
@@ -144,7 +146,18 @@ const szurtAutokLista = autokLista.filter(auto =>
   }
 };
 
-
+const MentesAdatbazisba = async (adatok) => {
+  try {
+    const res = await http.post('/auto/szamla', { adatok }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log("Sikeres mentés az adatbázisba:", res.data);
+  } catch (err) {
+    console.error("Hiba a mentés során:", err);
+  }
+};
 
 const handleAutoKivalasztas = (auto) => {
   setKivalasztottAutoId(auto.id);
@@ -233,6 +246,13 @@ doc.text(`ÁFA (27%): ${afa.toLocaleString("hu-HU")} Ft`, 140, y + 12);
   );
 
   doc.save("szamla.pdf");
+  MentesAdatbazisba({
+    szamlaSzam,
+    vevoId,
+    datum,
+    fizetesimod,
+    autokId: kivalasztottAutoId,
+  });
 };
 
 

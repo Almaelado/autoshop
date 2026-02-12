@@ -44,11 +44,12 @@ export default function HomeScreen() {
       <View style={styles.carGrid}>
         {autok.map(auto => (
           <View key={auto.id} style={styles.carCard}>
-            <Image
-              source={{ uri: `${BACKEND_URL}/img/${auto.id}_1.jpg` }}
+            {/*<Image
+              source={require("../../../frontend/public/img/"+auto.id+"_1.jpg")}
               style={styles.carImg}
               resizeMode="cover"
-            />
+            />*/}
+            
             <Text style={styles.carName}>{auto.nev} {auto.model}</Text>
             <Text style={styles.carPrice}>{auto.ar.toLocaleString()} Ft</Text>
             <TouchableOpacity
