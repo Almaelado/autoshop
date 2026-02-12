@@ -11,13 +11,15 @@ import axios from "axios";
 // csak az install kell !! az import nem
 //import { Cookies } from "@react-native-cookies/cookies";
 
-let accessToken = null;
+ let accessToken = null;
 
 // ------------------- Access token kezelése -------------------
 export function setAccessToken(token) {
   accessToken = token;
 }
-
+export function getAccessToken() {
+  return accessToken;
+}
 // ------------------- Axios instance -------------------
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,

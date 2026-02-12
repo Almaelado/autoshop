@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
@@ -583,7 +585,47 @@ async szuro(req, res, next) {
             res.status(500).json({ message: error.message });       
         }
     },
+    async KepTorles(req,res){
+        console.log("KepTorles hívás:", req.params); // Debug log
+        try {
+            const { autoId, index } = req.params;
+            console.log("KepTorles data:", { autoId, index });
+            const kepPath = path.join(__dirname, "..", "public", "img", `${autoId}_${index}.jpg`);
 
+            fs.unlink(kepPath, (err) => {
+                if (err) {
+                    console.error("Hiba a törléskor:", err);
+                    return res.status(500).json({ message: "Nem sikerült törölni a képet" });
+                }
+                res.json({ message: "Kép törölve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+        },
+    async KepFeltoltes(req,res){
+        try {
+            const { autoId } = req.params;
+            console.log("KepFeltoltes hívás:", { autoId, file: req.file }); // Debug log
+            if (!req.file) {
+                return res.status(400).json({ message: "Nincs fájl feltöltve" });
+            }
+            const uploadPath = path.join(__dirname, "..", "public", "img");
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            const filePath = path.join(uploadPath, `${autoId}_${Date.now()}.jpg`);
+            fs.rename(req.file.path, filePath, (err) => {
+                if (err) {
+                    console.error("Hiba a fájl átnevezésekor:", err);
+                    return res.status(500).json({ message: "Nem sikerült menteni a képet" });
+                }
+                res.json({ message: "Kép feltöltve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 };
 
 module.exports=autoController;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, Image, Button, ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import axios from 'axios';
+import {api} from '@/api/api';
 
 type Termek = {
   id: number;
@@ -30,8 +30,8 @@ const ListazoInfinite = () => {
     setError(null);
 
     try {
-      const response = await axios.get<Termek[]>(
-        `${backendUrl}/auto/minden`,
+      const response = await api.get<Termek[]>(
+        `/auto/minden`,
         {
           params: {
             offset: (pageNum - 1) * PAGE_SIZE,
@@ -93,11 +93,11 @@ const ListazoInfinite = () => {
             <Text style={styles.title}>
               {item.id}. {item.nev} {item.model}
             </Text>
-
-            <Image
-              source={{ uri: `${backendUrl}/images/${item.kepnev}` }}
+            {/* <Image
+              source={require("../../../frontend/public/img/"+item.id+"_1.jpg")}
               style={styles.image}
-            />
+            />*/}
+            
 
             <Text style={styles.price}>Ár: {item.ar} Ft</Text>
 
