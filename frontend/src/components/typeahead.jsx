@@ -1,7 +1,7 @@
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useState, useEffect } from "react";
 
-export default function TypeaheadComponent({ options, value, onChange, label, labelKey }) {
+export default function TypeaheadComponent({ options, value, onChange, label, labelKey, className }) {
   const [selectedValues, setSelectedValues] = useState(value || []);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function TypeaheadComponent({ options, value, onChange, label, la
   });
 
   return (
-    <div className="mb-3">
+    <div className={`mb-3 ${className || ""}`}>
       <label className="form-label m-0">{label || "Kiválasztott:"}</label>
       <div className="mb-2">
         {selectedValues.map((item) => (

@@ -112,7 +112,7 @@ export default function ProfileSzerkesztes({ accessToken }) {
             if (location.state?.from) {
               navigate(location.state.from);
             } else {
-              navigate("/profil");
+              navigate("/profile");
             }
           }}
         >
