@@ -1,20 +1,21 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import axios from 'axios';
+import {api} from '@/api/api';
 import {useRouter} from 'expo-router';
+import { useAuth } from '@/auth/AuthProvider';
 
 export default function BejReg() {
   const [vizsg, setVizsg] = React.useState(false);
-  const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
   const router = useRouter();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const { login } = useAuth();
 
   const handleSubmit = () => {
 
     if (vizsg) {
       // Regisztráció logika
-      axios.post(`${backendUrl}/auto/regisztracio`, {
+      api.post(`/auto/regisztracio`, {
         email: email,
         password: password,
       })
@@ -27,16 +28,11 @@ export default function BejReg() {
       });
     } else {
       // Bejelentkezés logika
-      axios.post(`${backendUrl}/auto/login`, {
-        email: email,
-        password: password,
-      })
+      login(email,password)
       .then(response => {
-        console.log('Bejelentkezés sikeres:', response.data);
         router.replace('/');
       })
       .catch(error => {
-        console.error('Bejelentkezés hiba:', error);
         alert('Bejelentkezési hiba! Ellenőrizd az adataidat.');
       });
     }

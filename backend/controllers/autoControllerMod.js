@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
@@ -526,6 +528,102 @@ async szuro(req, res, next) {
         }
         catch (error) {
             res.status(500).json({ message: error.message });       
+        }
+    },
+    async UjSzamla(req,res){
+        try {
+            const data = req.body;
+            console.log("UjSzamla data:", data);
+            const ujSzamla = await Auto.UjSzamla(data);
+            res.status(200).json(ujSzamla);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddSzin(req,res){
+        try {
+            const { szin } = req.body;
+            console.log("AddSzin data:", szin);
+            const ujSzin = await Auto.AddSzin(szin);
+            res.status(200).json(ujSzin);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddUzemanyag(req,res){
+        try {
+            const { uzemanyag } = req.body;
+            console.log("AddUzemanyag data:", uzemanyag);
+            const ujUzemanyag = await Auto.AddUzemanyag(uzemanyag);
+            res.status(200).json(ujUzemanyag);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddModell(req,res){
+        try {
+            const { modell } = req.body;
+            console.log("AddModell data:", modell);
+            const ujModell = await Auto.AddModell(modell);
+            res.status(200).json(ujModell);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddValto(req,res){
+        try {
+            const { valto } = req.body;
+            console.log("AddValto data:", valto);
+            const ujValto = await Auto.AddValto(valto);
+            res.status(200).json(ujValto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async KepTorles(req,res){
+        console.log("KepTorles hívás:", req.params); // Debug log
+        try {
+            const { autoId, index } = req.params;
+            console.log("KepTorles data:", { autoId, index });
+            const kepPath = path.join(__dirname, "..", "public", "img", `${autoId}_${index}.jpg`);
+
+            fs.unlink(kepPath, (err) => {
+                if (err) {
+                    console.error("Hiba a törléskor:", err);
+                    return res.status(500).json({ message: "Nem sikerült törölni a képet" });
+                }
+                res.json({ message: "Kép törölve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+        },
+    async KepFeltoltes(req,res){
+        try {
+            const { autoId } = req.params;
+            console.log("KepFeltoltes hívás:", { autoId, file: req.file }); // Debug log
+            if (!req.file) {
+                return res.status(400).json({ message: "Nincs fájl feltöltve" });
+            }
+            const uploadPath = path.join(__dirname, "..", "public", "img");
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            const filePath = path.join(uploadPath, `${autoId}_${Date.now()}.jpg`);
+            fs.rename(req.file.path, filePath, (err) => {
+                if (err) {
+                    console.error("Hiba a fájl átnevezésekor:", err);
+                    return res.status(500).json({ message: "Nem sikerült menteni a képet" });
+                }
+                res.json({ message: "Kép feltöltve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
         }
     },
 };

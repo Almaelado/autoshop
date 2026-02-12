@@ -3,8 +3,10 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import http from "../http-common.js";
 import { Carousel } from "react-bootstrap";
 import './autokreszletek.css';
+import KepekSzerkesztese from "./KepekSzerkesztese.jsx";
 
 export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) {
+  const [showKepekModal, setShowKepekModal] = useState(false);
     const { autoId } = useParams(); // az URL-ből jön
     const navigate = useNavigate();
     const location = useLocation();
@@ -312,15 +314,24 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
           </div>
         </div>
 
-        <div className="d-flex justify-content-end mt-4">
-          <button
-            className="btn btn-primary px-4"
-            onClick={handleSave}
-            disabled={saveLoading}
-          >
-            {saveLoading ? "Mentés..." : "Mentés"}
-          </button>
-        </div>
+        <div className="d-flex justify-content-between mt-4">
+  <button 
+  className="btn btn-primary px-4"
+  onClick={() => setShowKepekModal(true)}
+>
+  Képek szerkesztése
+</button>
+
+
+  <button
+    className="btn btn-primary px-4"
+    onClick={handleSave}
+    disabled={saveLoading}
+  >
+    {saveLoading ? "Mentés..." : "Mentés"}
+  </button>
+</div>
+
 
         {saveSuccess && (
           <div className="alert alert-success mt-3 mb-0">
@@ -329,6 +340,25 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
         )}
       </div>
     </div>
+    {showKepekModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <button
+        className="modal-close"
+        onClick={() => setShowKepekModal(false)}
+      >
+        ✕
+      </button>
+
+      <KepekSzerkesztese
+        autoId={autoId}
+        onClose={() => setShowKepekModal(false)}
+        accessToken={accessToken}
+      />
+    </div>
+  </div>
+)}
+
   </div>
 );
 

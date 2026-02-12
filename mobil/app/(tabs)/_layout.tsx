@@ -6,6 +6,7 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { getAccessToken } from '@/api/api';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -31,13 +32,24 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Ionicons name="car" size={24} color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="BejReg"
-        options={{
-          title: 'Bejelentkezés/Regisztráció',
-          tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
-        }}
-      />
+      {getAccessToken() ? (
+        <Tabs.Screen
+          name="BejReg"
+          options={{
+            title: 'Profil',
+            tabBarIcon: ({ color }) => <FontAwesome name="user" size={24} color={color} />,
+          }}
+        />
+      ) : (
+        <Tabs.Screen
+          name="BejReg"
+          options={{
+            title: 'Bejelentkezés/Regisztráció',
+            tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
+          }}
+        />
+      )}
+      
     </Tabs>
   );
 }
