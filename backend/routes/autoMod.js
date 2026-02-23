@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: function (req, file, cb) {
+    console.log("Fájlnév:", file.originalname);
     cb(null, file.originalname);
   }
 });

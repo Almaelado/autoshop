@@ -64,8 +64,14 @@ const feltoltKep = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
+    let index =
+    (kepek.length > 0
+      ? Math.max(...kepek.map((k) => k.index))
+      : 0)+1;
+
+
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("file", file,`${autoId}_${index}`);
 
   try {
     await http.post(`auto/kepek/${autoId}`, formData, {
