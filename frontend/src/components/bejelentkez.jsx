@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import http from '../http-common';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './bejelentkez.css';
 
 
@@ -11,28 +11,42 @@ export default function Bejelentkez( {setBelepett,setAccessToken,setAdmin} ) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const location = useLocation();
+
+const from = location.state?.from || "/";
+
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await http.post('auto/login', { email, password },{withCredentials:true});
-            console.log("Bejelentkezés sikeres:", response.data);
-            setAccessToken(response.data.accessToken);
-            setBelepett(true);
-            if(response.data.user.admin === 1){
-                setAdmin(true);
-                navigate('/admin');
-                return;
-            }
-            navigate('/');
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                setError("Hibás felhasználónév vagy jelszó.");
-            } else {
-                setError("Hálózati hiba, próbáld újra.");
-            }
-        }
-    };
+  e.preventDefault();
+  setError(null);
+
+  try {
+    const response = await http.post(
+      'auto/login',
+      { email, password },
+      { withCredentials: true }
+    );
+
+    setAccessToken(response.data.accessToken);
+    setBelepett(true);
+
+    if (response.data.user.admin === 1) {
+      setAdmin(true);
+      navigate('/admin');
+      return;
+    }
+
+    // 👇 Ide jön a visszairányítás
+    navigate(from, { replace: true });
+
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      setError("Hibás felhasználónév vagy jelszó.");
+    } else {
+      setError("Hálózati hiba, próbáld újra.");
+    }
+  }
+};
 
     return (
   <div className="login-container">

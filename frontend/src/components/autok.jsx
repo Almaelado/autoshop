@@ -10,8 +10,8 @@ const Autok = ({ szuro, admin }) => {
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const observerRef = useRef();
-    const [kereso, setKereso] = useState("");
-    const [keresés,setKeresés]=useState(false);    
+    const [kereso, setKereso] = useState("");   
+    const [searchTerm, setSearchTerm] = useState("");
 
     //console.log("Szuro prop:", szuro);
     const navigate = useNavigate();
@@ -23,8 +23,10 @@ const Autok = ({ szuro, admin }) => {
             szuroJson.limit = 30;
             szuroJson.page = page;
 
-            const response = await http.post("/auto/szuro",
-                 {...szuroJson, keres:keresés?kereso:""});
+            const response = await http.post("/auto/szuro", {
+                ...szuroJson,
+                keres: searchTerm.trim()
+                });
 
             if (response.data.length === 0) {
                 setHasMore(false);
@@ -43,15 +45,15 @@ const Autok = ({ szuro, admin }) => {
         }
     };
 
-    useEffect(() => {
-        setAutok([]);
-        setPage(1);
-        setHasMore(true);
-    }, [szuro,keresés]);
+        useEffect(() => {
+            setAutok([]);
+            setPage(1);
+            setHasMore(true);
+        }, [szuro, searchTerm]);
 
-    useEffect(() => {
-        fetchAutok();
-    }, [szuro, page, keresés]);
+        useEffect(() => {
+            fetchAutok();
+        }, [szuro, page, searchTerm]);
 
     const lastItemRef = useCallback(
         (node) => {
@@ -79,12 +81,12 @@ const Autok = ({ szuro, admin }) => {
     const handleKereso = (e) => {
         setKereso(e.target.value);
     };
-    const handleKeresoGomb = (e) => {
+    const handleKeresoGomb = () => {
         setAutok([]);
         setPage(1);
         setHasMore(true);
-        setKeresés(kereso.trim().length > 0);
-};  
+        setSearchTerm(kereso);
+    };
 
     
     return (
@@ -128,18 +130,12 @@ const Autok = ({ szuro, admin }) => {
                         <ListGroup className="list-group-flush">
                             <ListGroup.Item>Szín: {auto.szin_nev}</ListGroup.Item>
                             <ListGroup.Item>{auto.km} km</ListGroup.Item>
-                            <ListGroup.Item>Ár: {auto.ar} Ft</ListGroup.Item>
                         </ListGroup>
 
                         <Card.Body>
                             {/* FELHASZNÁLÓI FELÜLET */}
                             {!admin && (
-                                <Button
-                                    variant="primary"
-                                    onClick={() => navigate(`/auto/${auto.id}`)}
-                                >
-                                    Részletek
-                                </Button>
+                                <div>{auto.ar} Ft</div> 
                             )}
 
                             {/* ADMIN FELÜLET */}

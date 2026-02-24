@@ -107,6 +107,22 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
   }));
 };
 
+  const handleUzenet = () => {
+  if (!accessToken) {
+    const confirmLogin = window.confirm(
+      "A művelethez bejelentkezés szükséges!\n\nSzeretne bejelentkezni?"
+    );
+
+    if (confirmLogin) {
+      navigate("/bejelentkez", { state: { from: location.pathname } });
+    }
+
+    return;
+  }
+
+  navigate(`/uzenet/${autoId}`);
+};
+
     const handleSave = async () => {
   setSaveLoading(true);
   setSaveSuccess(false);
@@ -129,44 +145,50 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
 
 
     const handleErdekel = async () => {
-      if (!accessToken) {
-        if (onLoginModalOpen) {
-          onLoginModalOpen();
-        } else {
-          setShowLoginPrompt(true);
-        }
-        return;
+
+  if (!accessToken) {
+    const confirmLogin = window.confirm(
+      "A művelethez bejelentkezés szükséges!\n\nSzeretne bejelentkezni?"
+    );
+
+    if (confirmLogin) {
+      navigate("/bejelentkez", { state: { from: location.pathname } });
+    }
+
+    return;
+  }
+
+  setErdekelLoading(true);
+  setErdekelSuccess(false);
+
+  try {
+    const erdeklestettAutok = await http.get('auto/erdekeltek', {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (erdeklestettAutok.data.some(a => a.id === Number(autoId))) {
+      alert('Már érdeklődtél ez iránt az autó iránt!');
+      return;
+    }
+
+    await http.post(
+      "/auto/erdekel",
+      { autoId: Number(autoId) },
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${accessToken}` },
       }
-      setErdekelLoading(true);
-      setShowLoginPrompt(false);
-      setErdekelSuccess(false);
-      try {
-        const erdeklestettAutok = await http.get('auto/erdekeltek', {
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        //console.log('Érdeklődött autók:', erdeklestettAutok.data);
-        if (erdeklestettAutok.data.some(a => a.id === Number(autoId))) {
-          alert('Már érdeklődtél ez iránt az autó iránt!');
-          setErdekelLoading(false);
-          return;
-        }
-        await http.post(
-          "/auto/erdekel",
-          { autoId: Number(autoId) },
-          {
-            withCredentials: true,
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-        setErdekelSuccess(true);
-      } catch (err) {
-        setErdekelSuccess(false);
-        alert("Hiba történt az érdeklődés mentésekor!");
-      } finally {
-        setErdekelLoading(false);
-      }
-    };
+    );
+
+    setErdekelSuccess(true);
+
+  } catch (err) {
+    alert("Hiba történt az érdeklődés mentésekor!");
+  } finally {
+    setErdekelLoading(false);
+  }
+};
 
     if (error) return <div>{error}</div>;
     if (loading) return (
@@ -403,12 +425,18 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
   {/* Jobb oldali Üzenet gomb */}
   <div>
     <button
-      className="uzenet-btn"
-      onClick={() => navigate(`/uzenet/${autoId}`)}
-      style={{ backgroundColor: '#007bff', color: 'white', border: 'none', padding: '8px 16px', borderRadius: 4 }}
-    >
-      Üzenet
-    </button>
+  className="uzenet-btn"
+  onClick={handleUzenet}
+  style={{
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    padding: '8px 16px',
+    borderRadius: 4
+  }}
+>
+  Üzenet
+</button>
   </div>
 </div>
 
