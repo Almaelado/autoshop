@@ -66,7 +66,7 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
         const maxImages = 20;
         const promises = [];
         for (let i = 1; i <= maxImages; i++) {
-            const path = `/img/${autoId}_${i}.jpg`;
+            const path = `http://localhost:80/img/${autoId}_${i}.jpg`;
             promises.push(new Promise(resolve => {
                 const img = new window.Image();
                 img.src = path;
@@ -476,7 +476,7 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
                   }
                 }}
               >
-                <img src={`/img/${a.id}_1.jpg`} alt={a.nev} className="ajanlott-img" />
+                <img src={`http://localhost:80/img/${a.id}_1.jpg`} alt={a.nev} className="ajanlott-img" />
                 <div className="ajanlott-info">
                   <div className="ajanlott-nev">{a.nev} {a.model}</div>
                   <div className="ajanlott-ar">{a.ar?.toLocaleString()} Ft</div>

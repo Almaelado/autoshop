@@ -115,7 +115,10 @@ const Autok = ({ szuro, admin }) => {
                         ref={autok.length === index + 1 ? lastItemRef : null}
                         onClick={() => admin==false ? navigate(`/auto/${auto.id}`) : null}
                     >
-                        <Card.Img variant="top" src={`/img/${auto.id}_1.jpg`} />
+                        <Card.Img
+                              variant="top"
+                              src={`http://localhost:80/img/${auto.id}_1.jpg`}
+                            />
 
                         <Card.Body>
                             <Card.Title>{auto.nev} {auto.model}</Card.Title>

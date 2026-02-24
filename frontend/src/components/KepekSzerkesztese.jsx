@@ -29,7 +29,7 @@ const betoltKepek = async () => {
   const ujKepek = [];
 
   for (let i = 1; i < 10; i++) {
-    const url = `/img/${autoId}_${i}.jpg`;
+    const url = `http://localhost:80/img/${autoId}_${i}.jpg`;
 
     if (await kepLetezik(url)) {
       console.log("Kép létezik:", url);

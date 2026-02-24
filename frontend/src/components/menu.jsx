@@ -48,7 +48,7 @@ export default function Menu({belepett, setBelepett, setAdmin, setAccessToken, i
   <Container>
     <Navbar.Brand as={Link} to="/"> 
     <img
-      src="../img/autoshoplogo.png"
+      src="http://localhost:80/img/autoshoplogo.png"
       alt="Ndidi Autó kereskedés logo"
       height="32"
       className="me-2"
