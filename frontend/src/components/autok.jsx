@@ -107,7 +107,7 @@ const Autok = ({ szuro, admin }) => {
                 </Button>
             </div>
 
-            <div className="autok-grid">
+            <div className={`autok-grid${autok.length <= 4 ? " autok-grid-few" : ""}`}>
                 {autok.map((auto, index) => (
                     <Card
                         className="autok-card"
@@ -125,6 +125,7 @@ const Autok = ({ szuro, admin }) => {
                         <ListGroup className="list-group-flush">
                             <ListGroup.Item>Szín: {auto.szin_nev}</ListGroup.Item>
                             <ListGroup.Item>{auto.km} km</ListGroup.Item>
+                            <ListGroup.Item>Ár: {auto.ar} Ft</ListGroup.Item>
                         </ListGroup>
 
                         <Card.Body>
