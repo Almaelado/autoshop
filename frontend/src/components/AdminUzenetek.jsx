@@ -39,26 +39,30 @@ export default function AdminUzenetek({ accessToken }) {
             </div>
         );
     }
-    return (
-        <div className="container mt-4">
-            <h2>Üzenetek az érdeklődőktől</h2>
+     return (
+        <div className="admin-uzenetek-container">
+            <div className="admin-uzenetek-title">Üzenetek az érdeklődőktől</div>
             {uzenetek.length === 0 ? (
-                <div>Nincsenek üzenetek.</div>
+                <div className="uzenet-ures">Nincsenek üzenetek.</div>
             ) : (
-                <div className="list-group">
+                <div className="uzenet-lista">
                     {uzenetek.map((uzenet, index) => (
-                        <div key={index} className="list-group-item" onClick={() => {navigate(`/admin/chatablak?autoId=${uzenet.auto_id}&vevoId=${uzenet.vevo_id}&uzenetId=${uzenet.id}`)}} style={{cursor: 'pointer'}}>
-                            {/* FEJLÉC: NÉV + MODELL + ÁR */}
-                            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                                <h4 className="mb-1">
-                                    {uzenet.nev} {uzenet.model}
-                                </h4>   
-                                <span className="fw-bold text-success">
-                                    {uzenet.ar} Ft
-                                </span>
+                        <div
+                            key={index}
+                            className="uzenet-kartya"
+                            onClick={() => {
+                                navigate(`/admin/chatablak?autoId=${uzenet.auto_id}&vevoId=${uzenet.vevo_id}&uzenetId=${uzenet.id}`)
+                            }}
+                        >
+                            <div className="uzenet-fejlec">
+                                <span className="uzenet-nev">{uzenet.nev}</span>
+                                <span className="uzenet-model">{uzenet.model}</span>
+                                <span className="uzenet-ar">{uzenet.ar} Ft</span>
                             </div>
-                            {/* ÜZENET TARTALMA */}
-                            <p className="mt-2">{uzenet.uzenet_text}</p>
+                            <div className="uzenet-tartalom">{uzenet.uzenet_text}</div>
+                            {/* Ha van dátum vagy státusz, ide illesztheted: */}
+                            {/* <div className="uzenet-datum">{uzenet.datum}</div> */}
+                            {/* <span className={`uzenet-statusz${uzenet.read ? " read" : ""}`}>{uzenet.read ? "Olvasott" : "Új"}</span> */}
                         </div>
                     ))}
                 </div>

@@ -81,13 +81,27 @@ function App() {
         <Routes>
           <Route path="/" element={<Kezdolap />} />
           <Route path="/autok" element={
-            <div className='Hargita'>
-              <button className="szuro-gomb" onClick={() => setSzuroNyitva(prev => !prev)}>Szűrő</button>
-              {szuroNyitva && <div className="overlay" onClick={() => setSzuroNyitva(false)} />}
-              <Szures onSearch={filter => setSzur(filter)} nyitva={szuroNyitva} setNyitva={setSzuroNyitva} />
-              <Autok szuro={szur} admin={isAdmin} />
-            </div>
-          } />
+  <div className='Hargita'>
+    <button
+      className="szuro-gomb btn btn-primary d-flex align-items-center"
+      style={{ fontWeight: 'bold', boxShadow: '0 2px 8px #0002', borderRadius: 8 }}
+      onClick={() => setSzuroNyitva(prev => !prev)}
+    >
+      <span className="me-2 bi bi-funnel"></span> Szűrő
+    </button>
+    {szuroNyitva && <div className="overlay" onClick={() => setSzuroNyitva(false)} />}
+    <div className={`szuro-panel${szuroNyitva ? ' nyitva' : ''}`}>
+      {szuroNyitva && (
+        <div className="szuro-fejlec d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+          <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Szűrő panel</span>
+          <button className="btn-close" onClick={() => setSzuroNyitva(false)} />
+        </div>
+      )}
+      <Szures onSearch={filter => setSzur(filter)} nyitva={szuroNyitva} setNyitva={setSzuroNyitva} />
+    </div>
+    <Autok szuro={szur} admin={isAdmin} />
+  </div>
+} />
           <Route path="/regisztracio" element={<Regisztracio />} />
           <Route path="/bejelentkez" element={<Bejelentkez setBelepett={setBelepett} setAccessToken={setAccessToken} setAdmin={setIsAdmin}/>} />
           <Route path="/profile" element={<VedettVonal belepett={belepett}><Profil accessToken={accessToken}/></VedettVonal>} />

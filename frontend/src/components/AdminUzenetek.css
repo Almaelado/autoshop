@@ -1,225 +1,122 @@
-/* ===== ADMIN ÜZENETEK ===== */
+/* ===== ADMIN ÜZENETEK - MODERN KÁRTYÁS DESIGN ===== */
 .admin-uzenetek-container {
-  padding: 30px;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px 20px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 60, 120, 0.10);
 }
 
 .admin-uzenetek-title {
-  font-size: 2rem;
-  color: #1a1a2e;
-  font-weight: 700;
-  margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0a2540;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
-.messages-table-container {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  border: 2px solid rgba(0, 102, 255, 0.1);
-  margin-top: 30px;
-}
-
-.messages-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.messages-table th {
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  color: white;
-  padding: 16px;
-  text-align: left;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.messages-table td {
-  padding: 16px;
-  border-top: 1px solid rgba(0, 102, 255, 0.1);
-  color: #1a1a2e;
-}
-
-.messages-table tr:hover {
-  background: #f8fafc;
-  transition: background 0.3s ease;
-}
-
-.message-sender-info {
-  font-weight: 600;
-}
-
-.message-content-preview {
-  color: #6c757d;
-  font-size: 0.9rem;
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.message-date {
-  color: #999;
-  font-size: 0.85rem;
-}
-
-.message-status {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.status-new {
-  background: linear-gradient(135deg, #00b381 0%, #00d4a8 100%);
-  color: white;
-}
-
-.status-read {
-  background: linear-gradient(135deg, #999 0%, #bbb 100%);
-  color: white;
-}
-
-.message-actions {
+.uzenet-lista {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.message-view-btn,
-.message-delete-btn {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
+.uzenet-kartya {
+  background: linear-gradient(90deg, #f8fafc 80%, #e3f0ff 100%);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 102, 255, 0.06);
+  padding: 22px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
   cursor: pointer;
-  font-size: 0.8rem;
-  transition: all 0.3s ease;
+  border: 1.5px solid #e3eafc;
 }
 
-.message-view-btn {
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+.uzenet-kartya:hover {
+  box-shadow: 0 6px 24px rgba(0, 102, 255, 0.13);
+  transform: translateY(-2px) scale(1.01);
+  border-color: #b3d4fc;
 }
 
-.message-view-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
-}
-
-.message-delete-btn {
-  background: linear-gradient(135deg, #ff3333 0%, #ff6b35 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(255, 51, 51, 0.2);
-}
-
-.message-delete-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 51, 51, 0.3);
-}
-
-/* MESSAGE MODAL */
-.message-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+.uzenet-fejlec {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 20px;
-  animation: fadeIn 0.3s ease;
+  margin-bottom: 8px;
 }
 
-.message-modal-content {
-  background: white;
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.message-modal-header {
-  font-size: 1.5rem;
+.uzenet-nev {
+  font-size: 1.15rem;
   font-weight: 700;
+  color: #0066ff;
+}
+
+.uzenet-ar {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00b381;
+  background: #e6fff6;
+  padding: 4px 14px;
+  border-radius: 8px;
+}
+
+.uzenet-model {
+  font-size: 1rem;
   color: #1a1a2e;
-  margin-bottom: 20px;
+  font-weight: 500;
+  margin-left: 8px;
 }
 
-.message-modal-body {
+.uzenet-tartalom {
   color: #495057;
-  line-height: 1.8;
-  margin-bottom: 30px;
-  max-height: 300px;
-  overflow-y: auto;
-  background: #f8fafc;
-  padding: 20px;
+  font-size: 1.02rem;
+  margin: 10px 0 0 0;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.uzenet-datum {
+  font-size: 0.92rem;
+  color: #8ca0b3;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.uzenet-statusz {
+  display: inline-block;
+  padding: 3px 12px;
   border-radius: 12px;
-  border: 2px solid rgba(0, 102, 255, 0.1);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 10px;
+  background: linear-gradient(90deg, #00b381 60%, #00d4a8 100%);
+  color: #fff;
 }
 
-.message-modal-close {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+.uzenet-statusz.read {
+  background: linear-gradient(90deg, #b3b3b3 60%, #e0e0e0 100%);
+  color: #333;
 }
 
-.message-modal-close:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   .admin-uzenetek-container {
-    padding: 20px;
+    padding: 12px 2vw;
   }
+  .uzenet-kartya {
+    padding: 14px 10px;
+  }
+  .admin-uzenetek-title {
+    font-size: 1.3rem;
+  }
+}
 
-  .messages-table {
-    font-size: 0.85rem;
-  }
-
-  .messages-table td,
-  .messages-table th {
-    padding: 12px 8px;
-  }
-
-  .message-content-preview {
-    max-width: 150px;
-  }
-
-  .message-actions {
-    flex-direction: column;
-  }
+/* Üres lista üzenet */
+.uzenet-ures {
+  text-align: center;
+  color: #b0b8c9;
+  font-size: 1.1rem;
+  margin: 40px 0;
 }

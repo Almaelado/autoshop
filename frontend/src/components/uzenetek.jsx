@@ -36,45 +36,43 @@ export default function Uzenetek({ accessToken }) {
     }, [accessToken]);
 
     if (loading) {
-        return <div className="container mt-4">Betöltés...</div>;
-    }
-
-    if (error) {
         return (
-            <div className="container mt-4">
-                <div className="alert alert-danger">{error}</div>
+            <div className="uzenetek-container">
+                <div className="uzenet-ures">Betöltés...</div>
             </div>
         );
     }
 
-    
+    if (error) {
+        return (
+            <div className="uzenetek-container">
+                <div className="uzenet-ures" style={{ color: "#e74c3c" }}>{error}</div>
+            </div>
+        );
+    }
+
     return (
-        <div className="container mt-4">
-            <h2>Üzeneteim</h2>
-
+        <div className="uzenetek-container">
+            <h2 className="uzenetek-title">Üzeneteim</h2>
             {uzenetek.length === 0 ? (
-                <div>Nincsenek üzenetek.</div>
+                <div className="uzenet-ures">Nincsenek üzenetek.</div>
             ) : (
-                <div className="list-group">
+                <div className="uzenet-lista">
                     {uzenetek.map((uzenet, index) => (
-                        <div key={index} className="list-group-item" style={{ cursor: 'pointer' }} onClick={() => navigate(`/uzenetablak?autoId=${uzenet.auto_id}&vevoId=${uzenet.vevo_id}`)}>
-
-                            {/* FEJLÉC: NÉV + MODELL + ÁR */}
-                            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                                <h4 className="mb-1">
-                                    {uzenet.nev} {uzenet.model}
-                                </h4>
-
-                                <span className="fw-bold text-success">
-                                    {uzenet.ar} Ft
-                                </span>
+                        <div
+                            key={index}
+                            className="uzenet-kartya"
+                            onClick={() => navigate(`/uzenetablak?autoId=${uzenet.auto_id}&vevoId=${uzenet.vevo_id}`)}
+                        >
+                            <div className="uzenet-fejlec">
+                                <div className="uzenet-fejlec-bal">
+                                    <span className="uzenet-nev">{uzenet.nev}</span>
+                                    <span className="uzenet-model">{uzenet.model}</span>
+                                    <span className="uzenet-ar">{uzenet.ar} Ft</span>
+                                </div>
+                                <span className="uzenet-datum">{uzenet.elkuldve}</span>
                             </div>
-
-                            {/* ÜZENET */}
-                            <h5 className="mt-2">{uzenet.uzenet_text}</h5>
-
-                            {/* DÁTUM */}
-                            <p className="mb-0 text-muted">{uzenet.elkuldve}</p>
+                            <div className="uzenet-tartalom">{uzenet.uzenet_text}</div>
                         </div>
                     ))}
                 </div>
