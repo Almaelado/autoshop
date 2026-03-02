@@ -614,7 +614,7 @@ async szuro(req, res, next) {
             if (!fs.existsSync(uploadPath)) {
                 fs.mkdirSync(uploadPath, { recursive: true });
             }
-            const filePath = path.join(uploadPath, `${autoId}_${Date.now()}.jpg`);
+            const filePath = path.join(uploadPath,`${req.file.filename}.jpg`);
             fs.rename(req.file.path, filePath, (err) => {
                 if (err) {
                     console.error("Hiba a fájl átnevezésekor:", err);

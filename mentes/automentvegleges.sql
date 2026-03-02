@@ -76,7 +76,7 @@ CREATE TABLE `erdeklodesek` (
   KEY `FK_erdeklodesek_vevo_id` (`vevo_id`),
   CONSTRAINT `FK_erdeklodesek_auto_id` FOREIGN KEY (`auto_id`) REFERENCES `autok` (`id`),
   CONSTRAINT `FK_erdeklodesek_vevo_id` FOREIGN KEY (`vevo_id`) REFERENCES `vevok` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci AVG_ROW_LENGTH=4096;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci AVG_ROW_LENGTH=4096;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,6 +85,7 @@ CREATE TABLE `erdeklodesek` (
 
 LOCK TABLES `erdeklodesek` WRITE;
 /*!40000 ALTER TABLE `erdeklodesek` DISABLE KEYS */;
+INSERT INTO `erdeklodesek` VALUES (8,2,1,'2026-02-10 10:35:45'),(9,2,23,'2026-02-10 10:35:53');
 /*!40000 ALTER TABLE `erdeklodesek` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,13 +173,13 @@ DROP TABLE IF EXISTS `rendeles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rendeles` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `szid` int NOT NULL,
+  `szid` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
   `auto_Id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_rendeles_auto_Id` (`auto_Id`),
   KEY `FK_rendeles_szid` (`szid`),
   CONSTRAINT `FK_rendeles_auto_Id` FOREIGN KEY (`auto_Id`) REFERENCES `autok` (`id`),
-  CONSTRAINT `FK_rendeles_szid` FOREIGN KEY (`szid`) REFERENCES `szamla` (`rendelesid`)
+  CONSTRAINT `FK_rendeles_szid` FOREIGN KEY (`szid`) REFERENCES `szamla` (`szamlaid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -200,14 +201,12 @@ DROP TABLE IF EXISTS `szamla`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `szamla` (
   `szamlaid` varchar(255) COLLATE utf8mb4_hungarian_ci NOT NULL,
-  `rendelesid` int NOT NULL,
   `felhasz_id` int NOT NULL,
   `kelt_datum` date NOT NULL,
   `tel_datum` date NOT NULL,
   `fiz_datim` date NOT NULL,
   `fiz_id` int NOT NULL,
   PRIMARY KEY (`szamlaid`),
-  UNIQUE KEY `rendelesid` (`rendelesid`),
   KEY `FK_szamla_fiz_id2` (`fiz_id`),
   KEY `FK_szamla_felhasz_id` (`felhasz_id`),
   CONSTRAINT `FK_szamla_felhasz_id` FOREIGN KEY (`felhasz_id`) REFERENCES `vevok` (`id`),
@@ -348,7 +347,7 @@ CREATE TABLE `vevok` (
   `admin` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `adoszam` (`adoszam`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,6 +356,7 @@ CREATE TABLE `vevok` (
 
 LOCK TABLES `vevok` WRITE;
 /*!40000 ALTER TABLE `vevok` DISABLE KEYS */;
+INSERT INTO `vevok` VALUES (1,NULL,NULL,NULL,'$2b$10$HVQSetjmhIf/2bAAnn6Mvu3fNfFp6yFV/tpNra57UcIOKvkj2bgQC','admin@admin.hu',1),(2,'lajos','','','$2b$10$a0x1GkOuHqzZ2EHFkSdCb.otvtQD6R9yI.oeidvfzxD2A4fmcHpX2','anyad@anyad.hu',0);
 /*!40000 ALTER TABLE `vevok` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,4 +387,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-05  8:38:51
+-- Dump completed on 2026-02-12  8:39:48
