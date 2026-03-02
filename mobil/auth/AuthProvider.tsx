@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const res = await api.post("/auto/login", { email, password }, { withCredentials: true });
       const token = res.data.accessToken;
       setAccessToken(token);
+      Alert.alert(token);
        const userProfile = await fetchUserProfile(token);
        setUser(userProfile); // Beállítjuk a teljes felhasználói profilt
     } catch (error: any) {

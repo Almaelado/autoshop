@@ -60,6 +60,7 @@ const autoController={
     async getSzin(req, res) {
         try {
             const autos =  await Auto.getSzin();
+            console.log(autos);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -87,6 +88,7 @@ const autoController={
     async getAjto(req, res) {   
         try {
             const autos =  await Auto.getAjto();
+            console.log(autos)
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -96,6 +98,7 @@ const autoController={
     async getSzemely(req, res) {
         try {
             const autos =  await Auto.getSzemely();
+            console.log(autos);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);

@@ -1,174 +1,180 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, Image, Button, ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import {api} from '@/api/api';
-
-type Termek = {
-  id: number;
-  termek: string;
-  ar: number;
-  kepnev: string;
-};
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  Dimensions,
+  Button,
+} from 'react-native';
+import { api } from '@/api/api';
+import Szures from '@/components/Szures';
 
 const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
 const PAGE_SIZE = 10;
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = screenWidth / 2 - 20; // 2 kártya egymás mellett
 
-const ListazoInfinite = () => {
+type Termek = {
+  id: number;
+  nev: string;
+  model: string;
+  leiras: string;
+  ar: number;
+  szin_nev: string;
+  km: number;
+};
+
+export default function AutokMobile() {
   const [data, setData] = useState<Termek[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [currentFilters, setCurrentFilters] = useState<any>({});
 
-  useEffect(() => {
-    loadPage(1);
-  }, []);
+  // ----- Szűrés kezelése -----
+  const handleSearch = (filters: any) => {
+    setCurrentFilters(filters);
+    loadPage(1, true, filters);
+  };
 
-  const loadPage = async (pageNum: number, refresh = false) => {
+  // ----- Oldalak betöltése -----
+  const loadPage = async (pageNum: number, refresh = false, filters: any = {}) => {
     if (loading) return;
-
     setLoading(true);
-    setError(null);
-
     try {
-      const response = await api.get<Termek[]>(
-        `/auto/minden`,
-        {
-          params: {
-            offset: (pageNum - 1) * PAGE_SIZE,
-            limit: PAGE_SIZE,
-          },
-          timeout: 5000,
-        }
-      );
+      const response = await api.post<Termek[]>('/auto/szuro', {
+        ...filters,
+        limit: PAGE_SIZE,
+        page: pageNum,
+        keres: filters.keres || "",
+      });
 
       const newData = response.data;
+      if (newData.length < PAGE_SIZE) setHasMore(false);
 
-      if (newData.length < PAGE_SIZE) {
-        setHasMore(false);
-      }
-
-      setData((prev) =>
-        refresh ? newData : [...prev, ...newData]
-      );
-
+      setData(prev => (refresh ? newData : [...prev, ...newData]));
       setPage(pageNum);
     } catch (err) {
-      console.error('Fetch error:', err);
-      setError('❌ Nem érhető el a backend szerver');
+      console.error("Hiba a betöltésnél:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  // ----- Infinite scroll -----
   const loadMore = () => {
-    if (hasMore && !loading) {
-      loadPage(page + 1);
-    }
+    if (hasMore && !loading) loadPage(page + 1, false, currentFilters);
   };
 
-  const refreshList = () => {
-    setHasMore(true);
-    loadPage(1, true);
-  };
+  useEffect(() => {
+    loadPage(1, true, currentFilters);
+  }, []);
 
-  // ❌ Hiba képernyő
-  if (error && data.length === 0) {
-    return (
-      <View style={styles.center}>
-        <Text style={styles.errorText}>{error}</Text>
-        <Button title="Újrapróbálás" onPress={refreshList} />
+  // ----- Render Item -----
+  const renderItem = ({ item }: { item: Termek }) => (
+    <TouchableOpacity style={styles.card}>
+      <Image
+        source={{ uri: `${backendUrl}/img/${item.id}_1.jpg` }}
+        style={styles.image}
+      />
+      <View style={styles.cardBody}>
+        <Text style={styles.title}>{item.nev} {item.model}</Text>
+        <Text style={styles.leiras} numberOfLines={2}>{item.leiras}</Text>
+        <Text style={styles.info}>Szín: {item.szin_nev}</Text>
+        <Text style={styles.info}>{item.km} km</Text>
       </View>
-    );
-  }
+      <View style={styles.cardFooter}>
+        <Text style={styles.price}>{item.ar} Ft</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.htext}>Autóink</Text>
+      <Text style={styles.header}>Autóink</Text>
 
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.title}>
-              {item.id}. {item.nev} {item.model}
-            </Text>
-            {/* <Image
-              source={require("../../../frontend/public/img/"+item.id+"_1.jpg")}
-              style={styles.image}
-            />*/}
-            
+      <View style={{ flex: 1 }}>
+        <Button title="Szűrők megnyitása" onPress={() => setFilterOpen(true)} />
 
-            <Text style={styles.price}>Ár: {item.ar} Ft</Text>
+        <Szures
+          nyitva={filterOpen}
+          setNyitva={setFilterOpen}
+          onSearch={handleSearch}
+        />
 
-            <Button
-              title="Kosárba"
-              onPress={() => console.log('Kosárba:', item.termek)}
-            />
-          </View>
-        )}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.5}
-        refreshing={loading && page === 1}
-        onRefresh={refreshList}
-        ListFooterComponent={
-          loading && page > 1 ? (
-            <ActivityIndicator style={{ marginVertical: 20 }} />
-          ) : !hasMore ? (
-            <Text style={styles.endText}>Nincs több termék</Text>
-          ) : null
-        }
-      />
+        <FlatList
+          data={data}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+          numColumns={2}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={loading ? <ActivityIndicator style={{ margin: 20 }} /> : null}
+          columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 15 }}
+          contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 20 }}
+        />
+      </View>
     </View>
   );
-};
-
-export default ListazoInfinite;
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: '#e9ecef',
   },
-  center: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  htext: {
+  header: {
     fontSize: 24,
-    color: 'yellow',
-    marginVertical: 10,
+    fontWeight: 'bold',
+    margin: 15,
     textAlign: 'center',
   },
-  item: {
-    margin: 10,
-    padding: 10,
-    backgroundColor: 'white',
-    borderRadius: 8,
-  },
-  title: {
-    fontSize: 20,
-    color: 'black',
-  },
-  price: {
-    fontSize: 16,
-    marginVertical: 5,
+  card: {
+    backgroundColor: '#fff',
+    width: cardWidth,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
   },
   image: {
-    height: 200,
-    resizeMode: 'contain',
-    marginVertical: 5,
+    width: '100%',
+    height: 140,
+    resizeMode: 'cover',
   },
-  errorText: {
-    color: 'red',
+  cardBody: {
+    padding: 10,
+  },
+  title: {
+    fontWeight: 'bold',
     fontSize: 16,
-    marginBottom: 10,
-    textAlign: 'center',
+    marginBottom: 5,
   },
-  endText: {
-    textAlign: 'center',
-    color: 'gray',
-    marginVertical: 20,
+  leiras: {
+    fontSize: 12,
+    color: '#555',
+    marginBottom: 5,
+  },
+  info: {
+    fontSize: 12,
+    color: '#777',
+  },
+  cardFooter: {
+    backgroundColor: '#4f46e5',
+    paddingVertical: 8,
+    alignItems: 'center',
+  },
+  price: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
