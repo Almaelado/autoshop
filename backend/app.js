@@ -24,6 +24,6 @@ var autoModRouter = require('./routes/autoMod');
 var authMiddleware = require('./middleware/authAuto');
 
 app.use('/auto' ,autoModRouter);
-
+app.use("/img",express.static("public/img"));
 
 module.exports = app;

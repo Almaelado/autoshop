@@ -60,7 +60,7 @@ export default function FoOldal() {
             <Card key={auto.id} className="car-card">
               <Card.Img
                 variant="top"
-                src={`/img/${auto.id}_1.jpg`}
+                src={`http://localhost:80/img/${auto.id}_1.jpg`}
               />
 
               <Card.Body>

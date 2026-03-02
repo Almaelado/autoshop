@@ -10,8 +10,8 @@ const Autok = ({ szuro, admin }) => {
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const observerRef = useRef();
-    const [kereso, setKereso] = useState("");
-    const [keresés,setKeresés]=useState(false);    
+    const [kereso, setKereso] = useState("");   
+    const [searchTerm, setSearchTerm] = useState("");
 
     //console.log("Szuro prop:", szuro);
     const navigate = useNavigate();
@@ -23,8 +23,10 @@ const Autok = ({ szuro, admin }) => {
             szuroJson.limit = 30;
             szuroJson.page = page;
 
-            const response = await http.post("/auto/szuro",
-                 {...szuroJson, keres:keresés?kereso:""});
+            const response = await http.post("/auto/szuro", {
+                ...szuroJson,
+                keres: searchTerm.trim()
+                });
 
             if (response.data.length === 0) {
                 setHasMore(false);
@@ -43,15 +45,15 @@ const Autok = ({ szuro, admin }) => {
         }
     };
 
-    useEffect(() => {
-        setAutok([]);
-        setPage(1);
-        setHasMore(true);
-    }, [szuro,keresés]);
+        useEffect(() => {
+            setAutok([]);
+            setPage(1);
+            setHasMore(true);
+        }, [szuro, searchTerm]);
 
-    useEffect(() => {
-        fetchAutok();
-    }, [szuro, page, keresés]);
+        useEffect(() => {
+            fetchAutok();
+        }, [szuro, page, searchTerm]);
 
     const lastItemRef = useCallback(
         (node) => {
@@ -79,12 +81,12 @@ const Autok = ({ szuro, admin }) => {
     const handleKereso = (e) => {
         setKereso(e.target.value);
     };
-    const handleKeresoGomb = (e) => {
+    const handleKeresoGomb = () => {
         setAutok([]);
         setPage(1);
         setHasMore(true);
-        setKeresés(kereso.trim().length > 0);
-};  
+        setSearchTerm(kereso);
+    };
 
     
     return (
@@ -107,7 +109,7 @@ const Autok = ({ szuro, admin }) => {
                 </Button>
             </div>
 
-            <div className="autok-grid">
+            <div className={`autok-grid${autok.length <= 4 ? " autok-grid-few" : ""}`}>
                 {autok.map((auto, index) => (
                     <Card
                         className="autok-card"
@@ -115,7 +117,10 @@ const Autok = ({ szuro, admin }) => {
                         ref={autok.length === index + 1 ? lastItemRef : null}
                         onClick={() => admin==false ? navigate(`/auto/${auto.id}`) : null}
                     >
-                        <Card.Img variant="top" src={`/img/${auto.id}_1.jpg`} />
+                        <Card.Img
+                              variant="top"
+                              src={`http://localhost:80/img/${auto.id}_1.jpg`}
+                            />
 
                         <Card.Body>
                             <Card.Title>{auto.nev} {auto.model}</Card.Title>
@@ -130,12 +135,7 @@ const Autok = ({ szuro, admin }) => {
                         <Card.Body>
                             {/* FELHASZNÁLÓI FELÜLET */}
                             {!admin && (
-                                <Button
-                                    variant="primary"
-                                    onClick={() => navigate(`/auto/${auto.id}`)}
-                                >
-                                    Részletek
-                                </Button>
+                                <div>{auto.ar} Ft</div> 
                             )}
 
                             {/* ADMIN FELÜLET */}

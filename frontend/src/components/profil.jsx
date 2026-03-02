@@ -125,7 +125,7 @@ export default function Profil({ accessToken }) {
               }}
             >
               <img
-                src={`/img/${auto.id}_1.jpg`}
+                src={`http://localhost:80/img/${auto.id}_1.jpg`}
                 alt={auto.nev}
                 style={{
                   width: 80,
