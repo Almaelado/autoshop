@@ -67,6 +67,38 @@ function App() {
     updateHargitaViewport();
   }, [updateHargitaViewport]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    let scrollRafId = null;
+    const SCROLL_DARKEN_DISTANCE_PX = 3200;
+
+    const updateScrollProgress = () => {
+      scrollRafId = null;
+      const progress = Math.min(window.scrollY / SCROLL_DARKEN_DISTANCE_PX, 1);
+      const easedProgress = Math.pow(progress, 0.85);
+
+      root.style.setProperty('--scroll-progress', easedProgress.toFixed(4));
+    };
+
+    const scheduleScrollProgressUpdate = () => {
+      if (scrollRafId !== null) return;
+      scrollRafId = window.requestAnimationFrame(updateScrollProgress);
+    };
+
+    updateScrollProgress();
+    window.addEventListener('scroll', scheduleScrollProgressUpdate, { passive: true });
+    window.addEventListener('resize', scheduleScrollProgressUpdate);
+
+    return () => {
+      window.removeEventListener('scroll', scheduleScrollProgressUpdate);
+      window.removeEventListener('resize', scheduleScrollProgressUpdate);
+      if (scrollRafId !== null) {
+        window.cancelAnimationFrame(scrollRafId);
+      }
+      root.style.removeProperty('--scroll-progress');
+    };
+  }, []);
+
   // Refresh token
  useEffect(() => {
   const refreshAccessToken = async () => {
