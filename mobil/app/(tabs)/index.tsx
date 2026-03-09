@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
-import axios from 'axios';
+import { api } from '../../api/api';
+import { useBackend } from '@/auth/BackendProvider';
 
-const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL; // Állítsd be a backend URL-t
 
 export default function HomeScreen() {
   const [autok, setAutok] = useState([]);
+  const { backendUrl } = useBackend();
 
   useEffect(() => {
-    const fetchAutok = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/auto/random`);
-        setAutok(response.data);
-      } catch (error) {
-        console.error("Hiba az autók betöltésekor:", error);
-      }
-    };
+  if (!backendUrl) return;
 
-    fetchAutok();
-  }, []);
+  const fetchAutok = async () => {
+    try {
+      const response = await api.get(`/auto/random`);
+      setAutok(response.data);
+    } catch (error) {
+      console.error("Hiba az autók betöltésekor:", error);
+    }
+  };
+
+  fetchAutok();
+}, [backendUrl]); 
 
   useEffect(() => {
     console.log("Autók betöltve:", autok);
@@ -44,11 +47,11 @@ export default function HomeScreen() {
       <View style={styles.carGrid}>
         {autok.map(auto => (
           <View key={auto.id} style={styles.carCard}>
-            {/*<Image
-              source={require("../../../frontend/public/img/"+auto.id+"_1.jpg")}
-              style={styles.carImg}
-              resizeMode="cover"
-            />*/}
+            <Image
+  source={{ uri: backendUrl ? `${backendUrl}/img/${auto.id}_1.jpg` : undefined }}
+  style={styles.carImg}
+  resizeMode="cover"
+/>
             
             <Text style={styles.carName}>{auto.nev} {auto.model}</Text>
             <Text style={styles.carPrice}>{auto.ar.toLocaleString()} Ft</Text>

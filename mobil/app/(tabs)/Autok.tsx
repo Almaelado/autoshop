@@ -10,13 +10,15 @@ import {
   Dimensions,
   Button,
 } from 'react-native';
-import { api } from '@/api/api';
+import { api,getBackendCim } from '@/api/api';
 import Szures from '@/components/Szures';
+import { useBackend } from '@/auth/BackendProvider';
 
-const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
+
 const PAGE_SIZE = 10;
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = screenWidth / 2 - 20; // 2 kártya egymás mellett
+
 
 type Termek = {
   id: number;
@@ -35,6 +37,7 @@ export default function AutokMobile() {
   const [loading, setLoading] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentFilters, setCurrentFilters] = useState<any>({});
+  const { backendUrl } = useBackend();
 
   // ----- Szűrés kezelése -----
   const handleSearch = (filters: any) => {
@@ -45,6 +48,9 @@ export default function AutokMobile() {
   // ----- Oldalak betöltése -----
   const loadPage = async (pageNum: number, refresh = false, filters: any = {}) => {
     if (loading) return;
+
+    console.log("API baseURL:", api.defaults.baseURL);
+    console.log("Backend state:", backendUrl);
     setLoading(true);
     try {
       const response = await api.post<Termek[]>('/auto/szuro', {
@@ -72,16 +78,18 @@ export default function AutokMobile() {
   };
 
   useEffect(() => {
+  if (backendUrl) {
     loadPage(1, true, currentFilters);
-  }, []);
+  }
+}, [backendUrl]);
 
   // ----- Render Item -----
   const renderItem = ({ item }: { item: Termek }) => (
     <TouchableOpacity style={styles.card}>
       <Image
-        source={{ uri: `${backendUrl}/img/${item.id}_1.jpg` }}
-        style={styles.image}
-      />
+  source={{ uri: backendUrl ? `${backendUrl}/img/${item.id}_1.jpg` : undefined }}
+  style={styles.image}
+/>
       <View style={styles.cardBody}>
         <Text style={styles.title}>{item.nev} {item.model}</Text>
         <Text style={styles.leiras} numberOfLines={2}>{item.leiras}</Text>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Modal, Switch, StyleSheet,ScrollView  } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { api } from '@/api/api'; // a te mobilos http client-ed
+import { api } from '@/api/api'; 
+import { useBackend } from '@/auth/BackendProvider';
 
 type SzuresProps = {
   nyitva: boolean;
@@ -17,6 +18,7 @@ export default function Szures({ nyitva, setNyitva, onSearch }: SzuresProps) {
   const [ajto, setAjto] = useState<string[]>([]);
   const [szemely, setSzemely] = useState<string[]>([]);
   const [irat, setIrat] = useState(false);
+  const { backendUrl } = useBackend();
 
   const [markaList, setMarkaList] = useState<string[]>([]);
   const [uzemanyagList, setUzemanyagList] = useState<string[]>([]);
@@ -33,6 +35,7 @@ export default function Szures({ nyitva, setNyitva, onSearch }: SzuresProps) {
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
+    if (!backendUrl) return;
   const fetchOptions = async () => {
     try {
       const [markaRes, uzemanyagRes, szinRes, valtoRes, ajtoRes, szemelyRes] = await Promise.all([
@@ -61,7 +64,7 @@ export default function Szures({ nyitva, setNyitva, onSearch }: SzuresProps) {
   };
 
   fetchOptions();
-}, []);
+}, [backendUrl]);
 
 const toggleSelect = (item: { id: number; nev: any }, selected: string[], setSelected: (arr: string[]) => void) => {
   const value = String(item.nev); // mindig string
