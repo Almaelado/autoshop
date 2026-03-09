@@ -7,7 +7,7 @@ import Menu from './components/menu.jsx';
 import Reszletek from './components/autokreszletek.jsx';
 import Kezdolap from './components/kezdolap.jsx';
 import Footer from './components/footer.jsx';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Profil from './components/profil.jsx';
@@ -31,12 +31,41 @@ function App() {
   const [accessToken, setAccessToken] = useState(null);
   const [szuroNyitva, setSzuroNyitva] = useState(false);
   const [loading, setLoading] = useState(true);
+  const hargitaRef = useRef(null);
+  const hargitaRafRef = useRef(null);
 
 
   const [szur, setSzur] = useState(JSON.stringify({
     markak:[], uzemanyag:[], szin:[], arRange:[], kmRange:[],
     evjarat:[], irat:false, valto:[], motormeret:0, ajto:[], szemely:[]
   }));
+
+  const updateHargitaViewport = useCallback(() => {
+    const hargita = hargitaRef.current;
+    if (!hargita) return;
+
+    const rect = hargita.getBoundingClientRect();
+    const top = Math.max(Math.round(rect.top), 0);
+    const bottom = Math.min(Math.round(rect.bottom), window.innerHeight);
+    const height = Math.max(bottom - top, 0) || window.innerHeight;
+
+    hargita.style.setProperty('--hargita-top', `${top}px`);
+    hargita.style.setProperty('--hargita-height', `${height}px`);
+  }, []);
+
+  const scheduleHargitaViewportUpdate = useCallback(() => {
+    if (hargitaRafRef.current !== null) return;
+
+    hargitaRafRef.current = window.requestAnimationFrame(() => {
+      hargitaRafRef.current = null;
+      updateHargitaViewport();
+    });
+  }, [updateHargitaViewport]);
+
+  const setHargitaNode = useCallback((node) => {
+    hargitaRef.current = node;
+    updateHargitaViewport();
+  }, [updateHargitaViewport]);
 
   // Refresh token
  useEffect(() => {
@@ -63,6 +92,25 @@ function App() {
   refreshAccessToken();
 }, []);
 
+  useEffect(() => {
+    const handleViewportChange = () => {
+      scheduleHargitaViewportUpdate();
+    };
+
+    updateHargitaViewport();
+    window.addEventListener('scroll', handleViewportChange, { passive: true });
+    window.addEventListener('resize', handleViewportChange);
+
+    return () => {
+      window.removeEventListener('scroll', handleViewportChange);
+      window.removeEventListener('resize', handleViewportChange);
+      if (hargitaRafRef.current !== null) {
+        window.cancelAnimationFrame(hargitaRafRef.current);
+        hargitaRafRef.current = null;
+      }
+    };
+  }, [updateHargitaViewport, scheduleHargitaViewportUpdate]);
+
 
   // Betöltés amíg nem tudjuk az admin státuszt
   if (loading) return <div>Betöltés...</div>;
@@ -81,22 +129,20 @@ function App() {
         <Routes>
           <Route path="/" element={<Kezdolap />} />
           <Route path="/autok" element={
-  <div className='Hargita'>
-    <button
-      className="szuro-gomb btn btn-primary d-flex align-items-center"
-      style={{ fontWeight: 'bold', boxShadow: '0 2px 8px #0002', borderRadius: 8 }}
-      onClick={() => setSzuroNyitva(prev => !prev)}
-    >
-      <span className="me-2 bi bi-funnel"></span> Szűrő
-    </button>
+  <div
+    className='Hargita'
+    ref={setHargitaNode}
+  >
+    {!szuroNyitva && (
+      <button
+        className="szuro-gomb btn btn-primary d-flex align-items-center"
+        onClick={() => setSzuroNyitva(true)}
+      >
+        <span className="me-2 bi bi-funnel"></span> Szűrő
+      </button>
+    )}
     {szuroNyitva && <div className="overlay" onClick={() => setSzuroNyitva(false)} />}
     <div className={`szuro-panel${szuroNyitva ? ' nyitva' : ''}`}>
-      {szuroNyitva && (
-        <div className="szuro-fejlec d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
-          <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Szűrő panel</span>
-          <button className="btn-close" onClick={() => setSzuroNyitva(false)} />
-        </div>
-      )}
       <Szures onSearch={filter => setSzur(filter)} nyitva={szuroNyitva} setNyitva={setSzuroNyitva} />
     </div>
     <Autok szuro={szur} admin={isAdmin} />
@@ -131,3 +177,4 @@ function App() {
 
 
 export default App;
+

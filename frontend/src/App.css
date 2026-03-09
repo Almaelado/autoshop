@@ -47,6 +47,21 @@ body {
   overflow-y: auto;
 }
 
+.szuro-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.szuro-panel.nyitva {
+  max-height: 600px; /* vagy elég nagy érték, hogy minden tartalom beleférjen */
+  box-shadow: 0 2px 16px #0002;
+}
+
+
 #Szures.nyitva {
   transform: translateX(0);
 }
@@ -89,8 +104,8 @@ body {
 }
 
 .Hargita {
-  display: flex;
   position: relative;
+  display: block;
 }
 
 .auto-details-page #Szures {  
@@ -594,3 +609,54 @@ footer p {
   color: black;
 }
 /* End of recent edits */
+.szuro-gomb {
+  position: fixed;
+  top: var(--hargita-top, 0px);
+  left: 0;
+  width: 64px;
+  height: var(--hargita-height, 100vh);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 2px 8px #0002;
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+  border: 1px solid #0d47a1;
+  color: #fff;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  writing-mode: horizontal-tb;
+  transform: none;
+  z-index: 10001;
+}
+
+.szuro-gomb:hover {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.35);
+}
+
+.szuro-gomb i,
+.szuro-gomb span {
+  color: #fff;
+}
+
+/* A szuro csak a Hargita konteneren belul jelenjen meg */
+.Hargita #Szures {
+  position: fixed !important;
+  top: var(--hargita-top, 0px);
+  left: 0;
+  height: var(--hargita-height, 100vh);
+  max-height: var(--hargita-height, 100vh);
+  z-index: 10000;
+}
+
+.Hargita .overlay {
+  position: fixed;
+  top: var(--hargita-top, 0px);
+  right: 0;
+  left: 0;
+  height: var(--hargita-height, 100vh);
+  z-index: 9998;
+}
+
