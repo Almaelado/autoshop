@@ -90,7 +90,7 @@ const Autok = ({ szuro, admin }) => {
 
     
     return (
-        <div className="autok-container">
+        <div className={`autok-container ${admin ? "autok-admin-page" : "autok-list-page"}`}>
             <h1>{admin ? "Autók kezelése (Admin)" : "Autók listája"}</h1>
             <div className="kereso-sor">
                 <input
@@ -129,7 +129,7 @@ const Autok = ({ szuro, admin }) => {
 
                         <ListGroup className="list-group-flush">
                             <ListGroup.Item>Szín: {auto.szin_nev}</ListGroup.Item>
-                            <ListGroup.Item>{auto.km} km</ListGroup.Item>
+                            <ListGroup.Item>Km állás: {auto.km} km</ListGroup.Item>
                         </ListGroup>
 
                         <Card.Body>

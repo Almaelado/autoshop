@@ -135,7 +135,7 @@ export default function FoOldal() {
 </div>
 
 {/* -------- VÁSÁRLÓI VÉLEMÉNYEK -------- */}
-<div className="testimonials-section my-5 p-5 bg-light text-center rounded">
+<div className="testimonials-section my-5 p-5 text-center">
   <h2 className="section-title">Vásárlóink mondták</h2>
   <Row className="justify-content-center mt-4">
     <Col md={4} className="mb-4">
@@ -175,7 +175,6 @@ export default function FoOldal() {
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2682.863933094359!2d20.46123431573988!3d47.31409127915814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c5d1f7b4b93f%3A0x400af0f66198b30!2sMezőtúr!5e0!3m2!1shu!2hu!4v1700000000000!5m2!1shu!2hu"
           width="100%"
           height="450"
-          style={{ border: "0" }}
           loading="lazy"
         ></iframe>
       </div>
