@@ -8,6 +8,26 @@
   box-shadow: 0 8px 32px rgba(0, 60, 120, 0.10);
 }
 
+.admin-uzenetek-back {
+  background: #f3f7ff;
+  color: #0a2540;
+  border: 1px solid #cfe0ff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  box-shadow: 0 6px 18px rgba(0, 102, 255, 0.10);
+  margin-bottom: 18px;
+}
+
+.admin-uzenetek-back:hover {
+  background: #e8f1ff;
+  box-shadow: 0 10px 26px rgba(0, 102, 255, 0.16);
+  transform: translateY(-2px);
+}
+
 .admin-uzenetek-title {
   font-size: 2.2rem;
   font-weight: 800;

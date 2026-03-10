@@ -41,6 +41,13 @@ export default function AdminUzenetek({ accessToken }) {
     }
      return (
         <div className="admin-uzenetek-container">
+            <button
+                type="button"
+                className="admin-uzenetek-back"
+                onClick={() => navigate(-1)}
+            >
+                Vissza
+            </button>
             <div className="admin-uzenetek-title">Üzenetek az érdeklődőktől</div>
             {uzenetek.length === 0 ? (
                 <div className="uzenet-ures">Nincsenek üzenetek.</div>

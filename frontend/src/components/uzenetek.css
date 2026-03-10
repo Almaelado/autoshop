@@ -8,11 +8,43 @@
   box-shadow: 0 12px 40px rgba(0, 60, 120, 0.13);
 }
 
+.uzenetek-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.uzenetek-back {
+  justify-self: start;
+  background: #f3f7ff;
+  color: #0a2540;
+  border: 1px solid #cfe0ff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  box-shadow: 0 6px 18px rgba(0, 102, 255, 0.10);
+}
+
+.uzenetek-back:hover {
+  background: #e8f1ff;
+  box-shadow: 0 10px 26px rgba(0, 102, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.uzenetek-header-spacer {
+  justify-self: end;
+}
+
 .uzenetek-title {
   font-size: 2.5rem;
   font-weight: 900;
   color: #0a2540;
-  margin-bottom: 40px;
+  margin: 0;
   letter-spacing: 1.5px;
   text-align: center;
 }

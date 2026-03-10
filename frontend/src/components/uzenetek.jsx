@@ -53,7 +53,17 @@ export default function Uzenetek({ accessToken }) {
 
     return (
         <div className="uzenetek-container">
-            <h2 className="uzenetek-title">Üzeneteim</h2>
+            <div className="uzenetek-header">
+                <button
+                    type="button"
+                    className="uzenetek-back"
+                    onClick={() => navigate(-1)}
+                >
+                    Vissza
+                </button>
+                <h2 className="uzenetek-title">Üzeneteim</h2>
+                <div className="uzenetek-header-spacer" />
+            </div>
             {uzenetek.length === 0 ? (
                 <div className="uzenet-ures">Nincsenek üzenetek.</div>
             ) : (

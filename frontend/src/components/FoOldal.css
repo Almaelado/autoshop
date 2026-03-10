@@ -314,9 +314,28 @@
   }
 }
 
+.terkep-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  padding: 28px;
+  border-radius: 18px;
+  border: 2px solid rgba(0, 102, 255, 0.12);
+  box-shadow: 0 12px 32px rgba(0, 60, 120, 0.12);
+  margin: 60px auto;
+}
+
 .terkep-container h3 {
   font-size: 1.8rem;
   margin-bottom: 20px;
+}
+
+.terkep-container iframe {
+  display: block;
+  width: 100%;
+  border-radius: 14px;
+  border: 2px solid rgba(0, 102, 255, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    0 10px 24px rgba(0, 60, 120, 0.12);
+  background: #ffffff;
 }
 
 /* ---------- VISSZA GOMB ---------- */
@@ -368,14 +387,24 @@
   margin-bottom: 30px;
 }
 
+.testimonials-section {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f6ff 100%);
+  border: 2px solid rgba(0, 102, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0, 60, 120, 0.12);
+}
+
 .testimonial-card {
-  background: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #f7f9ff 100%);
+  border: 2px solid rgba(0, 102, 255, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 60, 120, 0.1);
   transition: 0.3s;
 }
 
 .testimonial-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-color: #7bb6fa;
+  box-shadow: 0 14px 30px rgba(0, 60, 120, 0.18);
 }
 
 .testimonial-text {
