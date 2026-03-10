@@ -1,15 +1,20 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import {api} from '@/api/api';
+import {api,getBackendCim} from '@/api/api';
 import {useRouter} from 'expo-router';
 import { useAuth } from '@/auth/AuthProvider';
+import Profile from '../../components/Profile';
+import { useBackend } from "@/auth/BackendProvider";
 
 export default function BejReg() {
   const [vizsg, setVizsg] = React.useState(false);
   const router = useRouter();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const { login } = useAuth();
+  const { login , user } = useAuth();
+  const [backendCim, setBackendCimLocal] = React.useState('');
+  const { setBackendUrl } = useBackend();
+
 
   const handleSubmit = () => {
 
@@ -37,6 +42,10 @@ export default function BejReg() {
       });
     }
   };
+
+  if(user){
+      return <Profile />;
+  }
 
   return (
     <View style={styles.container}>
@@ -82,6 +91,25 @@ export default function BejReg() {
           {vizsg ? 'Bejelentkezés' : 'Regisztráció'}
         </Text>
       </TouchableOpacity>
+      <View style={{ marginTop: 30 }}>
+  <TextInput
+    style={styles.input}
+    placeholder="Backend cím (pl: http://192.168.0.10:3000)"
+    value={backendCim}
+    onChangeText={setBackendCimLocal}
+  />
+
+  <TouchableOpacity
+    style={styles.primaryButton}
+    onPress={() => {
+      setBackendUrl(backendCim);
+    }}
+  >
+    <Text style={styles.primaryButtonText}>
+      Backend cím mentése
+    </Text>
+  </TouchableOpacity>
+</View>
     </View>
   );
 }
