@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { api,getBackendCim } from '@/api/api';
 import Szures from '@/components/Szures';
+import Reszletek from '@/components/Reszletek';
 import { useBackend } from '@/auth/BackendProvider';
 
 
@@ -38,6 +39,8 @@ export default function AutokMobile() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentFilters, setCurrentFilters] = useState<any>({});
   const { backendUrl } = useBackend();
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedAuto, setSelectedAuto] = useState<Termek | null>(null);
 
   // ----- Szűrés kezelése -----
   const handleSearch = (filters: any) => {
@@ -85,7 +88,10 @@ export default function AutokMobile() {
 
   // ----- Render Item -----
   const renderItem = ({ item }: { item: Termek }) => (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => {
+    setSelectedAuto(item);
+    setDetailsOpen(true);
+  }}>
       <Image
   source={{ uri: backendUrl ? `${backendUrl}/img/${item.id}_1.jpg` : undefined }}
   style={styles.image}
@@ -113,6 +119,11 @@ export default function AutokMobile() {
           nyitva={filterOpen}
           setNyitva={setFilterOpen}
           onSearch={handleSearch}
+        />
+        <Reszletek
+          nyitva={detailsOpen}
+          setNyitva={setDetailsOpen}
+          auto={selectedAuto}
         />
 
         <FlatList

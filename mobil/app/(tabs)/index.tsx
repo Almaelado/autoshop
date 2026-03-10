@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
 import { api } from '../../api/api';
 import { useBackend } from '@/auth/BackendProvider';
-
+import Reszletek from '@/components/Reszletek';
 
 export default function HomeScreen() {
   const [autok, setAutok] = useState([]);
   const { backendUrl } = useBackend();
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedAuto, setSelectedAuto] = useState<any>(null);
 
   useEffect(() => {
   if (!backendUrl) return;
@@ -28,7 +30,14 @@ export default function HomeScreen() {
   }, [autok]);
 
   return (
+    <>
+    <Reszletek
+  nyitva={detailsOpen}
+  setNyitva={setDetailsOpen}
+  auto={selectedAuto}
+/>
     <ScrollView style={styles.container}>
+      
       {/* HERO BANNER */}
       <View style={styles.hero}>
         <View style={styles.heroOverlay}>
@@ -46,21 +55,27 @@ export default function HomeScreen() {
       <Text style={styles.sectionTitle}>Kiemelt autóink</Text>
       <View style={styles.carGrid}>
         {autok.map(auto => (
-          <View key={auto.id} style={styles.carCard}>
+          <TouchableOpacity
+            key={auto.id}
+            style={styles.carCard}
+            onPress={() => {
+              setSelectedAuto(auto);
+              setDetailsOpen(true);
+            }}
+          >
             <Image
-  source={{ uri: backendUrl ? `${backendUrl}/img/${auto.id}_1.jpg` : undefined }}
-  style={styles.carImg}
-  resizeMode="cover"
-/>
-            
+              source={{ uri: backendUrl ? `${backendUrl}/img/${auto.id}_1.jpg` : undefined }}
+              style={styles.carImg}
+              resizeMode="cover"
+            />
+
             <Text style={styles.carName}>{auto.nev} {auto.model}</Text>
             <Text style={styles.carPrice}>{auto.ar.toLocaleString()} Ft</Text>
-            <TouchableOpacity
-              style={styles.detailsBtn}
-              onPress={() => {}}>
+
+            <View style={styles.detailsBtn}>
               <Text style={styles.detailsBtnText}>Részletek</Text>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -133,6 +148,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
   );
 }
 
