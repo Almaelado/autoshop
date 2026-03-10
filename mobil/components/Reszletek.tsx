@@ -1,0 +1,170 @@
+import React, { useEffect, useState } from "react";
+import { View, Text, Modal, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native";
+import { useBackend } from "@/auth/BackendProvider";
+import { Dimensions } from "react-native";
+
+const width = Dimensions.get("window").width;
+type Termek = {
+  id: number;
+  nev: string;
+  model: string;
+  leiras: string;
+  ar: number;
+  szin_nev: string;
+  km: number;
+};
+
+type Props = {
+  nyitva: boolean;
+  setNyitva: (value: boolean) => void;
+  auto: Termek | null;
+};
+
+export default function Reszletek({ nyitva, setNyitva, auto }: Props) {
+  const { backendUrl } = useBackend();
+  const [kepek, setKepek] = useState<number[]>([1,2,3,4,5]);
+  const [activeImageId, setActiveImageId] = useState<number>(kepek[0]);
+  const flatListRef = React.useRef<FlatList<number>>(null);
+
+    useEffect(() => {
+  if (auto && kepek.length > 0) {
+    setActiveImageId(kepek[0]);
+  }
+}, [auto, kepek]);
+
+    const onViewRef = React.useRef(({ viewableItems }: any) => {
+  if (viewableItems.length > 0) {
+    setActiveImageId(viewableItems[0].item);
+  }
+});
+
+const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
+
+  const handleImageError = (index:number) => {
+  setKepek(prev => prev.filter((_,i) => i !== index));
+};
+  if (!auto) return null;
+
+  return (
+    <Modal
+      visible={nyitva}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => setNyitva(false)}
+    >
+      <View style={styles.overlay}>
+        <View style={styles.modal}>
+
+          <FlatList
+  data={kepek}
+  horizontal
+  pagingEnabled
+  showsHorizontalScrollIndicator={false}
+  keyExtractor={(item) => item.toString()}
+  renderItem={({ item }) => (
+    <Image
+      source={{ uri: `${backendUrl}/img/${auto.id}_${item}.jpg` }}
+      style={styles.image}
+      onError={() => handleImageError(kepek.indexOf(item))}
+    />
+  )}
+  onMomentumScrollEnd={(event) => {
+    // Számoljuk ki a scroll indexet
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offsetX / (width * 0.8 + 10)); // 10 a marginRight
+    if (kepek[index] !== undefined) {
+      setActiveImageId(kepek[index]);
+    }
+  }}
+/>
+<View style={styles.indicatorContainer}>
+  {kepek.map((id) => (
+    <View
+      key={id}
+      style={[styles.dot, { opacity: id === activeImageId ? 1 : 0.3 }]}
+    />
+  ))}
+</View>
+          <Text style={styles.title}>
+            {auto.nev} {auto.model}
+          </Text>
+
+          <Text style={styles.price}>{auto.ar} Ft</Text>
+
+          <Text style={styles.info}>Szín: {auto.szin_nev}</Text>
+          <Text style={styles.info}>Kilométer: {auto.km} km</Text>
+
+          <Text style={styles.desc}>{auto.leiras}</Text>
+
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setNyitva(false)}
+          >
+            <Text style={styles.closeText}>Bezárás</Text>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modal: {
+    width: "90%",
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 20,
+  },
+  image: {
+  width: width * 0.8,
+  height: 200,
+  borderRadius: 10,
+  marginRight: 10,
+},
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  price: {
+    fontSize: 20,
+    color: "#4f46e5",
+    marginVertical: 5,
+  },
+  info: {
+    fontSize: 14,
+    color: "#555",
+  },
+  desc: {
+    marginTop: 10,
+    fontSize: 14,
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: "#4f46e5",
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  closeText: {
+    color: "white",
+    fontWeight: "bold",
+  },indicatorContainer: {
+  flexDirection: "row",
+  justifyContent: "center",
+  marginTop: 10,
+},
+dot: {
+  width: 8,
+  height: 8,
+  borderRadius: 4,
+  backgroundColor: "#4f46e5",
+  marginHorizontal: 4,
+},
+});
