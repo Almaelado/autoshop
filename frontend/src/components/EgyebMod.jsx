@@ -1,6 +1,6 @@
 import { useState } from "react"; 
 import http from "../http-common";
-
+import './egyedMod.css';
 
  export default function EgyebMod({accessToken}) {
     const [vizsgalt, setVizsgalt] = useState(0);
@@ -46,8 +46,8 @@ import http from "../http-common";
                 console.error("Hiba a váltó hozzáadása során:", error);
             });
     };
-  return (
-    <div>
+   return (
+    <div className="admin-mod-container">
         <h2>Admin Módosítások</h2>
         <button onClick={() => setVizsgalt(1)}>Új Szín felvétele</button>
         <button onClick={() => setVizsgalt(2)}>Új Üzemanyag típus felvétele</button>
@@ -75,6 +75,5 @@ import http from "../http-common";
             </div>}
 
     </div>
-
   );
 }

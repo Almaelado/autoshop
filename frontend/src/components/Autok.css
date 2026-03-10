@@ -6,7 +6,60 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(135deg, var(--light) 0%, #e9ecef 100%);
+  background: transparent;
+}
+
+.autok-list-page {
+  --autok-card-bg: #f9faf6;
+  --autok-card-border: rgba(26, 33, 46, 0.18);
+  --autok-card-border-hover: rgba(0, 102, 255, 0.55);
+  --autok-list-bg: #f2f4ef;
+  --autok-list-border: rgba(26, 33, 46, 0.08);
+}
+
+/* ===== KERESO ===== */
+.autok-list-page .kereso-sor {
+  margin-top: -0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.autok-list-page .kereso-input {
+  min-width: 240px;
+  width: min(420px, 75vw);
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 102, 255, 0.22);
+  background: #f6f8f5;
+  transition: var(--transition);
+}
+
+.autok-list-page .kereso-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
+}
+
+.autok-list-page .kereso-sor .btn {
+  padding: 0.65rem 1.35rem;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 1px solid rgba(0, 82, 204, 0.6);
+  background: linear-gradient(135deg, #2a8cff 0%, #0a5bd8 100%);
+  box-shadow: 0 8px 18px rgba(0, 102, 255, 0.22);
+  color: #ffffff;
+  margin-left: 0 !important;
+}
+
+.autok-list-page .kereso-sor .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(0, 102, 255, 0.28);
+}
+
+.autok-list-page .kereso-sor .btn:active {
+  transform: translateY(0);
 }
 
 /* ===== CÍM ===== */
@@ -31,6 +84,10 @@
   gap: 2rem;
   margin-top: 40px;
 }
+
+.autok-list-page .autok-grid {
+  gap: 2.4rem;
+}
 .autok-grid.autok-grid-few {
   grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
   justify-content: center;
@@ -47,10 +104,34 @@
   transition: var(--transition);
 }
 
+.autok-list-page .autok-card {
+  background: var(--autok-card-bg) !important;
+  border: 1px solid var(--autok-card-border);
+  box-shadow: 0 10px 24px rgba(23, 35, 54, 0.12);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.autok-list-page .autok-card .card-body:first-of-type {
+  flex: 1 1 auto;
+  min-height: 170px;
+}
+
+.autok-list-page .autok-card .list-group {
+  flex: 0 0 auto;
+}
+
 .autok-card:hover {
   transform: translateY(-12px) scale(1.03);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary);
+}
+
+.autok-list-page .autok-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 18px 34px rgba(23, 35, 54, 0.18);
+  border-color: var(--autok-card-border-hover);
 }
 
 /* ===== KÉP ===== */
@@ -58,6 +139,7 @@
   height: 200px;
   width: 100%;
   object-fit: cover;
+  object-position: center;
   background: linear-gradient(135deg, #e9ecef, #f5f7fa);
   transition: transform 0.4s ease;
 }
@@ -79,11 +161,33 @@
   color: var(--dark);
 }
 
+.autok-list-page .autok-card .card-title {
+  font-size: 1.45rem;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .autok-card .card-text {
   font-size: 0.95rem;
   color: var(--gray);
   line-height: 1.6;
   margin-bottom: 1rem;
+}
+
+.autok-list-page .autok-card .card-text {
+  font-size: 0.92rem;
+  color: #5a6068;
+  line-height: 1.5;
+  min-height: 4.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ===== LISTA ===== */
@@ -99,6 +203,24 @@
   justify-content: space-between;
 }
 
+.autok-list-page .autok-card .list-group-item {
+  background: var(--autok-list-bg) !important;
+  border-top: 1px solid var(--autok-list-border);
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.autok-list-page .autok-card .list-group-item:first-child::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.08);
+  flex: 0 0 10px;
+}
+
 .autok-card .list-group-item:first-child {
   border-top: none;
 }
@@ -112,6 +234,21 @@
   color: white;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   border-radius: 0 0 18px 18px;
+}
+
+.autok-list-page .autok-card .card-body:last-child {
+  background: linear-gradient(180deg, #2f7fff 0%, #0a5bd8 100%);
+  border-radius: 0 0 16px 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 -8px 16px rgba(0, 0, 0, 0.18);
+  height: 72px;
+  padding: 0 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+  margin-top: auto;
 }
 
 /* ===== RESZPONZÍV ===== */

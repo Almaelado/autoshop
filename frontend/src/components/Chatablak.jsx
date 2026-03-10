@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import http from "../http-common.js";
+import { useNavigate } from 'react-router-dom';
 import './Chatablak.css';
 
 export default function Chatablak({ accessToken , admin}) {
@@ -14,6 +15,7 @@ export default function Chatablak({ accessToken , admin}) {
     const [loading, setLoading] = useState(true); // kezdéskor true
     const [rendezett, setRendezett] = useState([]);
     const [ujUzenet, setUjUzenet] = useState("");
+    const navigate = useNavigate();
     
     
     useEffect(() => {
@@ -105,19 +107,41 @@ export default function Chatablak({ accessToken , admin}) {
         }
     };
 
+    const header = (
+        <div className="chat-header">
+            <button
+                type="button"
+                className="chat-back"
+                onClick={() => navigate(-1)}
+            >
+                Vissza
+            </button>
+            <h2>Chatablak</h2>
+            <div className="chat-header-spacer" />
+        </div>
+    );
+
     if (loading) {
-        return <div>Betöltés...</div>; // loading state kezelése
+        return (
+            <div className="chat-container">
+                {header}
+                <div className="chat-state">Betöltés...</div>
+            </div>
+        );
     }
 
     if (messages.length === 0) {
-        return <div>Nincsenek üzenetek.</div>; // üres chat kezelése
+        return (
+            <div className="chat-container">
+                {header}
+                <div className="chat-state">Nincsenek üzenetek.</div>
+            </div>
+        );
     }
     //console.log("Üzenetek:", rendezett);
     return (
         <div className="chat-container">
-    <div className="chat-header">
-        <h2>Chatablak</h2>
-    </div>
+    {header}
 
     <div className="chat-messages">
         {rendezett.map((msg,index) => {

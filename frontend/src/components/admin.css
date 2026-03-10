@@ -1,197 +1,99 @@
-/* ===== ADMIN PANEL ===== */
-.admin-container {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-}
-
-.admin-sidebar {
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-  padding: 30px 20px;
-  color: white;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.admin-sidebar h3 {
-  font-size: 1.3rem;
-  margin-bottom: 30px;
-  background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.admin-sidebar ul {
-  list-style: none;
-}
-
-.admin-sidebar li {
-  margin-bottom: 15px;
-}
-
-.admin-sidebar a {
-  color: #e9ecef;
-  font-weight: 600;
-  padding: 12px 15px;
-  border-radius: 8px;
-  display: block;
-  transition: all 0.3s ease;
-}
-
-.admin-sidebar a:hover {
-  background: rgba(0, 102, 255, 0.2);
-  color: #00d4ff;
-  transform: translateX(5px);
-}
-
-.admin-content {
-  padding: 40px 30px;
-}
-
-.admin-header {
+/* ===== ADMIN DASHBOARD KÁRTYÁK ===== */
+.admin-dashboard {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 32px;
+  margin-top: 40px;
+  justify-content: center; /* középre igazítás */
 }
 
-.admin-header h1 {
-  font-size: 2rem;
-  color: #1a1a2e;
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.admin-card {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 102, 255, 0.08);
+  padding: 32px 28px;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+}
+
+.admin-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 102, 255, 0.18);
+}
+
+.admin-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 18px;
+  color: #0066ff;
   font-weight: 700;
 }
 
-.admin-search {
-  position: relative;
-}
-
-.admin-search input {
-  padding: 12px 16px;
-  border: 2px solid rgba(0, 102, 255, 0.2);
-  border-radius: 50px;
-  background: white;
-  width: 250px;
-  transition: all 0.3s ease;
-}
-
-.admin-search input:focus {
-  outline: none;
-  border-color: #0066ff;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
-}
-
-.admin-table {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  border: 2px solid rgba(0, 102, 255, 0.1);
-  margin-bottom: 30px;
-}
-
-.admin-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.admin-table th {
+.admin-card button {
   background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
   color: white;
-  padding: 16px;
-  text-align: left;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.admin-table td {
-  padding: 16px;
-  border-top: 1px solid rgba(0, 102, 255, 0.1);
-  color: #1a1a2e;
-}
-
-.admin-table tr:hover {
-  background: #f8fafc;
-  transition: background 0.3s ease;
-}
-
-.admin-table button {
-  padding: 8px 16px;
-  margin: 0 5px;
   border: none;
   border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 1rem;
   font-weight: 600;
+  margin-bottom: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0,102,255,0.08);
 }
 
-.admin-table .btn-edit {
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  color: white;
+.admin-card button:hover {
+  background: linear-gradient(135deg, #0052cc 0%, #00b4d8 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+.admin-alert {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
-.admin-table .btn-edit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+.admin-alert button {
+    background: #ffc107;
+    color: #212529;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 1em;
 }
 
-.admin-table .btn-delete {
-  background: linear-gradient(135deg, #ff3333 0%, #ff6b35 100%);
-  color: white;
+.admin-alert button:hover {
+    background: #e0a800;
 }
 
-.admin-table .btn-delete:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 51, 51, 0.3);
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .admin-container {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 999;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    height: auto;
-    width: 250px;
-    max-height: 100vh;
-  }
-
-  .admin-sidebar.open {
-    transform: translateX(0);
-  }
-
-  .admin-content {
-    padding: 20px 15px;
-  }
-
-  .admin-header {
+@media (max-width: 900px) {
+  .admin-dashboard {
     flex-direction: column;
-    align-items: stretch;
+    gap: 20px;
   }
-
-  .admin-search input {
+  .admin-card {
     width: 100%;
-  }
-
-  .admin-table {
-    overflow-x: auto;
-  }
-
-  .admin-table button {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    max-width: 100%;
   }
 }

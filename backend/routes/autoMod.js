@@ -59,4 +59,12 @@ router.post('/addmodell', authenticateToken, autoController.AddModell);
 router.post('/addvalto', authenticateToken, autoController.AddValto);
 router.delete("/kepek/:autoId/:index",authenticateToken, autoController.KepTorles);
 router.post("/kepek/:autoId", authenticateToken,upload.single('file'), autoController.KepFeltoltes);
+router.get('/admin/unansweredcount', async (req, res) => {
+  try {
+    const rows = await require('../models/autoModellMod').AdminuzenetekLekerdezese();
+    res.json({ count: rows.length });
+  } catch (err) {
+    res.status(500).json({ count: 0 });
+  }
+});
 module.exports = router;
