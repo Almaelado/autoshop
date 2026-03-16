@@ -1,124 +1,189 @@
 /* ===== MENU STYLES ===== */
-.menu {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 30px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-bottom: 2px solid rgba(0, 102, 255, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+.main-menu {
+  --menu-bg-start: #2d3a4b;
+  --menu-bg-end: #374a61;
+  --menu-accent: #4ea1ff;
+  --menu-accent-soft: #7fd3ff;
+  --menu-text: #ecf2ff;
+  --menu-muted: rgba(236, 242, 255, 0.78);
+  --menu-hover: rgba(94, 150, 255, 0.18);
+  --menu-active: rgba(94, 150, 255, 0.28);
+  --menu-border: rgba(140, 190, 255, 0.45);
+  --menu-shadow: 0 14px 28px rgba(13, 20, 34, 0.25);
+  background: linear-gradient(90deg, var(--menu-bg-start) 0%, var(--menu-bg-end) 55%, var(--menu-bg-start) 100%);
+  border-bottom: 1px solid rgba(130, 175, 255, 0.35);
+  box-shadow: var(--menu-shadow);
+  padding: 0.85rem 0;
+  min-height: 68px;
 }
 
-.menu-logo {
-  font-size: 1.5rem;
+.main-menu .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--menu-text);
   font-weight: 700;
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+  text-decoration: none;
 }
 
-.menu-logo:hover {
-  transform: scale(1.05);
+.main-menu .navbar-brand:hover {
+  color: #ffffff;
+  text-decoration: none;
 }
 
-.menu-nav {
-  display: flex;
-  gap: 30px;
-  align-items: center;
+.main-menu .menu-logo {
+  height: 40px;
+  width: auto;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 18px rgba(10, 18, 32, 0.35);
 }
 
-.menu-nav a {
-  color: #1a1a2e;
+.main-menu .menu-brand-text {
+  font-size: 1.05rem;
+}
+
+.main-menu .navbar-nav {
+  gap: 0.9rem;
+}
+
+.main-menu .nav-link,
+.main-menu .dropdown-toggle {
+  color: var(--menu-muted);
   font-weight: 600;
-  transition: all 0.3s ease;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
   position: relative;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  text-decoration: none;
 }
 
-.menu-nav a::after {
-  content: '';
+.main-menu .menu-link::after {
+  content: "";
   position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
   height: 2px;
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, var(--menu-accent), var(--menu-accent-soft));
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-.menu-nav a:hover::after {
-  width: 100%;
+.main-menu .menu-dropdown > .dropdown-toggle::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 28px;
+  bottom: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--menu-accent), var(--menu-accent-soft));
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-.menu-nav a:hover {
-  color: #0066ff;
+.main-menu .nav-link:hover,
+.main-menu .dropdown-toggle:hover,
+.main-menu .nav-link:focus-visible,
+.main-menu .dropdown-toggle:focus-visible {
+  color: #ffffff;
+  background: var(--menu-hover);
+  text-decoration: none;
 }
 
-.menu-button {
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+.main-menu .menu-link:hover::after,
+.main-menu .menu-link.active::after,
+.main-menu .menu-dropdown.active > .dropdown-toggle::before,
+.main-menu .menu-dropdown > .dropdown-toggle:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
-.menu-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
+.main-menu .menu-link.active,
+.main-menu .menu-dropdown.active > .dropdown-toggle {
+  color: #ffffff;
+  background: var(--menu-active);
+  box-shadow: 0 0 0 1px var(--menu-border);
 }
 
-.menu-button:active {
-  transform: translateY(0);
+.main-menu .nav-link:focus-visible,
+.main-menu .dropdown-toggle:focus-visible {
+  outline: 2px solid rgba(125, 180, 255, 0.5);
+  outline-offset: 2px;
 }
 
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: #1a1a2e;
-  font-size: 1.5rem;
-  cursor: pointer;
+.main-menu .menu-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.05rem;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .menu {
-    padding: 15px 20px;
+.main-menu .navbar-toggler {
+  border-color: rgba(236, 242, 255, 0.35);
+  box-shadow: none;
+}
+
+.main-menu .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(125, 180, 255, 0.25);
+}
+
+.main-menu .navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+
+.main-menu .dropdown-menu {
+  background: #233144;
+  border: 1px solid rgba(120, 170, 255, 0.2);
+  box-shadow: 0 16px 30px rgba(10, 18, 32, 0.3);
+}
+
+.main-menu .dropdown-item {
+  color: var(--menu-text);
+  font-weight: 500;
+}
+
+.main-menu .dropdown-item:hover,
+.main-menu .dropdown-item:focus {
+  color: #ffffff;
+  background: rgba(94, 150, 255, 0.2);
+}
+
+.main-menu .dropdown-divider {
+  border-top: 1px solid rgba(120, 170, 255, 0.2);
+}
+
+@media (max-width: 991.98px) {
+  .main-menu {
+    padding: 0.7rem 0;
   }
 
-  .menu-toggle {
-    display: block;
+  .main-menu .navbar-collapse {
+    margin-top: 0.75rem;
   }
 
-  .menu-nav {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    gap: 0;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    display: none;
-    gap: 15px;
+  .main-menu .navbar-nav {
+    gap: 0.6rem;
+    padding: 0.5rem 0;
   }
 
-  .menu-nav.active {
-    display: flex;
+  .main-menu .nav-link,
+  .main-menu .dropdown-toggle {
+    width: 100%;
+    justify-content: flex-start;
   }
 
-  .menu-nav a {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+  .main-menu .menu-link::after,
+  .main-menu .menu-dropdown > .dropdown-toggle::before {
+    left: 12px;
+    right: 12px;
   }
 }
