@@ -1,4 +1,4 @@
-import http from '../http-common.js';
+import http from '../../http-common.js';
 import React, { useState, useEffect } from 'react';
 import './Ujauto.css';
 

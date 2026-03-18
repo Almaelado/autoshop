@@ -1,8 +1,8 @@
 import { use, useState,useEffect } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import http from "../http-common";
-import TypeaheadComponent from './typeahead.jsx';
+import http from "../../http-common";
+import TypeaheadComponent from '../gombok/typeahead.jsx';
 
 export default function Szamla({ accessToken }) {
   const LIMIT = 10;
