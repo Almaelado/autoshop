@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../../http-common";
 import { useEffect, useState } from "react";
 import './ProfileSzerkesztes.css';
 import { useNavigate, useLocation } from "react-router-dom";

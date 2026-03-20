@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Autokreszletek from "./autokreszletek.jsx";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import http from "../http-common";
+import http from "../../http-common";
 import "./FoOldal.css"; 
 import { useNavigate } from "react-router-dom";
 

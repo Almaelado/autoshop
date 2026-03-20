@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
-import http from '../http-common';
+import http from '../../http-common';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './bejelentkez.css';
 

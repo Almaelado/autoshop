@@ -1,4 +1,4 @@
-import Autok from "./autok";
+import Autok from "../felhasznaloi/autok.jsx";
 import './AdminAutok.css';
 
 export default function AdminAutok() {

@@ -1,7 +1,7 @@
 import './admin.css';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import http from "../http-common";
+import http from "../../http-common";
 
 export default function Admin() {
     const navigate = useNavigate();

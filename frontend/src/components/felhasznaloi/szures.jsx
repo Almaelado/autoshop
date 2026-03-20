@@ -1,9 +1,9 @@
 import { use, useEffect, useState } from "react";
-import TypeaheadComponent from "./typeahead.jsx";
-import RangeSlider from "./RangeSlider.jsx";
-import Checkbox from "./checkbox.jsx";
+import TypeaheadComponent from "../gombok/typeahead.jsx";
+import RangeSlider from "../gombok/RangeSlider.jsx";
+import Checkbox from "../gombok/checkbox.jsx";
 import Button from 'react-bootstrap/Button';
-import http from "../http-common";
+import http from "../../http-common";
 import {useSearchParams} from "react-router-dom"; 
 import './szures.css';
 
