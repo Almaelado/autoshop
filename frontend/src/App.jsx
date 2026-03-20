@@ -24,6 +24,7 @@ import AdminUzenetek from './components/admin/AdminUzenetek.jsx';
 import Chatablak from './components/chatablak/Chatablak.jsx';
 import Ujauto from './components/admin/Ujauto.jsx';
 import EgyebMod from './components/admin/EgyebMod.jsx';
+import './premium-theme.css';
 
 function App() {
   const [belepett, setBelepett] = useState(false);
