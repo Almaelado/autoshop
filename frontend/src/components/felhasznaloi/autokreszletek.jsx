@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import http from "../http-common.js";
+import http from "../../http-common.js";
 import { Carousel } from "react-bootstrap";
 import './autokreszletek.css';
-import KepekSzerkesztese from "./KepekSzerkesztese.jsx";
+import KepekSzerkesztese from "../admin/KepekSzerkesztese.jsx";
 
 export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) {
   const [showKepekModal, setShowKepekModal] = useState(false);

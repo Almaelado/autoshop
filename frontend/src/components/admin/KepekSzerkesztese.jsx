@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import http from "../http-common";
+import http from "../../http-common";
 import "./kepekSzerkesztese.css";
 
 export default function KepekSzerkesztese({ autoId, onClose, accessToken }) {

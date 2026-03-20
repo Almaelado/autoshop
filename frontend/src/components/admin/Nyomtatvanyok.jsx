@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Szamla from "./Szamla";
-import "./Nyomtatvanyok.css";
+import "./nyomtatvanyok.css";
 
 export default function Nyomtatvanyok({ accessToken }) {
   const [nyomtatvanyok, setNyomtatvanyok] = useState("");

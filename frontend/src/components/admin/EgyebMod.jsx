@@ -1,6 +1,6 @@
 import { useState } from "react"; 
-import http from "../http-common";
-import './egyedMod.css';
+import http from "../../http-common";
+import './egyedmod.css';
 
  export default function EgyebMod({accessToken}) {
     const [vizsgalt, setVizsgalt] = useState(0);

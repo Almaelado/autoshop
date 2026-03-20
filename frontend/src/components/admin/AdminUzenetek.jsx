@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import http from "../http-common";
+import http from "../../http-common";
 import {useNavigate} from "react-router-dom";
 import './AdminUzenetek.css';
 

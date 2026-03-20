@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import http from "../http-common";
+import http from "../../http-common";
 import './Autok.css';
 
 const Autok = ({ szuro, admin }) => {
