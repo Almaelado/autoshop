@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Modal, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native";
 import { useBackend } from "@/auth/BackendProvider";
 import { Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import ChatAblak from "@/components/ChatAblak";
 
 const width = Dimensions.get("window").width;
 type Termek = {
@@ -25,7 +27,8 @@ export default function Reszletek({ nyitva, setNyitva, auto }: Props) {
   const [kepek, setKepek] = useState<number[]>([1,2,3,4,5]);
   const [activeImageId, setActiveImageId] = useState<number>(kepek[0]);
   const flatListRef = React.useRef<FlatList<number>>(null);
-
+  const navigation = useNavigation();
+  const [chatOpen, setChatOpen] = useState(false);
     useEffect(() => {
   if (auto && kepek.length > 0) {
     setActiveImageId(kepek[0]);
@@ -54,7 +57,12 @@ const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
     >
       <View style={styles.overlay}>
         <View style={styles.modal}>
-
+        <TouchableOpacity
+  style={styles.closeIcon}
+  onPress={() => setNyitva(false)}
+>
+  <Text style={styles.closeIconText}>✕</Text>
+</TouchableOpacity>
           <FlatList
   data={kepek}
   horizontal
@@ -96,15 +104,29 @@ const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
 
           <Text style={styles.desc}>{auto.leiras}</Text>
 
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setNyitva(false)}
-          >
-            <Text style={styles.closeText}>Bezárás</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={styles.interestButton}
+              onPress={() => console.log("Érdekel gomb megnyomva")}
+            >
+              <Text style={styles.buttonText}>Érdekel</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.messageButton}
+             onPress={() => setChatOpen(true)}
+            >
+              <Text style={styles.buttonText}>Üzenet</Text>
+            </TouchableOpacity>
+          </View>
 
         </View>
       </View>
+      <ChatAblak
+  nyitva={chatOpen}
+  setNyitva={setChatOpen}
+  auto={auto}
+/>
     </Modal>
   );
 }
@@ -117,11 +139,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modal: {
-    width: "90%",
-    backgroundColor: "white",
-    borderRadius: 15,
-    padding: 20,
-  },
+  width: "90%",
+  backgroundColor: "white",
+  borderRadius: 15,
+  padding: 20,
+  paddingTop: 40,
+},
   image: {
   width: width * 0.8,
   height: 200,
@@ -166,5 +189,50 @@ dot: {
   borderRadius: 4,
   backgroundColor: "#4f46e5",
   marginHorizontal: 4,
+},
+buttonsContainer: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginTop: 20,
+},
+
+interestButton: {
+  flex: 1,
+  backgroundColor: "#22c55e",
+  padding: 12,
+  borderRadius: 8,
+  alignItems: "center",
+  marginRight: 5,
+},
+
+messageButton: {
+  flex: 1,
+  backgroundColor: "#3b82f6",
+  padding: 12,
+  borderRadius: 8,
+  alignItems: "center",
+  marginLeft: 5,
+},
+
+buttonText: {
+  color: "white",
+  fontWeight: "bold",
+},closeIcon: {
+  position: "absolute",
+  top: 10,
+  right: 10,
+  zIndex: 10,
+  width: 30,
+  height: 30,
+  borderRadius: 15,
+  backgroundColor: "#eee",
+  justifyContent: "center",
+  alignItems: "center",
+},
+
+closeIconText: {
+  fontSize: 18,
+  fontWeight: "bold",
+  color: "#333",
 },
 });
