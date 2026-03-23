@@ -30,6 +30,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html.szuro-open,
+body.szuro-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 /* SZŰRÉS PANEL */
 #Szures {
   position: fixed;   
@@ -105,6 +111,15 @@ body {
 .Hargita {
   position: relative;
   display: block;
+}
+
+.Hargita .autok-container {
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.Hargita.szuro-open .autok-container {
+  pointer-events: none;
+  user-select: none;
 }
 
 .auto-details-page #Szures {  
@@ -233,28 +248,37 @@ footer p {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
   border: 2px solid rgba(0, 102, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .auto-info h2 {
   font-weight: 700;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
   font-size: 1.8rem;
   color: #1a1a2e;
+  max-width: 920px;
+  text-align: center;
 }
 
 .auto-info p {
   color: #6c757d;
-  margin-bottom: 30px;
+  margin: 0 auto 30px;
   font-size: 1rem;
   line-height: 1.6;
+  max-width: 760px;
+  text-align: center;
 }
 
 /* ===== SPECIFIKÁCIÓK ===== */
 .auto-specs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 25px;
-  margin-top: 30px;
+  width: 100%;
+  max-width: 960px;
+  margin: 30px auto 0;
   padding-top: 30px;
   border-top: 2px solid rgba(0, 102, 255, 0.1);
 }
@@ -265,6 +289,12 @@ footer p {
   border-radius: 12px;
   border: 2px solid rgba(0, 102, 255, 0.05);
   transition: var(--transition);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .auto-specs div:hover {
@@ -407,6 +437,10 @@ footer p {
   font-size: 1em;
   color: var(--dark);
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .ajanlott-nev {
@@ -424,6 +458,23 @@ footer p {
   font-weight: 700;
   font-size: 1.15em;
 }
+
+@media (max-width: 900px) {
+  .auto-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .auto-info {
+    padding: 26px 20px;
+  }
+
+  .auto-specs {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 700px) {
   .ajanlott-lista {
     flex-direction: column;
@@ -662,8 +713,56 @@ footer p {
     }
 }
 
-.SzamlaTypeahead{
+.SzamlaTypeahead {
   color: black;
+}
+
+.SzamlaTypeahead .rbt {
+  width: 100%;
+}
+
+.SzamlaTypeahead .rbt-input-multi {
+  width: 100%;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1rem;
+}
+
+.SzamlaTypeahead .rbt-input-wrapper {
+  width: 100%;
+  margin: 0 !important;
+  align-items: center;
+}
+
+.SzamlaTypeahead .rbt-input-main {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0.7rem 1rem !important;
+  color: #1b1715 !important;
+  background: #fffaf5 !important;
+  border: 1px solid rgba(140, 110, 84, 0.2) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 1;
+}
+
+.SzamlaTypeahead .rbt-input-hint {
+  background: transparent !important;
+  border-color: transparent !important;
+  border-width: 0 !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  padding: 0.7rem 1rem !important;
+  z-index: 0;
+}
+
+.SzamlaTypeahead .rbt-input-main::placeholder {
+  color: #6f6358 !important;
+  opacity: 0.9;
 }
 /* End of recent edits */
 .szuro-gomb {
@@ -685,7 +784,7 @@ footer p {
   transition: background 0.2s ease, box-shadow 0.2s ease;
   writing-mode: horizontal-tb;
   transform: none;
-  z-index: 10001;
+  z-index: 12001;
 }
 
 .szuro-gomb:hover {
@@ -705,7 +804,7 @@ footer p {
   left: 0;
   height: var(--hargita-height, 100vh);
   max-height: var(--hargita-height, 100vh);
-  z-index: 10000;
+  z-index: 12000;
 }
 
 .Hargita .overlay {
@@ -713,7 +812,12 @@ footer p {
   top: var(--hargita-top, 0px);
   right: 0;
   left: 0;
-  height: var(--hargita-height, 100vh);
-  z-index: 9998;
+  bottom: 0;
+  height: auto;
+  z-index: 11500;
+  background: rgba(32, 30, 28, 0.22) !important;
+  backdrop-filter: blur(1.5px);
+  opacity: 1;
+  pointer-events: auto;
 }
 

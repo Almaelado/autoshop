@@ -92,16 +92,6 @@ export default function Profil({ accessToken }) {
         </div>
         <div className="profile-name">{profilData?.nev || "Betöltés..."}</div>
         <div className="profile-email">{profilData?.email}</div>
-        <div className="profile-info">
-          <div className="info-card">
-            <div className="info-label">Regisztráció</div>
-            <div className="info-value">
-              {profilData?.reg_datum
-                ? new Date(profilData.reg_datum).toLocaleDateString()
-                : "-"}
-            </div>
-          </div>
-        </div>
       </div>
       <hr />
       <h2>Érdeklődéseim</h2>

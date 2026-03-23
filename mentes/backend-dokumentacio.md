@@ -1,52 +1,49 @@
-﻿# Backend dokumentáció – Autókereskedés
+# Backend dokumentáció – Autókereskedés
 
 **Áttekintés**
-A backend egy Node.js + Express alapú REST API, amely az autókereskedés adatainak kezelését végzi. A rendszer autók listázását és szűrését, felhasználói regisztrációt és bejelentkezést, érdeklődések és üzenetek kezelését, valamint számlázási adatok rögzítését támogatja. A backend egy MySQL adatbázishoz kapcsolódik, és statikus képek kiszolgálását is elvégzi.
+A backend egy Node.js + Express alapú REST API, amelyet a webes frontend és a mobil kliens is használ. A szerver az autók listázását, részletek lekérését, összetett szűrését, a felhasználói hitelesítést, a profilkezelést, az érdeklődési és üzenetkezelési folyamatokat, valamint az admin felülethez tartozó autó-, képfeltöltési és nyomtatványos műveleteket szolgálja ki. A statikus autóképek a `backend/public/img` mappából érhetők el a `/img` útvonalon.
 
 **A rendszer célja és funkciója**
-- Autók listázása, részletek lekérése, szűrés, ajánlott és véletlenszerű autók.
-- Adminisztrátori műveletek: autók létrehozása, szerkesztése, törlése, segédtáblák bővítése.
-- Felhasználói regisztráció, bejelentkezés, token alapú azonosítás.
-- Érdeklődések, üzenetek és chat funkció kezelése.
-- Számla- és rendelésadatok rögzítése.
-- Képfeltöltés és képtörlés.
+- Nyilvános autólista, autóadatlap, ajánlott autók és véletlenszerű ajánlatok kiszolgálása.
+- JWT alapú bejelentkezés, regisztráció, profillekérés, profilmódosítás és jelszócsere.
+- Érdeklődési és üzenetküldési folyamatok kezelése a felhasználói oldalon.
+- Admin felület támogatása: autók létrehozása, szerkesztése, képfeltöltés, segédadatok bővítése.
+- Számlaadatok lekérése és számla/rendelés mentése.
 
 **Rövid architektúra leírás**
-A backend MVC-szerű felépítésű. Az útvonalak (routes) irányítják a kéréseket a kontrollerekhez, a kontrollerek az üzleti logikát végzik, és a modelleken keresztül férnek hozzá az adatbázishoz. A JWT-alapú autentikációt middleware kezeli. Statikus fájlok a `backend/public` mappából szolgálódnak ki.
+A backend MVC-szerű felépítést követ. Az útvonalak a kontrollerekhez irányítják a kéréseket, a kontrollerek állítják össze a válaszlogikát, az adatbázis-elérést pedig a modellek végzik. Külön service réteg jelenleg nincs, a vezérlők közvetlenül hívják a modelleket. A JWT ellenőrzést middleware végzi, a képek és egyéb statikus fájlok az Express statikus kiszolgálásán keresztül érhetők el.
 
 **Fő komponensek és modulok**
 - `backend/app.js`: Express alkalmazás inicializálása, middleware-ek és route-ok bekötése.
-- `backend/bin/www`: HTTP szerver indítása és port beállítása.
-- `backend/routes/autoMod.js`: REST végpontok listája és middleware-ek.
-- `backend/controllers/autoControllerMod.js`: üzleti logika, JWT kezelés, fájlkezelés.
-- `backend/models/autoModellMod.js`: adatbázis műveletek, SQL lekérdezések.
-- `backend/middleware/authAuto.js`: JWT ellenőrzés és `req.user` beállítás.
+- `backend/bin/www`: HTTP szerver indítása.
+- `backend/routes/autoMod.js`: az összes REST végpont definíciója.
+- `backend/controllers/autoControllerMod.js`: vezérlőlogika, tokenkezelés, képfeltöltés, számla mentés.
+- `backend/models/autoModellMod.js`: SQL lekérdezések és adatbázis műveletek.
+- `backend/middleware/authAuto.js`: JWT ellenőrzés és `req.user` beállítása.
 - `backend/config/db.js`: MySQL kapcsolat pool konfiguráció.
-- `backend/public/img`: autók képei.
-- `backend/tmp`: ideiglenes feltöltési mappa (multer).
+- `backend/public/img`: kiszolgált képek mappája.
+- `backend/tmp`: ideiglenes feltöltési mappa a `multer` számára.
 
 **Technológiai stack**
 - Nyelv: JavaScript (Node.js).
 - Framework: Express 4.16.1.
-- Adatbázis: MySQL (InnoDB, `utf8mb4_hungarian_ci` kolláció).
-- ORM/DB driver: mysql2/promise 3.15.3.
-- Autentikáció: jsonwebtoken 9.0.2, bcrypt 6.0.0.
-- Fájlkezelés: multer 2.0.2.
-- HTTP middleware-ek: cors 2.8.5, cookie-parser 1.4.4, morgan 1.9.1, dotenv 17.2.3.
-- Fejlesztői eszköz: nodemon 3.1.10.
-- Külső szolgáltatások / API-k: nincs.
+- Adatbázis driver: `mysql2/promise` 3.15.3.
+- Hitelesítés: `jsonwebtoken` 9.0.2, `bcrypt` 6.0.0.
+- Fájlkezelés: `multer` 2.0.2.
+- Middleware-ek: `cors`, `cookie-parser`, `morgan`, `dotenv`.
+- Fejlesztői futtatás: `nodemon`.
 
 **Rendszerarchitektúra**
 Modulok és rétegek:
-- Controller réteg: `backend/controllers/autoControllerMod.js`.
-- Service réteg: nincs külön réteg, a controller közvetlenül hívja a modelleket.
-- Repository/Model réteg: `backend/models/autoModellMod.js`.
-- Middleware réteg: `backend/middleware/authAuto.js`.
+- Route réteg: `backend/routes/autoMod.js`
+- Controller réteg: `backend/controllers/autoControllerMod.js`
+- Model réteg: `backend/models/autoModellMod.js`
+- Middleware réteg: `backend/middleware/authAuto.js`
 
-Adatáramlás diagram:
+Adatáramlás:
 ```mermaid
 flowchart LR
-    Client[Frontend/Mobil kliens] -->|HTTP JSON| Express[Express API]
+    Client[Frontend vagy mobil kliens] -->|HTTP JSON| Express[Express API]
     Express --> Router[Routes]
     Router --> Controller[Controller]
     Controller --> Model[Model]
@@ -56,14 +53,14 @@ flowchart LR
 ```
 
 Összefüggések más rendszerekkel:
-- A backendet a webes frontend és a mobil kliens fogyasztja REST API-n keresztül.
-- Képek kiszolgálása a backend statikus `/img` útvonalán keresztül történik.
-- Külső integráció nincs.
+- A webes frontend a `frontend` mappából, a mobil kliens a `mobil` mappából használja ugyanazt az API-t.
+- A képek közvetlenül a backend `/img` útvonalán érhetők el.
+- Külső fizetési vagy e-mail integráció jelenleg nincs.
 
-Skálázási és deployment koncepciók:
-- Jelenleg egyetlen Node.js processz fut, horizontális skálázás nincs konfigurálva.
-- Javasolt: több példány futtatása (pl. PM2), reverse proxy (Nginx), és külön statikus fájlkiszolgáló vagy CDN.
-- Adatbázis oldalon replikáció és rendszeres mentés javasolt, de nem része a jelenlegi kódnak.
+Skálázási és deployment megjegyzések:
+- Jelenleg egyetlen Node.js folyamat fut.
+- Külön service layer, queue vagy cache nincs.
+- A jelenlegi kód egyszerű fejlesztői/iskolai futtatásra van optimalizálva.
 
 **Adatbázis és adatmodellezés**
 Adatbázis séma és ER összefoglaló:
@@ -112,13 +109,14 @@ Alap útvonal: minden végpont a `/auto` prefix alatt érhető el.
 Hitelesítés:
 - A védett végpontok `Authorization: Bearer <accessToken>` fejlécet várnak.
 - A refresh token `refreshToken` néven HTTP-only cookie-ban tárolódik.
+- Az access token 15 percig, a refresh token 7 napig érvényes.
 
-Végpontok összefoglaló táblázat:
+Végpontok összefoglaló táblázata:
 | Metódus | Útvonal | Auth | Leírás |
 |---|---|---|---|
-| GET | `/auto/minden` | Nem | Összes autó listázása (query: `limit`, `offset`). |
+| GET | `/auto/minden` | Nem | Összes autó listázása `limit` és `offset` query paraméterekkel. |
 | GET | `/auto/egy/:id` | Nem | Egy autó részletei. |
-| DELETE | `/auto/torol/:id` | Nem | Autó törlése. |
+| DELETE | `/auto/torol/:id` | Nem | Autó törlése. A webes admin felület használja, de a backend jelenleg nem védi. |
 | GET | `/auto/marka` | Nem | Márkák listája. |
 | GET | `/auto/szin` | Nem | Színek listája. |
 | GET | `/auto/uzemanyag` | Nem | Üzemanyagok listája. |
@@ -126,35 +124,35 @@ Végpontok összefoglaló táblázat:
 | GET | `/auto/ajtok` | Nem | Ajtószám opciók. |
 | GET | `/auto/szemelyek` | Nem | Személy opciók. |
 | GET | `/auto/count` | Nem | Autók száma. |
-| GET | `/auto/ajanlott/:marka` | Nem | Ajánlott autók márka alapján. |
-| GET | `/auto/random` | Nem | Véletlenszerű autók. |
-| POST | `/auto/szuro` | Nem | Szűrő feltételek szerinti listázás. |
-| POST | `/auto/login` | Nem | Bejelentkezés, access token + cookie refresh token. |
+| GET | `/auto/ajanlott/:marka` | Nem | Ajánlott autók ugyanazon márka alapján. |
+| GET | `/auto/random` | Nem | Véletlenszerűen kiválasztott autók. |
+| POST | `/auto/szuro` | Nem | Többmezős szűrés és lapozás. |
+| POST | `/auto/login` | Nem | Bejelentkezés, access token + refresh cookie. |
 | POST | `/auto/regisztracio` | Nem | Regisztráció. |
-| POST | `/auto/refresh` | Nem | Access token frissítése cookie-ból. |
-| POST | `/auto/logout` | Nem | Refresh token törlése. |
-| GET | `/auto/profil` | Igen | Saját profil adatok. |
-| PUT | `/auto/profilmodosit` | Igen | Profil módosítás. |
-| PUT | `/auto/jelszomodositas` | Igen | Jelszó módosítás. |
-| POST | `/auto/erdekel` | Igen | Érdeklődés rögzítése. |
-| GET | `/auto/erdekeltek` | Igen | Saját érdeklődött autók. |
-| POST | `/auto/uzenet` | Igen | Új üzenet küldése. |
-| GET | `/auto/uzenetek` | Igen | Saját üzenetek listája. |
-| POST | `/auto/adminuzenetek` | Igen | Admin: megválaszolatlan üzenetek. |
-| GET | `/auto/chatablak` | Igen | Chat előzmények lekérése. |
-| POST | `/auto/admin/chatablak` | Igen | Admin válasz küldése. |
-| POST | `/auto/felhasznalo/chatablak` | Igen | Felhasználói válasz küldése. |
-| GET | `/auto/szamla` | Igen | Számlához szükséges adatok. |
-| POST | `/auto/szamla` | Igen | Számla és rendelés mentése. |
-| PUT | `/auto/szerkesztes/:id` | Igen | Autó módosítása. |
-| POST | `/auto/ujauto` | Igen | Új autó létrehozása. |
-| POST | `/auto/addszin` | Igen | Új szín felvitele. |
-| POST | `/auto/adduzemanyag` | Igen | Új üzemanyag felvitele. |
-| POST | `/auto/addmodell` | Igen | Új márka felvitele. |
-| POST | `/auto/addvalto` | Igen | Új váltó felvitele. |
-| POST | `/auto/kepek/:autoId` | Igen | Kép feltöltése (multipart/form-data). |
-| DELETE | `/auto/kepek/:autoId/:index` | Igen | Kép törlése. |
-| GET | `/auto/admin/unansweredcount` | Nem | Admin: megválaszolatlan üzenetek száma. |
+| POST | `/auto/refresh` | Cookie | Új access token kiadása a refresh cookie alapján. |
+| POST | `/auto/logout` | Cookie | Refresh cookie törlése. |
+| GET | `/auto/profil` | JWT | Saját profil adatok lekérése. |
+| PUT | `/auto/profilmodosit` | JWT | Profil adatok módosítása. |
+| PUT | `/auto/jelszomodositas` | JWT | Jelszó módosítása. |
+| POST | `/auto/erdekel` | JWT | Érdeklődés rögzítése. |
+| GET | `/auto/erdekeltek` | JWT | Saját érdeklődött autók listája. |
+| POST | `/auto/uzenet` | JWT | Új üzenet küldése. |
+| GET | `/auto/uzenetek` | JWT | Saját üzenetszálak lekérése. |
+| POST | `/auto/adminuzenetek` | JWT | Megválaszolatlan üzenetek listája. |
+| GET | `/auto/chatablak` | JWT | Egy felhasználó és autó chat előzményei. |
+| POST | `/auto/admin/chatablak` | JWT | Admin válasz mentése. |
+| POST | `/auto/felhasznalo/chatablak` | JWT | Új felhasználói chat üzenet mentése. |
+| GET | `/auto/szamla` | JWT | Számlához szükséges adatok lekérése. |
+| POST | `/auto/szamla` | JWT | Számla és rendelés mentése. |
+| PUT | `/auto/szerkesztes/:id` | JWT | Autó szerkesztése. |
+| POST | `/auto/ujauto` | JWT | Új autó felvitele. |
+| POST | `/auto/addszin` | JWT | Új szín felvitele. |
+| POST | `/auto/adduzemanyag` | JWT | Új üzemanyag felvitele. |
+| POST | `/auto/addmodell` | JWT | Új márka felvitele. |
+| POST | `/auto/addvalto` | JWT | Új váltó felvitele. |
+| POST | `/auto/kepek/:autoId` | JWT | Kép feltöltése `multipart/form-data` formában. |
+| DELETE | `/auto/kepek/:autoId/:index` | JWT | Egy kép törlése. |
+| GET | `/auto/admin/unansweredcount` | Nem | Megválaszolatlan üzenetek száma. |
 
 Paraméterek és request body példák:
 - `POST /auto/login`
@@ -203,70 +201,43 @@ Válasz:
 ```
 
 - `POST /auto/kepek/:autoId`
-A feltöltés `multipart/form-data` formátumban történik, a fájlmező neve `file`.
+A feltöltés `multipart/form-data` formában történik, a fájlmező neve `file`.
 
-Autentikáció és jogosultságok:
-- Access token érvényesség: 15 perc.
-- Refresh token érvényesség: 7 nap (cookie).
-- A token payload az `id`, `email`, `admin` mezőket tartalmazza.
-- Admin jogosultság ellenőrzése nincs központilag implementálva, csak token validáció történik.
+Jogosultsági megjegyzések:
+- A `JWT` jelölés jelenleg csak tokenellenőrzést jelent, központi admin szerepkör-ellenőrzést nem.
+- Az admin felületet a webes frontend útvonalőrei korlátozzák, de a backend több admin jellegű végpontnál nem vizsgálja külön az `admin` flaget.
+- A `/auto/torol/:id` és a `/auto/admin/unansweredcount` végpont jelenleg token nélkül is elérhető.
 
 **Biztonság**
-- Jelszavak bcrypt-tel hash-eltek, sima szöveg nem tárolódik.
-- SQL injection ellen a legtöbb lekérdezés paraméterezett.
-- A szűrő végpont dinamikus SQL-t épít, a `LIMIT/OFFSET` értékek közvetlenül kerülnek be, ezért validálás javasolt.
-- CORS beállítás `origin: true` és `credentials: true`, ami fejlesztéshez jó, de élesben szigorítást igényelhet.
-- Refresh token cookie `secure: false` értékkel van beállítva, HTTPS környezetben `true` javasolt.
-- Input validáció minimális, javasolt központi validáció és hibakezelés (pl. Joi/Zod).
+- A jelszavak `bcrypt` hash formában kerülnek tárolásra.
+- A legtöbb SQL művelet paraméterezett lekérdezést használ.
+- A szűrő végpont dinamikusan építi a lekérdezést, és a `LIMIT/OFFSET` közvetlenül kerül az SQL-be, ezért további szerveroldali validálás javasolt.
+- A `refreshToken` cookie `httpOnly`, de jelenleg `secure: false` beállítással működik.
+- A CORS konfiguráció `origin: true` és `credentials: true`, ami fejlesztéshez kényelmes, éles környezetben szigorítást igényel.
+- Külön admin jogosultságellenőrzés és központi inputvalidáció még nincs.
 
 **Hibakezelés és logolás**
-- Hibák többsége 500-as státuszkóddal és `{ message }` struktúrával tér vissza.
-- Nincs egységes hibakód-katalógus.
-- Logolás: `morgan('dev')` és `console.log`/`console.error` a futás során.
+- A hibák többsége 500-as státuszkóddal és `{ message }` struktúrával tér vissza.
+- Egységes hibakezelő middleware nincs.
+- Naplózás: `morgan('dev')`, valamint több helyen `console.log` és `console.error`.
 - Monitoring és alerting nincs beépítve.
 
 **Deployment és üzemeltetés**
-Környezetek:
-- A rendszerhez nincs külön `dev/test/prod` konfiguráció, ugyanaz a kód fut mindenhol.
-
-Konfiguráció és környezeti változók:
-- `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`, `DB_PORT`.
-- `ACCESS_SECRET`, `REFRESH_SECRET`.
+Környezeti változók:
+- `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`, `DB_PORT`
+- `ACCESS_SECRET`, `REFRESH_SECRET`
 
 Futtatás:
-- Indítás: `npm start`.
-- A szerver a `backend/bin/www` fájlban indul, a portot a `DB_PORT` változóból veszi.
+- Indítás: `npm start`
+- A szerver a `backend/bin/www` fájlból indul.
+- A HTTP port jelenleg a `DB_PORT` környezeti változóból kerül kiolvasásra.
 
-Docker / Kubernetes:
-- Nincs konfiguráció.
-
-Backup és rollback:
-- Nincs automatizálva.
-- Javasolt: rendszeres `mysqldump` alapú mentés és verzionált SQL dump.
+Aktuális üzemeltetési állapot:
+- Docker vagy Kubernetes konfiguráció nincs.
+- Több környezetre bontott konfiguráció nincs.
+- Automatizált backup és rollback folyamat nincs.
 
 **Tesztelés**
-- Automatikus tesztek nem találhatók.
-- Javasolt: egységtesztek (Jest), integrációs tesztek (Supertest), valamint Postman gyűjtemény.
-
-**Karbantartás és további fejlesztés**
-Kód stílus és konvenciók:
-- Nincs formalizált linting vagy formázási szabályrendszer.
-- Javasolt: ESLint + Prettier.
-
-Közös utility függvények:
-- Jelenleg nincs külön `utils` réteg.
-
-Jövőbeli fejlesztési irányok:
-- Egységes validációs réteg és error handler middleware.
-- Role-alapú jogosultságkezelés admin funkciókra.
-- Rate limiting és audit log a biztonság növeléséhez.
-- CI/CD pipeline és automatikus tesztek.
-
-**Tippek hibakereséshez**
-- DB kapcsolat hiba esetén ellenőrizd a `.env` változókat és a MySQL elérhetőséget.
-- A szerver portját a `DB_PORT` változó vezérli, ami félrevezető lehet, ha adatbázis portot vársz.
-- 401-es válasz esetén hiányzik vagy lejárt az `Authorization` token.
-- 403-as válasz esetén a refresh token lejárt vagy hibás.
-- Képfeltöltéskor a fájlnév és a törlésnél használt `autoId_index` név konzisztenciáját ellenőrizd.
-- Szűrő esetén figyelj arra, hogy a `limit` és `page` szám típusú legyen.
-- Ha a magyar ékezetes oszlopnevek miatt hibát kapsz, ellenőrizd a DB és a kliens karakterkódolását.
+- Automatikus tesztek jelenleg nem találhatók a projektben.
+- A backend főleg manuális teszteléssel használható.
+- Javasolt továbblépés: `Jest` + `Supertest`, valamint dokumentált Postman gyűjtemény.

@@ -11,6 +11,7 @@
   background: linear-gradient(180deg, var(--dark) 0%, #16213e 100%);
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
   overflow-y: auto;
+  pointer-events: auto;
 }
 
 #Szures.nyitva {
@@ -157,6 +158,30 @@
   background: rgba(0, 102, 255, 0.2);
   color: var(--secondary);
   transform: translateX(6px);
+}
+
+.szures-toggle {
+  color: #7fd3ff !important;
+}
+
+.szures-extra-fields {
+  position: relative;
+  z-index: 1;
+}
+
+.szuro-number-field {
+  margin-bottom: 1rem;
+}
+
+.szuro-number-field .form-label {
+  display: block;
+  margin-bottom: 0.5rem !important;
+}
+
+.szuro-number-input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0.7rem 1rem;
 }
 
 /* ===== MOBIL ===== */

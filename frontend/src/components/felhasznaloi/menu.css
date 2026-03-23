@@ -15,6 +15,10 @@
   box-shadow: var(--menu-shadow);
   padding: 0.85rem 0;
   min-height: 68px;
+  position: relative;
+  z-index: 11000;
+  isolation: isolate;
+  --bs-dropdown-zindex: 11010;
 }
 
 .main-menu .navbar-brand {
@@ -144,6 +148,7 @@
   background: #233144;
   border: 1px solid rgba(120, 170, 255, 0.2);
   box-shadow: 0 16px 30px rgba(10, 18, 32, 0.3);
+  z-index: var(--bs-dropdown-zindex);
 }
 
 .main-menu .dropdown-item {

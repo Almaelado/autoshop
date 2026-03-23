@@ -1,50 +1,70 @@
-# Welcome to your Expo app 👋
+# Mobil kliens dokumentáció – Autókereskedés
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Áttekintés
+A `mobil` mappa az autókereskedés Expo Routerre és React Native-ra épülő mobil kliensét tartalmazza. A mobil alkalmazás ugyanazt a Node.js + Express backendet használja, mint a webes frontend, ezért a fő cél az volt, hogy a kínálat böngészése, a szűrés és az alap hitelesítési folyamat mobilon is elérhető legyen.
 
-## Get started
+A jelenlegi állapot egy működő prototípus: a fő tabok, a listaoldal, a szűrőmodál, az autó-részletek megjelenítése, a bejelentkezés/regisztráció és a profilnézet elkészültek. Néhány képernyő és komponens még fejlesztés alatt áll, ezért a projektben maradt néhány Expo starter fájl is.
 
-1. Install dependencies
+## Fő funkciók
+- Kezdőlap véletlenszerűen kiválasztott autókkal és bemutatkozó tartalommal.
+- Autólista szerveroldali szűréssel és lapozott betöltéssel.
+- Bejelentkezés és regisztráció a backend `/auto/login` és `/auto/regisztracio` végpontjain keresztül.
+- Profilnézet a bejelentkezett felhasználó adataival.
+- Backend címének kézi beállítása a mobil kliensből.
+- Modális autóadatlap képgalériával.
 
-   ```bash
-   npm install
-   ```
+## Jelenlegi korlátok
+- Az alkalmazás nem teljes értékű admin kliens, az admin funkciók továbbra is a webes frontendben találhatók.
+- A részletező nézetben szereplő chat és érdeklődés gombokhoz tartozó mobilos folyamat még nincs teljesen véglegesítve.
+- A projektben maradt néhány Expo alapfájl (`modal.tsx`, tematikus helper komponensek), amelyek nem az üzleti logika központi részei.
 
-2. Start the app
+## Főbb fájlok
+- `app/_layout.tsx`: gyökér layout, `ThemeProvider`, `BackendProvider` és `AuthProvider` bekötése.
+- `app/(tabs)/_layout.tsx`: alsó tab navigáció.
+- `app/(tabs)/index.tsx`: kezdőlap, kiemelt autók és bemutatkozó blokk.
+- `app/(tabs)/Autok.tsx`: autólista, végtelen görgetés, szűrőmodál nyitása.
+- `app/(tabs)/BejReg.tsx`: bejelentkezés, regisztráció, profil megjelenítése, backend URL beállítása.
+- `api/api.ts`: axios kliens, access token kezelése, refresh token interceptor.
+- `auth/AuthProvider.tsx`: hitelesítési állapot és profilbetöltés.
+- `auth/BackendProvider.tsx`: backend URL központi kezelése.
+- `components/Szures.tsx`: mobil szűrőpanel.
+- `components/Reszletek.tsx`: autó részletei modális ablakban.
+- `components/Profile.tsx`: profil és kijelentkezés.
 
-   ```bash
-   npx expo start
-   ```
+## Technológiai környezet
+- Expo 54
+- React Native 0.81
+- React 19
+- Expo Router 6
+- Axios
+- `@react-native-community/slider`
+- TypeScript
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Futtatás
+1. Lépj be a `mobil` mappába.
+2. Telepítsd a csomagokat:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+3. Indítsd el a fejlesztői szervert:
 
-## Learn more
+```bash
+npm run start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Hasznos parancsok:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm run android
+npm run ios
+npm run web
+npm run lint
+```
 
-## Join the community
+## API kapcsolat
+Alapértelmezésben az `api/api.ts` fájlban van egy fix backend cím, de a bejelentkezés/regisztráció tabon ez futás közben felülírható. Az alkalmazás `withCredentials: true` beállítással dolgozik, ezért a mobil kliens ugyanazt a JWT + refresh cookie mechanizmust használja, mint a webes frontend.
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Összegzés
+A mobil projekt jelenleg a webes rendszer kiegészítő kliense. A böngészés, a szűrés, az alap hitelesítés és a profilkezelés már elkészült, a teljes funkcionalitás és a maradék starter elemek kitisztítása a következő fejlesztési lépések része.
