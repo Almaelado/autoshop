@@ -4,7 +4,8 @@ import { useBackend } from "@/auth/BackendProvider";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import ChatAblak from "@/components/ChatAblak";
-
+import { useAuth } from "@/auth/AuthProvider";
+import { api } from "@/api/api";
 const width = Dimensions.get("window").width;
 type Termek = {
   id: number;
@@ -29,6 +30,9 @@ export default function Reszletek({ nyitva, setNyitva, auto }: Props) {
   const flatListRef = React.useRef<FlatList<number>>(null);
   const navigation = useNavigation();
   const [chatOpen, setChatOpen] = useState(false);
+  const { user, token } = useAuth();
+  const [erdekelLoading, setErdekelLoading] = useState(false);
+const [erdekelSuccess, setErdekelSuccess] = useState(false);
     useEffect(() => {
   if (auto && kepek.length > 0) {
     setActiveImageId(kepek[0]);
@@ -40,8 +44,44 @@ export default function Reszletek({ nyitva, setNyitva, auto }: Props) {
     setActiveImageId(viewableItems[0].item);
   }
 });
+useEffect(() => {
+  if (nyitva) {
+    setErdekelSuccess(false);
+  }
+}, [nyitva]);
 
 const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
+
+const handleErdekel = async () => {
+  if (!user) {
+    alert("A művelethez be kell jelentkezni!");
+    return;
+  }
+
+  setErdekelLoading(true);
+  setErdekelSuccess(false);
+
+  try {
+    const res = await api.get("/auto/erdekeltek");
+
+    if (res.data.some((a: any) => a.id === auto.id)) {
+      alert("Már érdeklődtél ez iránt az autó iránt!");
+      return;
+    }
+
+    await api.post("/auto/erdekel", {
+      autoId: auto.id,
+    });
+
+    setErdekelSuccess(true);
+
+  } catch (err) {
+    console.log(err);
+    alert("Hiba történt az érdeklődés mentésekor!");
+  } finally {
+    setErdekelLoading(false);
+  }
+};
 
   const handleImageError = (index:number) => {
   setKepek(prev => prev.filter((_,i) => i !== index));
@@ -105,27 +145,37 @@ const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
           <Text style={styles.desc}>{auto.leiras}</Text>
 
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-              style={styles.interestButton}
-              onPress={() => console.log("Érdekel gomb megnyomva")}
-            >
-              <Text style={styles.buttonText}>Érdekel</Text>
-            </TouchableOpacity>
+  <TouchableOpacity
+    style={styles.interestButton}
+    onPress={handleErdekel}
+    disabled={erdekelLoading}
+  >
+    <Text style={styles.buttonText}>
+      {erdekelLoading ? "Mentés..." : "Érdekel"}
+    </Text>
+  </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.messageButton}
-             onPress={() => setChatOpen(true)}
-            >
-              <Text style={styles.buttonText}>Üzenet</Text>
-            </TouchableOpacity>
-          </View>
+  <TouchableOpacity
+    style={styles.messageButton}
+    onPress={() => setChatOpen(true)}
+  >
+    <Text style={styles.buttonText}>Üzenet</Text>
+  </TouchableOpacity>
+</View>
+
+{erdekelSuccess && (
+  <Text style={styles.successText}>
+    ✔ Hozzáadva az érdeklődésekhez!
+  </Text>
+)}
 
         </View>
       </View>
       <ChatAblak
   nyitva={chatOpen}
   setNyitva={setChatOpen}
-  auto={auto}
+  autoId={auto?.id}
+  vevoId={user?.id}
 />
     </Modal>
   );
@@ -234,5 +284,10 @@ closeIconText: {
   fontSize: 18,
   fontWeight: "bold",
   color: "#333",
+},successText: {
+  color: "#16a34a",
+  marginTop: 10,
+  textAlign: "center",
+  fontWeight: "600",
 },
 });
