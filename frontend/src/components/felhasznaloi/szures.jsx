@@ -1,93 +1,88 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import TypeaheadComponent from "../gombok/typeahead.jsx";
 import RangeSlider from "../gombok/RangeSlider.jsx";
 import Checkbox from "../gombok/checkbox.jsx";
-import Button from 'react-bootstrap/Button';
 import http from "../../http-common";
-import {useSearchParams} from "react-router-dom"; 
-import './szures.css';
+import "./szures.css";
 
-export default function Szures({ value, onSearch,nyitva,setNyitva }) {
+export default function Szures({ value, onSearch, nyitva, setNyitva }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-    // Állapotok
-    const [markak, setMarkak] = useState([]);
-    const [markaList, setMarkaList] = useState([]);
+  const [markak, setMarkak] = useState([]);
+  const [markaList, setMarkaList] = useState([]);
 
-    const [uzemanyag, setUzemanyag] = useState([]);
-    const [uzemanyagList, setUzemanyagList] = useState([]);
+  const [uzemanyag, setUzemanyag] = useState([]);
+  const [uzemanyagList, setUzemanyagList] = useState([]);
 
-    const [szin, setSzin] = useState([]);
-    const [szinList, setSzinList] = useState([]);
+  const [szin, setSzin] = useState([]);
+  const [szinList, setSzinList] = useState([]);
 
+  const [valto, setValto] = useState([]);
+  const [valtoList, setValtoList] = useState([]);
 
-    const [valto, setValto] = useState([]);
-    const [valtoList, setValtoList] = useState([]);
+  const [evjarat, setEvjarat] = useState([1900, new Date().getFullYear()]);
 
-    const [evjarat, setEvjarat] = useState([1900,new Date().getFullYear()]);
+  const maxKm = 200000;
+  const [kmRange, setKmRange] = useState([0, maxKm]);
 
-    const maxKm = 200000;
-    const [kmRange, setKmRange] = useState([0,maxKm]);
+  const maxAr = 24000000;
+  const [arRange, setArRange] = useState([0, maxAr]);
 
-    const maxAr = 24000000;
-    const [arRange, setArRange] = useState([0, maxAr]); // kétvégű csúszka
+  const [motormeret, setMotormeret] = useState("");
 
-    const [motormeret, setMotormeret] = useState(0);
+  const [irat, setIrat] = useState(false);
 
-    const [irat, setIrat] = useState(false);
+  const [ajto, setAjto] = useState([]);
+  const [ajtoList, setAjtoList] = useState([]);
 
-    const [ajto, setAjto] = useState([]);
-    const [ajtoList, setAjtoList] = useState([]);
+  const [szemely, setSzemely] = useState([]);
+  const [szemelyList, setSzemelyList] = useState([]);
 
-    const [szemely, setSzemely] = useState([]);
-    const [szemelyList, setSzemelyList] = useState([]);
+  const [showMore, setShowMore] = useState(false);
 
-
-    const [showMore, setShowMore] = useState(false);
-
-    useEffect(() => {
-      const fetchData = async (endpoint, setter) => {
+  useEffect(() => {
+    const fetchData = async (endpoint, setter) => {
       try {
         const response = await http.get(endpoint);
         setter(response.data);
       } catch (error) {
         console.error(`Error fetching ${endpoint}:`, error);
       }
-  };
+    };
 
-      fetchData("auto/marka", setMarkaList);
-      fetchData("auto/uzemanyag", setUzemanyagList);
-      fetchData("auto/szin", setSzinList);
-      fetchData("auto/valtok", setValtoList);
-      fetchData("auto/ajtok", setAjtoList);
-      fetchData("auto/szemelyek", setSzemelyList);
+    fetchData("auto/marka", setMarkaList);
+    fetchData("auto/uzemanyag", setUzemanyagList);
+    fetchData("auto/szin", setSzinList);
+    fetchData("auto/valtok", setValtoList);
+    fetchData("auto/ajtok", setAjtoList);
+    fetchData("auto/szemelyek", setSzemelyList);
 
-      handleSearch();
+    const params = Object.fromEntries([...searchParams]);
 
-      const params = Object.fromEntries([...searchParams]);
+    if (params.markak) setMarkak(params.markak.split(","));
+    if (params.uzemanyag) setUzemanyag(params.uzemanyag.split(","));
+    if (params.szin) setSzin(params.szin.split(","));
+    if (params.arMin || params.arMax) {
+      setArRange([Number(params.arMin) || 0, Number(params.arMax) || maxAr]);
+    }
+    if (params.kmMin || params.kmMax) {
+      setKmRange([Number(params.kmMin) || 0, Number(params.kmMax) || maxKm]);
+    }
+    if (params.evMin || params.evMax) {
+      setEvjarat([
+        Number(params.evMin) || 1900,
+        Number(params.evMax) || new Date().getFullYear(),
+      ]);
+    }
+    if (params.irat) setIrat(true);
+    if (params.valto) setValto(params.valto.split(","));
+    if (params.motormeret) setMotormeret(String(params.motormeret));
+    if (params.ajto) setAjto(params.ajto.split(","));
+    if (params.szemely) setSzemely(params.szemely.split(","));
+  }, [searchParams]);
 
-      if (params.markak) setMarkak(params.markak.split(","));
-      if (params.uzemanyag) setUzemanyag(params.uzemanyag.split(","));
-      if (params.szin) setSzin(params.szin.split(","));
-      if (params.arMin || params.arMax) setArRange([Number(params.arMin) || 0, Number(params.arMax) || maxAr]);
-      if (params.kmMin || params.kmMax) setKmRange([Number(params.kmMin) || 0, Number(params.kmMax) || maxKm]);
-      if (params.evMin || params.evMax) setEvjarat([Number(params.evMin) || 1900, Number(params.evMax) || new Date().getFullYear()]);
-      if (params.irat) setIrat(true);
-      if (params.valto) setValto(params.valto.split(","));
-      if (params.motormeret) setMotormeret(params.motormeret);
-      if (params.ajto) setAjto(params.ajto.split(","));
-      if (params.szemely) setSzemely(params.szemely.split(","));
-
-    }, [searchParams]);
-
-  // Kezelők (NEM hívnak többé triggerOnChange-t)
-  const handleMarkakChange = setMarkak;
-  const handleSzinChange = setSzin;
-  const handleUzemanyagChange = setUzemanyag;
-  const handleArChange = setArRange;
-  const handleKmChange = setKmRange;
-  const handleEvjaratChange = setEvjarat;
-  // Csak gombnyomásra adja át a szűrőt
   const handleSearch = () => {
     const filters = {
       markak,
@@ -100,11 +95,11 @@ export default function Szures({ value, onSearch,nyitva,setNyitva }) {
       valto,
       motormeret,
       ajto,
-      szemely
+      szemely,
     };
-    const filtersString = JSON.stringify(filters);
+
     if (onSearch) {
-      onSearch(filtersString);
+      onSearch(JSON.stringify(filters));
     }
 
     const params = {};
@@ -124,37 +119,40 @@ export default function Szures({ value, onSearch,nyitva,setNyitva }) {
     if (ajto.length) params.ajto = ajto.join(",");
     if (szemely.length) params.szemely = szemely.join(",");
 
-    setSearchParams(params); // Frissíti az URL-t
-
+    setSearchParams(params);
   };
 
   return (
     <div id="Szures" className={nyitva ? "nyitva" : ""}>
       <button className="bezar-btn" onClick={() => setNyitva(false)}>
-        ✖ Bezár
+        Bezár
       </button>
+
       <TypeaheadComponent
         className="SzamlaTypeahead"
-        label="Gyártányok"
+        label="Gyártmányok"
         options={markaList}
         labelKey="nev"
         value={markak}
-        onChange={handleMarkakChange}
+        onChange={setMarkak}
       />
 
       <TypeaheadComponent
+        className="SzamlaTypeahead"
         label="Üzemanyagok"
         options={uzemanyagList}
         labelKey="nev"
         value={uzemanyag}
-        onChange={handleUzemanyagChange}
+        onChange={setUzemanyag}
       />
-        <TypeaheadComponent
+
+      <TypeaheadComponent
+        className="SzamlaTypeahead"
         label="Színek"
         options={szinList}
         labelKey="nev"
         value={szin}
-        onChange={handleSzinChange}
+        onChange={setSzin}
       />
 
       <RangeSlider
@@ -163,53 +161,86 @@ export default function Szures({ value, onSearch,nyitva,setNyitva }) {
         max={maxAr}
         step={100000}
         value={arRange}
-        onChange={handleArChange}
-        mertek={"Ft"}
+        onChange={setArRange}
+        mertek="Ft"
       />
+
       <RangeSlider
-        label="Futott Kilométer"
+        label="Futott kilométer"
         min={0}
         max={maxKm}
         step={50000}
         value={kmRange}
-        onChange={handleKmChange}
-        mertek={"Km"}
+        onChange={setKmRange}
+        mertek="Km"
       />
+
       <RangeSlider
         label="Gyártási év"
         min={1900}
         max={new Date().getFullYear()}
         step={1}
         value={evjarat}
-        onChange={handleEvjaratChange}
-        mertek={"Év"}
+        onChange={setEvjarat}
+        mertek="Év"
       />
-        <Checkbox cim="Érvényes Magyar Okmányokkal" value={irat} onChange={setIrat} />
 
-        <Button variant="outline-info" onClick={handleSearch}>Keresés</Button>
-         <p style={{cursor: "pointer", color: "blue"}} onClick={() => setShowMore(!showMore)}>
+      <Checkbox
+        cim="Érvényes magyar okmányokkal"
+        value={irat}
+        onChange={setIrat}
+      />
+
+      <Button variant="outline-info" onClick={handleSearch}>
+        Keresés
+      </Button>
+
+      <p
+        className="szures-toggle"
+        onClick={() => setShowMore((prev) => !prev)}
+      >
         {showMore ? "Kevesebb szűrő" : "További szűrők"}
       </p>
 
-      {/* További szűrők */}
       {showMore && (
-        <div id="moreFilters">
+        <div id="moreFilters" className="szures-extra-fields">
           <TypeaheadComponent
+            className="SzamlaTypeahead"
             label="Váltó típus"
-            labelKey="váltó"
+            labelKey="nev"
             options={valtoList}
             value={valto}
             onChange={setValto}
           />
-          <input name="motormeret" type="number" value={motormeret} onChange={(e)=>setMotormeret(e.target.value)}/>
+
+          <div className="szuro-number-field">
+            <label className="form-label m-0" htmlFor="motormeret-input">
+              Motorméret
+            </label>
+            <input
+              id="motormeret-input"
+              className="form-control szuro-number-input"
+              name="motormeret"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="Pl. 1600"
+              value={motormeret}
+              onChange={(e) => setMotormeret(e.target.value)}
+            />
+          </div>
+
           <TypeaheadComponent
+            className="SzamlaTypeahead"
             label="Ajtók száma"
             labelKey="ajtoszam"
             options={ajtoList}
             value={ajto}
             onChange={setAjto}
           />
+
           <TypeaheadComponent
+            className="SzamlaTypeahead"
             label="Személyek száma"
             labelKey="szemelyek"
             options={szemelyList}

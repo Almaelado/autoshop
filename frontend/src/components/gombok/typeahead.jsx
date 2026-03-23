@@ -1,8 +1,11 @@
 import { Typeahead } from "react-bootstrap-typeahead";
-import { useState, useEffect } from "react";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
+import { useState, useEffect, useId } from "react";
 
 export default function TypeaheadComponent({ options, value, onChange, label, labelKey, className }) {
   const [selectedValues, setSelectedValues] = useState(value || []);
+  const typeaheadId = useId();
 
   useEffect(() => {
     setSelectedValues(value || []);
@@ -54,7 +57,7 @@ export default function TypeaheadComponent({ options, value, onChange, label, la
       </div>
 
       <Typeahead
-        id="typeahead-search"
+        id={`typeahead-search-${typeaheadId}`}
         options={filteredOptions} // csak a még nem kiválasztottak
         placeholder="Elkezdesz írni..."
         selected={[]}
