@@ -205,12 +205,46 @@ Auto.uzenetekLekerdezese = async (vevo_id) => {
     console.log(vevo_id);
     try {
         const [rows] = await pool.execute(
-            ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
-                FROM uzenet
-                inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
-                WHERE uzenet.vevo_id = ?
-                GROUP BY auto_id, vevo_id, osszes_auto.nev, osszes_auto.model, osszes_auto.ar
-`,
+            `SELECT
+                u.auto_id,
+                u.vevo_id,
+                a.nev,
+                a.model,
+                a.ar,
+                CASE
+                    WHEN u.valasz IS NOT NULL
+                        AND u.valasz_datum IS NOT NULL
+                        AND u.valasz_datum >= u.elkuldve
+                    THEN u.valasz
+                    ELSE u.uzenet_text
+                END AS utolso_uzenet,
+                CASE
+                    WHEN u.valasz IS NOT NULL
+                        AND u.valasz_datum IS NOT NULL
+                        AND u.valasz_datum >= u.elkuldve
+                    THEN u.valasz_datum
+                    ELSE u.elkuldve
+                END AS utolso_aktivitas
+            FROM uzenet u
+            JOIN osszes_auto a ON a.id = u.auto_id
+            WHERE u.vevo_id = ?
+              AND u.id = (
+                SELECT u2.id
+                FROM uzenet u2
+                WHERE u2.vevo_id = u.vevo_id
+                  AND u2.auto_id = u.auto_id
+                ORDER BY
+                    CASE
+                        WHEN u2.valasz IS NOT NULL
+                            AND u2.valasz_datum IS NOT NULL
+                            AND u2.valasz_datum >= u2.elkuldve
+                        THEN u2.valasz_datum
+                        ELSE u2.elkuldve
+                    END DESC,
+                    u2.id DESC
+                LIMIT 1
+              )
+            ORDER BY utolso_aktivitas DESC, u.auto_id DESC`,
             [vevo_id]
         );
         return rows;
