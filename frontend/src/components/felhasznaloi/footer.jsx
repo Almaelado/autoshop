@@ -9,19 +9,19 @@ export default function Footer() {
       <div className="footer-shell">
         <div className="footer-top">
           <div className="footer-brand">
-            <h3>Ndidi Auto kereskedes</h3>
-            <p>Attekintheto autokereses es egyszeru kapcsolatfelvetel egy helyen.</p>
+            <h3>Ndidi Auto kereskedés</h3>
+            <p>Áttekinthető autókeresés és egyszerű kapcsolatfelvétel egy helyen.</p>
           </div>
 
           <nav className="footer-links" aria-label="Footer navigacio">
-            <Link to="/">Kezdolap</Link>
-            <Link to="/autok">Autok</Link>
-            <Link to="/bejelentkez">Bejelentkezes</Link>
+            <Link to="/">Kezdőlap</Link>
+            <Link to="/autok">Autók</Link>
+            <Link to="/bejelentkez">Bejelentkezés</Link>
           </nav>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} Ndidi Auto Kereskedes. Minden jog fenntartva.</p>
+          <p>&copy; {currentYear} Ndidi Auto Kereskedés. Minden jog fenntartva.</p>
         </div>
       </div>
     </footer>
