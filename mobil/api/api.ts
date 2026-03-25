@@ -3,14 +3,14 @@ import axios from "axios";
 let accessToken = null;
 let backendCim = "http://10.210.71.23:80";
 
-// ------------------- Axios instance -------------------
+// Az osszes mobil API keres ugyanazt a baseURL-t es auth logikat hasznalja.
 const api = axios.create({
   baseURL: backendCim,
   withCredentials: true,
   timeout: 5000,
 });
 
-// ------------------- Access token -------------------
+// A token memoriaban van tarolva, es minden kereshez automatikusan bekerul.
 export function setAccessToken(token) {
   accessToken = token;
 }
@@ -29,7 +29,7 @@ export function getBackendCim() {
   return backendCim;
 }
 
-// ------------------- Request interceptor -------------------
+// A request interceptor minden kereshez hozzafuzi az access tokent, ha van.
 api.interceptors.request.use(
   async (config) => {
     if (accessToken) {
@@ -40,7 +40,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ------------------- Response interceptor -------------------
+// 401 eseten egyszer megprobalunk refresh-elni, aztan ujrakuldjuk az eredeti kerest.
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -70,7 +70,7 @@ api.interceptors.response.use(
   }
 );
 
-// ------------------- Refresh token -------------------
+// A refresh cookie-bol uj access token keszul, ha a session meg ervenyes.
 async function refreshToken() {
   try {
     const response = await api.post("/auto/refresh", {}, { withCredentials: true });

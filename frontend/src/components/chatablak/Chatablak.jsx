@@ -22,6 +22,7 @@ export default function Chatablak({ accessToken , admin}) {
         fetchChatMessages();
     }, []);
     useEffect(() => {
+    // A backend egy rekordban tarolhat user uzenetet es admin valaszt, ezt bontjuk idorendi listava.
     const ujRendezett = [];
     for (let i = 0; i < messages.length; i++) {
         console.log("Üzenet:", messages[i]);

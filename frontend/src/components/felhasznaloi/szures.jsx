@@ -59,6 +59,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
     fetchData("auto/ajtok", setAjtoList);
     fetchData("auto/szemelyek", setSzemelyList);
 
+    // Ha URL-bol jon a lap, a query paramokat visszatoltjuk a UI allapotaba.
     const params = Object.fromEntries([...searchParams]);
 
     if (params.markak) setMarkak(params.markak.split(","));
@@ -102,6 +103,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
       onSearch(JSON.stringify(filters));
     }
 
+    // A szurok query paramkent is bekerulnek, hogy megoszthato legyen az allapot.
     const params = {};
 
     if (markak.length) params.markak = markak.join(",");

@@ -39,6 +39,7 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
         setLoading(true);
         const fetchAuto = async () => {
             try {
+                // A reszletezohoz az auto mellett a szerkeszteshez szukseges torzsadatokat is bekerjuk.
                 const res = await http.get(`auto/egy/${autoId}`);
                 const res2 = await http.get(`auto/marka`);
                 const res3 = await http.get(`auto/szin`);
@@ -65,6 +66,7 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
         if (!autoId) return;
         const maxImages = 20;
         const promises = [];
+        // A kepeket elore vegigprobaljuk, mert autobol valtozo darabszamu fotot tarol a backend.
         for (let i = 1; i <= maxImages; i++) {
             const path = `http://localhost:80/img/${autoId}_${i}.jpg`;
             promises.push(new Promise(resolve => {
@@ -83,6 +85,7 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
     useEffect(() => {
         if (!auto || !autoId) return;
         //console.log('Ajánlott autók lekérdezés, auto.nev:', auto.nev, 'autoId:', autoId);
+        // Ugyanahhoz a markahoz kapcsolodo ajanlatokat mutatunk a reszletek alatt.
         const fetchAjanlott = async () => {
             try {
                 const res = await http.get(`auto/ajanlott/${auto.nev}?kiveve=${autoId}`);
@@ -199,6 +202,7 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
     );
     if (!auto) return <div>Betöltés...</div>;
 
+    // Ugyanaz a komponens kezeli a publikus reszletezo es az admin szerkeszto nezetet is.
     if (admin === true) {
   if (!editAuto) return <div>Betöltés...</div>;
 

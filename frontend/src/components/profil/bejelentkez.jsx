@@ -37,6 +37,7 @@ const from = location.state?.from || "/";
     }
 
     // 👇 Ide jön a visszairányítás
+    // Sikeres login utan oda kuldjuk vissza a usert, ahonnan a belepes jott.
     navigate(from, { replace: true });
 
   } catch (error) {

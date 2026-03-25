@@ -7,6 +7,7 @@ export default function Admin() {
     const navigate = useNavigate();
     const [unansweredCount, setUnansweredCount] = useState(0);
      useEffect(() => {
+    // A dashboard tetejen azonnal jelezzuk, ha maradt megvalaszolatlan erdeklodoi szal.
     // Nem válaszolt üzenetek számának lekérdezése
     const fetchUnanswered = async () => {
         try {

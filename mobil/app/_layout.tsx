@@ -17,6 +17,7 @@ export default function RootLayout() {
   //console.log("RootLayout render, accessToken:", getAccessToken()); // Debug: ellenőrizzük az accessToken értékét
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      {/* A teljes app a backend- es auth-provideren keresztul kap kozos allapotot. */}
       <BackendProvider>
         <AuthProvider>
           <Stack>

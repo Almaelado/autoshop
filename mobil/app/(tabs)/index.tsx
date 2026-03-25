@@ -15,6 +15,7 @@ export default function HomeScreen() {
 
   const fetchAutok = async () => {
     try {
+      // A foolap ugyanazt a random ajanlot tolti be, mint a webes landing oldal.
       const response = await api.get(`/auto/random`);
       setAutok(response.data);
     } catch (error) {
@@ -31,6 +32,7 @@ export default function HomeScreen() {
 
   return (
     <>
+    {/* A reszletezo modal a listarol kivalasztott auto adatait kapja meg. */}
     <Reszletek
   nyitva={detailsOpen}
   setNyitva={setDetailsOpen}
