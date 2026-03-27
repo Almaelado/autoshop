@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { api, setAccessToken } from "../api/api"; // itt legyen a jwt/axios logika
+import { api, setAccessToken} from "../api/api"; // itt legyen a jwt/axios logika
 import { Alert } from 'react-native';
 
 interface AuthContextType {
@@ -12,9 +12,9 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<{ email: string,name:string } | null>(null);
-
   const fetchUserProfile = async (token: string) => {
     try {
+      // Login utan a profil vegponttol kerjuk le a teljes felhasznaloi adatokat.
       const res = await api.get("/auto/profil", {
         withCredentials: true,
         headers: {
@@ -33,6 +33,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const res = await api.post("/auto/login", { email, password }, { withCredentials: true });
       const token = res.data.accessToken;
       setAccessToken(token);
+      Alert.alert(token);
+       // A context akkor tekinti bejelentkezettnek a usert, ha a profil is betoltott.
        const userProfile = await fetchUserProfile(token);
        setUser(userProfile); // Beállítjuk a teljes felhasználói profilt
     } catch (error: any) {
@@ -44,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
+    // Logoutnal a cookie es a lokalis auth allapot egyszerre nullazodik.
     await api.post("/auto/logout", {}, { withCredentials: true });
     setAccessToken(null);
     setUser(null);

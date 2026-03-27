@@ -1,0 +1,101 @@
+/* ===== ADMIN DASHBOARD KÁRTYÁK ===== */
+.admin-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 40px;
+  justify-content: center; /* középre igazítás */
+}
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.admin-card {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 102, 255, 0.08);
+  padding: 32px 28px;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.admin-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 102, 255, 0.18);
+}
+
+.admin-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+  color: #0066ff;
+  font-weight: 700;
+}
+
+.admin-card button {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0,102,255,0.08);
+}
+
+.admin-card button:hover {
+  background: linear-gradient(135deg, #0052cc 0%, #00b4d8 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+.admin-alert {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.admin-alert button {
+    background: #ffc107;
+    color: #212529;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 1em;
+}
+
+.admin-alert button:hover {
+    background: #e0a800;
+}
+
+@media (max-width: 900px) {
+  .admin-dashboard {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .admin-card {
+    width: 100%;
+    max-width: 100%;
+  }
+}

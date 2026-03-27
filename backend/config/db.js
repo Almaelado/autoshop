@@ -1,5 +1,6 @@
 const mysql=require('mysql2/promise');
 
+// Egy kozos connection pool fut az egesz backend alatt, hogy ne nyisson minden keres uj kapcsolatot.
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER ,

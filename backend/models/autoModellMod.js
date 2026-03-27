@@ -2,6 +2,7 @@ const pool = require('../config/db.js');
 const bcrypt = require('bcrypt');
 const Auto = {};
 
+// Ez a modell fogja ossze az adatbazis muveleteket, hogy a controller csak folyamatszinten dolgozzon.
 Auto.osszes = async (data) => {
     try {
         const [rows] = await pool.execute('SELECT * FROM osszes_auto limit ? offset ?',[data.limit,data.offset]);
@@ -128,6 +129,7 @@ Auto.validatePassword = async (email,password) =>{
     return match ? user:false;
 }
 // Érdeklődés hozzáadása
+// Az erdeklodesek kulon tablaban vannak, igy egy user tobb autora is jelezhet szandekot.
 Auto.erdekelHozzaad = async (vevo_id, auto_id) => {
     try {
         await pool.execute(
@@ -204,13 +206,48 @@ Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
 Auto.uzenetekLekerdezese = async (vevo_id) => {
     console.log(vevo_id);
     try {
+        // A legutobbi uzenet alapjan listazzuk a szalakat, hogy inbox-szeru sorrendet kapjon a kliens.
         const [rows] = await pool.execute(
-            ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
-                FROM uzenet
-                inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
-                WHERE uzenet.vevo_id = ?
-                GROUP BY auto_id, vevo_id, osszes_auto.nev, osszes_auto.model, osszes_auto.ar
-`,
+            `SELECT
+                u.auto_id,
+                u.vevo_id,
+                a.nev,
+                a.model,
+                a.ar,
+                CASE
+                    WHEN u.valasz IS NOT NULL
+                        AND u.valasz_datum IS NOT NULL
+                        AND u.valasz_datum >= u.elkuldve
+                    THEN u.valasz
+                    ELSE u.uzenet_text
+                END AS utolso_uzenet,
+                CASE
+                    WHEN u.valasz IS NOT NULL
+                        AND u.valasz_datum IS NOT NULL
+                        AND u.valasz_datum >= u.elkuldve
+                    THEN u.valasz_datum
+                    ELSE u.elkuldve
+                END AS utolso_aktivitas
+            FROM uzenet u
+            JOIN osszes_auto a ON a.id = u.auto_id
+            WHERE u.vevo_id = ?
+              AND u.id = (
+                SELECT u2.id
+                FROM uzenet u2
+                WHERE u2.vevo_id = u.vevo_id
+                  AND u2.auto_id = u.auto_id
+                ORDER BY
+                    CASE
+                        WHEN u2.valasz IS NOT NULL
+                            AND u2.valasz_datum IS NOT NULL
+                            AND u2.valasz_datum >= u2.elkuldve
+                        THEN u2.valasz_datum
+                        ELSE u2.elkuldve
+                    END DESC,
+                    u2.id DESC
+                LIMIT 1
+              )
+            ORDER BY utolso_aktivitas DESC, u.auto_id DESC`,
             [vevo_id]
         );
         return rows;
@@ -221,6 +258,7 @@ Auto.uzenetekLekerdezese = async (vevo_id) => {
 };
 Auto.AdminuzenetekLekerdezese = async () => {
     try {
+        // Az admin lista csak azokat a szalakat mutatja, ahol az utolso kerdesre meg nincs valasz.
         const [rows] = await pool.execute(
             `SELECT u.id,v.nev,u.vevo_id,u.auto_id,a.model,a.ar,u.uzenet_text,u.elkuldve,u.valasz
 FROM uzenet u
@@ -316,6 +354,7 @@ return result;
         throw error;
     }
 }
+// A szerkesztes es uj auto mentese a normalizalt autok tablat frissiti, nem a nezetet.
 Auto.Szerkesztes = async (data) =>{
     try {
         console.log(data.nev,data.model,data.váltó,data.kiadasiev,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtoszam,data.szemelyek,data.szin_nev,data.irat,data.leírás,data.id);

@@ -6,6 +6,7 @@ import { getAccessToken } from '@/api/api';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { AuthProvider } from '@/auth/AuthProvider';
+import { BackendProvider } from '@/auth/BackendProvider';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -16,12 +17,16 @@ export default function RootLayout() {
   //console.log("RootLayout render, accessToken:", getAccessToken()); // Debug: ellenőrizzük az accessToken értékét
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-        </Stack>
-      </AuthProvider>
+      {/* A teljes app a backend- es auth-provideren keresztul kap kozos allapotot. */}
+      <BackendProvider>
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+          </Stack>
+        </AuthProvider>
+      </BackendProvider>
+      
       <StatusBar style="auto" />
     </ThemeProvider>
   );

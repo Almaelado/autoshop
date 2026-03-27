@@ -1,0 +1,2485 @@
+{
+  "info": {
+    "_postman_id": "dafe888a-5bda-484d-bfe8-b10177ad9cf2",
+    "name": "autoshop",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53411995",
+    "_collection_link": "https://go.postman.co/collection/53411995-dafe888a-5bda-484d-bfe8-b10177ad9cf2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "minden",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Van válasz\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/minden?limit=30&offset=0",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "minden"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "30",
+              "type": "text"
+            },
+            {
+              "key": "offset",
+              "value": "0",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "egy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code 200 vagy 404\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "if (pm.response.code === 200) {\r",
+              "    pm.test(\"Van auto objektum\", function () {\r",
+              "        const data = pm.response.json();\r",
+              "        pm.expect(data).to.be.an(\"object\");\r",
+              "        pm.expect(data).to.have.property(\"id\");\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "if (pm.response.code === 404) {\r",
+              "    pm.test(\"Hibaüzenet van\", function () {\r",
+              "        const data = pm.response.json();\r",
+              "        pm.expect(data).to.have.property(\"message\");\r",
+              "        pm.expect(data.message).to.eql(\"Auto not found\");\r",
+              "    });\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/egy/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "egy",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "torol",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body üres\", function () {\r",
+              "    pm.expect(pm.response.text()).to.eql(\"\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time OK\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/torol/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "torol",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getMarka",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Lista érkezik vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Van legalább 1 elem (opcionális)\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.length).to.be.at.least(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/marka",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "marka"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getSzin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Lista érkezik vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Lista elemei nem null-ok\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    data.forEach(item => {\r",
+              "        pm.expect(item).to.not.be.null;\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/szin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "szin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getUzemanyag",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Tömb érkezik vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Elemek validak\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    data.forEach(item => {\r",
+              "        pm.expect(item).to.not.be.undefined;\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/uzemanyag",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "uzemanyag"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getValtok",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Tömb érkezik vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Elemek nem üresek\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    data.forEach(item => {\r",
+              "        pm.expect(item).to.not.be.null;\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/valtok",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "valtok"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAjtok",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Tömb jön vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ajtó értékek validak\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    data.forEach(item => {\r",
+              "        pm.expect(item).to.not.be.null;\r",
+              "        // ha számot vársz:\r",
+              "        // pm.expect(item).to.be.a(\"number\");\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/ajtok",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "ajtok"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getSzemelyek",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Tömb érkezik vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Személy értékek validak\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    data.forEach(item => {\r",
+              "        pm.expect(item).to.not.be.null;\r",
+              "        // ha számot vársz:\r",
+              "        // pm.expect(item).to.be.a(\"number\");\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/szemelyek",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "szemelyek"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "szuro",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Tömb jön vissza\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Elemek objektumok\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    data.forEach(item => {\r",
+              "        pm.expect(item).to.be.an(\"object\");\r",
+              "        pm.expect(item).to.have.property(\"id\");       // feltételezve, hogy van id\r",
+              "        pm.expect(item).to.have.property(\"nev\");      // feltételezve, hogy van nev\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/szuro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "szuro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getCount",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Visszaadott objektum tartalmaz count mezőt\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"object\");\r",
+              "    pm.expect(data).to.have.property(\"count\");\r",
+              "    pm.expect(data.count).to.be.a(\"number\");\r",
+              "    pm.expect(data.count).to.be.at.least(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/count",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "count"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code 200 vagy 401\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 401]);\r",
+              "});\r",
+              "\r",
+              "if (pm.response.code === 200) {\r",
+              "    pm.test(\"Válasz JSON és accessToken létezik\", function () {\r",
+              "        pm.response.to.be.json;\r",
+              "        const data = pm.response.json();\r",
+              "        pm.expect(data).to.have.property(\"accessToken\");\r",
+              "        pm.expect(data.accessToken).to.be.a(\"string\");\r",
+              "        pm.expect(data).to.have.property(\"user\");\r",
+              "        pm.expect(data.user).to.have.property(\"id\");\r",
+              "        pm.expect(data.user).to.have.property(\"email\");\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"refreshToken cookie létezik\", function () {\r",
+              "        const cookie = pm.cookies.get(\"refreshToken\");\r",
+              "        pm.expect(cookie).to.be.a(\"string\");\r",
+              "        pm.expect(cookie.length).to.be.greaterThan(0);\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "if (pm.response.code === 401) {\r",
+              "    pm.test(\"Helytelen belépés üzenet\", function () {\r",
+              "        pm.expect(pm.response.text()).to.eql(\"Érvénytelen belépés\");\r",
+              "    });\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"lk2007@gmail.com\",\r\n    \"password\": \"lali\"\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "regisztracio",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code 200, 404 vagy 500\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 404, 500]);\r",
+              "});\r",
+              "\r",
+              "if (pm.response.code === 200) {\r",
+              "    pm.test(\"Válasz JSON és user objektum létezik\", function () {\r",
+              "        pm.response.to.be.json;\r",
+              "        const data = pm.response.json();\r",
+              "        pm.expect(data).to.be.an(\"object\");\r",
+              "        pm.expect(data).to.have.property(\"id\");      // feltételezve, hogy van id\r",
+              "        pm.expect(data).to.have.property(\"email\");\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "if (pm.response.code === 404) {\r",
+              "    pm.test(\"Hiányzó email vagy jelszó üzenet\", function () {\r",
+              "        pm.expect(pm.response.text()).to.eql(\"Nincs email vagy jelszo\");\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "if (pm.response.code === 500) {\r",
+              "    pm.test(\"Hibaüzenet van\", function () {\r",
+              "        const data = pm.response.json();\r",
+              "        pm.expect(data).to.have.property(\"message\");\r",
+              "    });\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/regisztracio",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "regisztracio"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "refresh",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200, 204 vagy 403\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 204, 403]);\r",
+              "});\r",
+              "\r",
+              "if (pm.response.code === 200) {\r",
+              "    pm.test(\"Válasz JSON tartalmaz accessToken és user objektumot\", function () {\r",
+              "        pm.response.to.be.json;\r",
+              "        const data = pm.response.json();\r",
+              "        pm.expect(data).to.have.property(\"accessToken\");\r",
+              "        pm.expect(data.accessToken).to.be.a(\"string\");\r",
+              "        pm.expect(data).to.have.property(\"user\");\r",
+              "        pm.expect(data.user).to.have.property(\"id\");\r",
+              "        pm.expect(data.user).to.have.property(\"email\");\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "if (pm.response.code === 204) {\r",
+              "    pm.test(\"Nincs refresh token cookie\", function () {\r",
+              "        pm.expect(pm.response.text()).to.eql(\"\");\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "if (pm.response.code === 403) {\r",
+              "    pm.test(\"Érvénytelen vagy lejárt token\", function () {\r",
+              "        pm.expect(pm.response.text()).to.eql(\"\");\r",
+              "    });\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/refresh",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "refresh"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "profil",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Profil objektum tartalmaz emailt\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.be.an(\"object\");\r",
+              "    pm.expect(data).to.have.property(\"email\");\r",
+              "    pm.expect(data.email).to.be.a(\"string\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Profil objektum tartalmaz id-t\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"id\");\r",
+              "    pm.expect(data.id).to.be.a(\"number\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/profil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "profil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body is empty\", function () {\r",
+              "    pm.response.text().should.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Refresh token cookie is cleared\", function () {\r",
+              "    const cookies = pm.cookies.toObject();\r",
+              "    pm.expect(cookies.refreshToken).to.be.undefined;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ajanlott",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Maximum 4 items returned\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.at.most(4);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each item has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    jsonData.forEach(item => {\r",
+              "        pm.expect(item).to.have.property(\"id\");\r",
+              "        pm.expect(item).to.have.property(\"nev\");\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"All cars match the requested marka\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    const marka = pm.request.url.variables.get(\"marka\");\r",
+              "    \r",
+              "    jsonData.forEach(item => {\r",
+              "        pm.expect(item.nev).to.eql(marka);\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Excluded ID is not present (if provided)\", function () {\r",
+              "    const excludeId = pm.request.url.query.get(\"kiveve\");\r",
+              "    if (excludeId) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        jsonData.forEach(item => {\r",
+              "            pm.expect(item.id.toString()).to.not.eql(excludeId);\r",
+              "        });\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/ajanlott/Skoda",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "ajanlott",
+            "Skoda"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "erdekel",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains success true\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"success\", true);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Missing user or autoId returns 400\", function () {\r",
+              "    const status = pm.response.code;\r",
+              "    if (status === 400) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "        pm.expect(jsonData.message).to.include(\"Hiányzó adat\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Server errors return 500\", function () {\r",
+              "    const status = pm.response.code;\r",
+              "    if (status === 500) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"autoId\": 123\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/erdekel",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "erdekel"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "erdekeltek",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"401 if user not logged in\", function () {\r",
+              "    const status = pm.response.code;\r",
+              "    if (status === 401) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\", \"Nincs bejelentkezve\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Server errors return 500\", function () {\r",
+              "    const status = pm.response.code;\r",
+              "    if (status === 500) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/erdekeltek",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "erdekeltek"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "profilmodosit",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"401 if user not logged in\", function () {\r",
+              "    const status = pm.response.code;\r",
+              "    if (status === 401) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\", \"Nincs bejelentkezve\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Server errors return 500\", function () {\r",
+              "    const status = pm.response.code;\r",
+              "    if (status === 500) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/profilmodosit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "profilmodosit"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "jelszomodosit",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Successful password change returns correct message\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    if (pm.response.code === 200) {\r",
+              "        pm.expect(jsonData).to.have.property(\"message\", \"Jelszó sikeresen módosítva\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Incorrect old password returns 403\", function () {\r",
+              "    if (pm.response.code === 403) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\", \"Hibás régi jelszó\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Server errors return 500\", function () {\r",
+              "    if (pm.response.code === 500) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Required fields are present\", function () {\r",
+              "    const body = pm.request.body.raw ? JSON.parse(pm.request.body.raw) : {};\r",
+              "    pm.expect(body).to.have.property(\"email\");\r",
+              "    pm.expect(body).to.have.property(\"oldPassword\");\r",
+              "    pm.expect(body).to.have.property(\"newPassword\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"oldPassword\": \"regiJelszo123\",\r\n    \"newPassword\": \"ujJelszo456\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/jelszomodositas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "jelszomodositas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "uzenetkuldes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Successful message sending returns success true\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    if (pm.response.code === 201) {\r",
+              "        pm.expect(jsonData).to.have.property(\"success\", true);\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Missing required fields returns 400\", function () {\r",
+              "    if (pm.response.code === 400) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\", \"Hiányzó adat!\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Server errors return 500\", function () {\r",
+              "    if (pm.response.code === 500) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Request body contains required fields\", function () {\r",
+              "    const body = pm.request.body.raw ? JSON.parse(pm.request.body.raw) : {};\r",
+              "    pm.expect(body).to.have.property(\"autoId\");\r",
+              "    pm.expect(body).to.have.property(\"uzenet\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"autoId\": 123,\r\n    \"uzenet\": \"Érdekelne az autó részletei.\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/uzenet",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "uzenet"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "uzenetekLekerdezese",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"401 if user not logged in\", function () {\r",
+              "    if (pm.response.code === 401) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\", \"Nincs bejelentkezve\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Server errors return 500\", function () {\r",
+              "    if (pm.response.code === 500) {\r",
+              "        const jsonData = pm.response.json();\r",
+              "        pm.expect(jsonData).to.have.property(\"message\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/uzenetek",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "uzenetek"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "adminuzenetek",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200-e\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú-e\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tömb-e (feltételezve, hogy több üzenet jön)\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a tömb elemei tartalmaznak bizonyos kulcsokat (példa: id, uzenet)\r",
+              "pm.test(\"Each message has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    jsonData.forEach(msg => {\r",
+              "        pm.expect(msg).to.have.property(\"id\");\r",
+              "        pm.expect(msg).to.have.property(\"uzenet\");\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/adminuzenetek",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "adminuzenetek"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "chatablak",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200 (sikeres lekérés)\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tömb-e\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a tömb elemei tartalmaznak bizonyos kulcsokat (például: id, szoveg, ido)\r",
+              "pm.test(\"Each message has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    jsonData.forEach(msg => {\r",
+              "        pm.expect(msg).to.have.property(\"id\");\r",
+              "        pm.expect(msg).to.have.property(\"szoveg\");\r",
+              "        pm.expect(msg).to.have.property(\"ido\");\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "// Opcionális: Ellenőrizzük, hogy nem üres a tömb\r",
+              "pm.test(\"Response array is not empty\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.above(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/chatablak?autoId=123&vevoId=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "chatablak"
+          ],
+          "query": [
+            {
+              "key": "autoId",
+              "value": "123"
+            },
+            {
+              "key": "vevoId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Chatablakadmin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tömb vagy objektum\r",
+              "pm.test(\"Response has expected structure\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an('array').or.to.be.an('object');\r",
+              "});\r",
+              "\r",
+              "// Ha tömb, ellenőrizzük az elemek kulcsait (példa: id, szoveg, ido)\r",
+              "pm.test(\"Each message has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(msg => {\r",
+              "            pm.expect(msg).to.have.property(\"id\");\r",
+              "            pm.expect(msg).to.have.property(\"szoveg\");\r",
+              "            pm.expect(msg).to.have.property(\"ido\");\r",
+              "        });\r",
+              "    } else {\r",
+              "        pm.expect(jsonData).to.have.property(\"id\");\r",
+              "        pm.expect(jsonData).to.have.property(\"szoveg\");\r",
+              "        pm.expect(jsonData).to.have.property(\"ido\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"uzenetId\": 123,\r\n    \"uzenet_text\": \"Ez egy admin üzenet\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/admin/chatablak",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "admin",
+            "chatablak"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ChatablakFelhasznalo",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tömb vagy objektum\r",
+              "pm.test(\"Response has expected structure\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an('array').or.to.be.an('object');\r",
+              "});\r",
+              "\r",
+              "// Ha tömb, ellenőrizzük az elemek kulcsait (példa: id, szoveg, ido)\r",
+              "pm.test(\"Each message has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(msg => {\r",
+              "            pm.expect(msg).to.have.property(\"id\");\r",
+              "            pm.expect(msg).to.have.property(\"szoveg\");\r",
+              "            pm.expect(msg).to.have.property(\"ido\");\r",
+              "        });\r",
+              "    } else {\r",
+              "        pm.expect(jsonData).to.have.property(\"id\");\r",
+              "        pm.expect(jsonData).to.have.property(\"szoveg\");\r",
+              "        pm.expect(jsonData).to.have.property(\"ido\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"autoId\": 123,\r\n    \"vevoId\": 456,\r\n    \"uzenet_text\": \"Ez egy felhasználói üzenet\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/felhasznalo/chatablak",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "felhasznalo",
+            "chatablak"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "szamla",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmaz bizonyos kulcsokat (példa: szamlaSzam, nev, cim)\r",
+              "pm.test(\"Response has required invoice fields\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"szamlaSzam\");\r",
+              "    pm.expect(data).to.have.property(\"nev\");\r",
+              "    pm.expect(data).to.have.property(\"cim\");\r",
+              "});\r",
+              "\r",
+              "// Opcionális: ellenőrizzük, hogy a mezők nem üresek\r",
+              "pm.test(\"Invoice fields are not empty\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.szamlaSzam).to.not.be.empty;\r",
+              "    pm.expect(data.nev).to.not.be.empty;\r",
+              "    pm.expect(data.cim).to.not.be.empty;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/szamla",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "szamla"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "random",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tömb\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a tömb elemei tartalmazzák az alapvető mezőket (példa: id, marka, modell)\r",
+              "pm.test(\"Each car has required fields\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    jsonData.forEach(auto => {\r",
+              "        pm.expect(auto).to.have.property(\"id\");\r",
+              "        pm.expect(auto).to.have.property(\"marka\");\r",
+              "        pm.expect(auto).to.have.property(\"modell\");\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "// Opcionális: ellenőrizzük, hogy van legalább egy elem a tömbben\r",
+              "pm.test(\"Array is not empty\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.above(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:80/auto/random",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "random"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Szerkesztes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza az autó módosított adatait\r",
+              "pm.test(\"Response has expected car fields\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"id\");\r",
+              "    pm.expect(data).to.have.property(\"nev\");       // márka id\r",
+              "    pm.expect(data).to.have.property(\"üzemanyag\"); // üzemanyag id\r",
+              "    pm.expect(data).to.have.property(\"váltó\");     // váltó id\r",
+              "    pm.expect(data).to.have.property(\"szin_nev\");  // szín id\r",
+              "});\r",
+              "\r",
+              "// Opcionális: ellenőrizzük, hogy az id-k számok-e\r",
+              "pm.test(\"ID fields are numbers\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.nev).to.be.a('number');\r",
+              "    pm.expect(data.üzemanyag).to.be.a('number');\r",
+              "    pm.expect(data.váltó).to.be.a('number');\r",
+              "    pm.expect(data.szin_nev).to.be.a('number');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 123,\r\n    \"nev\": \"Toyota\",\r\n    \"üzemanyag\": \"Benzin\",\r\n    \"váltó\": \"Automata\",\r\n    \"szin_nev\": \"Piros\",\r\n    \"egyeb_mezo\": \"példa\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/szerkesztes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "szerkesztes",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ujauto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza az új autó adatait\r",
+              "pm.test(\"Response has expected car fields\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"id\");        // új autó ID\r",
+              "    pm.expect(data).to.have.property(\"nev\");      // márka ID\r",
+              "    pm.expect(data).to.have.property(\"üzemanyag\"); // üzemanyag ID\r",
+              "    pm.expect(data).to.have.property(\"váltó\");     // váltó ID\r",
+              "    pm.expect(data).to.have.property(\"szin_nev\");  // szín ID\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy az ID-k számok\r",
+              "pm.test(\"ID fields are numbers\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.nev).to.be.a('number');\r",
+              "    pm.expect(data.üzemanyag).to.be.a('number');\r",
+              "    pm.expect(data.váltó).to.be.a('number');\r",
+              "    pm.expect(data.szin_nev).to.be.a('number');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nev\": \"Toyota\",\r\n    \"üzemanyag\": \"Benzin\",\r\n    \"váltó\": \"Automata\",\r\n    \"szin_nev\": \"Piros\",\r\n    \"ar\": 7500000,\r\n    \"evjarat\": 2021,\r\n    \"egyeb_mezo\": \"példa\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/ujauto",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "ujauto"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "szamla",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza az új számla alapvető mezőit\r",
+              "pm.test(\"Response has required invoice fields\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"id\");        // új számla ID\r",
+              "    pm.expect(data).to.have.property(\"szamlaSzam\"); // számla száma\r",
+              "    pm.expect(data).to.have.property(\"nev\");       // név\r",
+              "    pm.expect(data).to.have.property(\"cim\");       // cím\r",
+              "});\r",
+              "\r",
+              "// Opcionális: ellenőrizzük, hogy az ID szám\r",
+              "pm.test(\"ID field is a number\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.id).to.be.a('number');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"szamlaSzam\": \"2026-001\",\r\n    \"nev\": \"Kovács Péter\",\r\n    \"cim\": \"Budapest, Fő utca 12\",\r\n    \"osszeg\": 1500000,\r\n    \"datum\": \"2026-03-25\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/szamla",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "szamla"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addszin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza az új szín mezőt\r",
+              "pm.test(\"Response has required color field\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"id\");    // új szín ID\r",
+              "    pm.expect(data).to.have.property(\"nev\");   // szín neve\r",
+              "});\r",
+              "\r",
+              "// Opcionális: ellenőrizzük, hogy az ID szám\r",
+              "pm.test(\"ID field is a number\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.id).to.be.a('number');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"szin\": \"Kék\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/addszin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "addszin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "adduzemanyag",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz 200\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza az új üzemanyag mezőt\r",
+              "pm.test(\"Response has required fuel field\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"id\");        // új üzemanyag ID\r",
+              "    pm.expect(data).to.have.property(\"nev\");       // üzemanyag neve\r",
+              "});\r",
+              "\r",
+              "// Opcionális: ellenőrizzük, hogy az ID szám\r",
+              "pm.test(\"ID field is a number\", function () {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data.id).to.be.a('number');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"uzemanyag\": \"Dízel\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/adduzemanyag",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "adduzemanyag"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addmodell",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz kód 200\r",
+              "pm.test(\"Státusz kód 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON\r",
+              "pm.test(\"Válasz JSON formátumú\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a modell visszatér a válaszban\r",
+              "pm.test(\"Válasz tartalmazza a modellt\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('nev');\r",
+              "    pm.expect(jsonData).to.have.property('evjarat');\r",
+              "    pm.expect(jsonData).to.have.property('marka');\r",
+              "});\r",
+              "\r",
+              "// Logoljuk a választ a konzolra (opcionális)\r",
+              "console.log(\"Válasz a szervertől:\", pm.response.json());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"modell\": {\r\n        \"nev\": \"Tesla Model S\",\r\n        \"evjarat\": 2023,\r\n        \"marka\": \"Tesla\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/addmodell",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "addmodell"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addvalto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz kód 200\r",
+              "pm.test(\"Státusz kód 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Válasz JSON formátumú\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza a várt mezőket\r",
+              "pm.test(\"Válasz tartalmazza a váltót\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('tipus');\r",
+              "    pm.expect(jsonData).to.have.property('sebessegFok');\r",
+              "});\r",
+              "\r",
+              "// Logoljuk a választ a konzolra (opcionális)\r",
+              "console.log(\"Válasz a szervertől:\", pm.response.json());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"valto\": {\r\n        \"tipus\": \"Automata\",\r\n        \"sebessegFok\": 6\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/addvalto",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "addvalto"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "keptorles",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz kód 200\r",
+              "pm.test(\"Státusz kód 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Válasz JSON formátumú\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza a várt üzenetet\r",
+              "pm.test(\"Válasz tartalmazza a törlés üzenetét\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('message', 'Kép törölve');\r",
+              "});\r",
+              "\r",
+              "// Logoljuk a választ a konzolra (opcionális)\r",
+              "console.log(\"Válasz a szervertől:\", pm.response.json());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"szamlaSzam\": \"2026-001\",\r\n    \"nev\": \"Kovács Péter\",\r\n    \"cim\": \"Budapest, Fő utca 12\",\r\n    \"osszeg\": 1500000,\r\n    \"datum\": \"2026-03-25\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/kepek/123/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "kepek",
+            "123",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "kepfeltoltes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz kód 200\r",
+              "pm.test(\"Státusz kód 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Válasz JSON formátumú\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza a siker üzenetet\r",
+              "pm.test(\"Válasz tartalmazza a siker üzenetet\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('message', 'Kép feltöltve');\r",
+              "});\r",
+              "\r",
+              "// Logoljuk a választ a konzolra (opcionális)\r",
+              "console.log(\"Válasz a szervertől:\", pm.response.json());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nev\": \"Toyota\",\r\n    \"üzemanyag\": \"Benzin\",\r\n    \"váltó\": \"Automata\",\r\n    \"szin_nev\": \"Piros\",\r\n    \"ar\": 7500000,\r\n    \"evjarat\": 2021,\r\n    \"egyeb_mezo\": \"példa\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/kepek/123",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "kepek",
+            "123"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "adminNemvalaszotak",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ellenőrizzük, hogy a státusz kód 200\r",
+              "pm.test(\"Státusz kód 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz JSON formátumú\r",
+              "pm.test(\"Válasz JSON formátumú\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// Ellenőrizzük, hogy a válasz tartalmazza a count mezőt\r",
+              "pm.test(\"Válasz tartalmazza a count mezőt\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('count');\r",
+              "    pm.expect(jsonData.count).to.be.a('number');\r",
+              "});\r",
+              "\r",
+              "// Logoljuk a választ a konzolra (opcionális)\r",
+              "console.log(\"Válasz a szervertől:\", pm.response.json());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJsazIwMDdAZ21haWwuY29tIiwiYWRtaW4iOjAsImlhdCI6MTc3NDQzNzc0MiwiZXhwIjoxNzc0NDM4NjQyfQ.qyXf8tn7xuHPGb9c4-Mq3YVJtdNs4vjwKvdRLE-PEWo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:80/auto/admin/unansweredcount",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "80",
+          "path": [
+            "auto",
+            "admin",
+            "unansweredcount"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
