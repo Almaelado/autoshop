@@ -29,7 +29,6 @@ frontend.pnp.js
 /frontend/public/img
 
 /backend/node_modules
-/backend/.env
 
 # Dependencies
 /mobil/node_modules/
