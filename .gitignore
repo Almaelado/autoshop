@@ -1,5 +1,4 @@
-/backend/node_modules
-/backend/public/img
+
 
 # dependencies
 frontend/node_modules
@@ -8,6 +7,8 @@ frontend.pnp.js
 
 # testing
 /frontend/coverage
+
+/frontend/dist
 
 # production
 /frontend/build
