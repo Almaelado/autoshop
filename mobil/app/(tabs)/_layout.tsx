@@ -1,13 +1,18 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useAuth } from '@/auth/AuthProvider';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { user } = useAuth(); // 👈 EZ A LÉNYEG
+
+  // A harmadik tab cime es ikonja attol fugg, hogy van-e aktiv session.
+  const isLoggedIn = !!user;
 
   return (
     <Tabs
@@ -15,19 +20,40 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
         }}
       />
+
       <Tabs.Screen
-        name="explore"
+        name="Autok"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Autók',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="car" size={24} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="BejReg"
+        options={{
+          title: isLoggedIn
+            ? 'Profil'
+            : 'Bejelentkezés/Regisztráció',
+          tabBarIcon: ({ color }) =>
+            isLoggedIn ? (
+              <FontAwesome name="user" size={24} color={color} />
+            ) : (
+              <Ionicons name="person" size={24} color={color} />
+            ),
         }}
       />
     </Tabs>

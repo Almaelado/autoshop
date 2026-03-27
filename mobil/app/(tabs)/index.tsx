@@ -1,25 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
-
-const BACKEND_URL = 'http://localhost:5000'; // Állítsd be a backend URL-t
+import { api } from '../../api/api';
+import { useBackend } from '@/auth/BackendProvider';
+import Reszletek from '@/components/Reszletek';
 
 export default function HomeScreen() {
   const [autok, setAutok] = useState([]);
-  const [randomAutok, setRandomAutok] = useState([]);
+  const { backendUrl } = useBackend();
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedAuto, setSelectedAuto] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/auto/minden`)
-      .then(res => res.json())
-      .then(data => {
-        setAutok(data);
-        const shuffled = [...data].sort(() => 0.5 - Math.random());
-        setRandomAutok(shuffled.slice(0, 6));
-      })
-      .catch(err => console.error('Error fetching autok:', err));
-  }, []);
+  if (!backendUrl) return;
+
+  const fetchAutok = async () => {
+    try {
+      // A foolap ugyanazt a random ajanlot tolti be, mint a webes landing oldal.
+      const response = await api.get(`/auto/random`);
+      setAutok(response.data);
+    } catch (error) {
+      console.error("Hiba az autók betöltésekor:", error);
+    }
+  };
+
+  fetchAutok();
+}, [backendUrl]); 
+
+  useEffect(() => {
+    console.log("Autók betöltve:", autok);
+  }, [autok]);
 
   return (
+    <>
+    {/* A reszletezo modal a listarol kivalasztott auto adatait kapja meg. */}
+    <Reszletek
+  nyitva={detailsOpen}
+  setNyitva={setDetailsOpen}
+  auto={selectedAuto}
+/>
     <ScrollView style={styles.container}>
+      
       {/* HERO BANNER */}
       <View style={styles.hero}>
         <View style={styles.heroOverlay}>
@@ -36,21 +56,28 @@ export default function HomeScreen() {
       {/* KIEMELT AUTÓK */}
       <Text style={styles.sectionTitle}>Kiemelt autóink</Text>
       <View style={styles.carGrid}>
-        {randomAutok.map(auto => (
-          <View key={auto.id} style={styles.carCard}>
+        {autok.map(auto => (
+          <TouchableOpacity
+            key={auto.id}
+            style={styles.carCard}
+            onPress={() => {
+              setSelectedAuto(auto);
+              setDetailsOpen(true);
+            }}
+          >
             <Image
-              source={{ uri: `${BACKEND_URL}/img/${auto.id}_1.jpg` }}
+              source={{ uri: backendUrl ? `${backendUrl}/img/${auto.id}_1.jpg` : undefined }}
               style={styles.carImg}
               resizeMode="cover"
             />
+
             <Text style={styles.carName}>{auto.nev} {auto.model}</Text>
             <Text style={styles.carPrice}>{auto.ar.toLocaleString()} Ft</Text>
-            <TouchableOpacity
-              style={styles.detailsBtn}
-              onPress={() => {}}>
+
+            <View style={styles.detailsBtn}>
               <Text style={styles.detailsBtnText}>Részletek</Text>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -123,6 +150,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
   );
 }
 

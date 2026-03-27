@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
@@ -5,10 +7,12 @@ const Auto=require('../models/autoModellMod');
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
+// A rovid eletu access token minden vedett keresnel kell a kliensnek.
 function generateAccessToken(user) {
     return jwt.sign(user, ACCESS_SECRET, { expiresIn: '15m' }); 
 }
 
+// A refresh token segit uj access tokent kerni uj bejelentkezes nelkul.
 function generateRefreshToken(user) {
     return jwt.sign(user, REFRESH_SECRET, { expiresIn: '7d' }); 
 }
@@ -37,28 +41,6 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-
-    async hozzaad(req, res) {
-        try {
-            const autoData = req.body;
-            const ujAuto = await Auto.hoozzaad(autoData);
-            res.status(201).json(ujAuto);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-
-    async modosit(req, res) {
-        try {
-            const id = req.params.id;
-            const autoData = req.body;
-            const frissitettAuto = await Auto.modosit(id, autoData);
-            res.status(200).json(frissitettAuto);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-
     async torol(req, res) {
         try {
             const id = req.params.id;
@@ -68,17 +50,6 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-
-    async szinkeres(req,res){
-        try {
-            const szin_id=req.params.szin_id;
-            const autos=await Auto.szinkeres(szin_id);
-            res.status(200).json(autos);
-        } catch (error) {
-            res.status(500).json({message:error.message});
-        }
-    },
-
     async getMarka(req, res) {
         try {
             const autos =  await Auto.getMarka();
@@ -91,6 +62,7 @@ const autoController={
     async getSzin(req, res) {
         try {
             const autos =  await Auto.getSzin();
+            console.log(autos);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -118,6 +90,7 @@ const autoController={
     async getAjto(req, res) {   
         try {
             const autos =  await Auto.getAjto();
+            console.log(autos)
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -127,6 +100,7 @@ const autoController={
     async getSzemely(req, res) {
         try {
             const autos =  await Auto.getSzemely();
+            console.log(autos);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -138,6 +112,7 @@ async szuro(req, res, next) {
         const szuro_json = req.body;
         console.log("Szurok:", szuro_json);
 
+        // A bejovo filter objektumbol dinamikusan epul fel a WHERE resz.
         let whereClauses = [];
         let values = [];
 
@@ -193,12 +168,14 @@ async szuro(req, res, next) {
         }
 
         // SQL összeállítása
+        // A kliens mindig ugyanazt az alapnezetet szuri, csak a feltetelek valtoznak.
         let sql = "SELECT * FROM osszes_auto";
         if (whereClauses.length > 0) {
             sql += " WHERE " + whereClauses.join(" AND ");
         }
 
         // Paginálás
+        // Az oldalszamozast a frontend infinite scroll-ja hasznalja.
         const limit = Number(szuro_json.limit) || 10;
         const page = Number(szuro_json.page) || 1;
         const offset = (page - 1) * limit;
@@ -228,6 +205,7 @@ async szuro(req, res, next) {
         console.log('Bejelentkezési kísérlet:', user);
 
         if(user!= false){
+            // A token payload csak a kliensnek tenyleg szukseges adatokat tartalmazza.
             // Csak az id-t és emailt tesszük a tokenbe!
             const accessToken = generateAccessToken({ id: user.id, email: user.email , admin: user.admin});
             const refreshToken = generateRefreshToken({ id: user.id, email: user.email, admin: user.admin});
@@ -278,6 +256,7 @@ async szuro(req, res, next) {
             }
 
             const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+            // Itt csak uj access token keszul, a refresh cookie marad a bongeszoben.
             const newAccessToken = generateAccessToken(payload);
             console.log(payload);
             res.json({ accessToken: newAccessToken , user: payload });
@@ -338,15 +317,6 @@ async szuro(req, res, next) {
             const lista = await Auto.erdekeltekListaja(user.id);
             res.status(200).json(lista);
         } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-    async felhasznalok(req, res) {
-        try {
-            const felhasznalok = await Auto.felhasznalok();
-            res.status(200).json(felhasznalok);
-        } catch (error) {
-            console.error("Error fetching users:", error);
             res.status(500).json({ message: error.message });
         }
     },
@@ -486,20 +456,15 @@ async szuro(req, res, next) {
             const autosValto = await Auto.getValto();
             const autosSzin = await Auto.getSzin();
 
-            //console.log(autosMarka);
-            //console.log(autosUzemanyag);
-            //console.log(autosValto);
-            //console.log(autosSzin);
+            // A frontend olvashato neveket kuld, itt forditjuk vissza adatbazis ID-kra.
 
             autosMarka.forEach(element => {
-                //console.log(element);
                 if(element.nev === data.nev){
                     data.nev = element.id;
                 }
             });
 
             autosUzemanyag.forEach(element => {
-                //console.log(element);
                 if(element.nev === data.üzemanyag){
                     data.üzemanyag = element.id;
                 }
@@ -524,7 +489,150 @@ async szuro(req, res, next) {
         } catch (error) {
             res.status(500).json({ message: error.message });       
         }
-    }
+    },
+    async UjAuto(req,res){
+        try {
+            const data = req.body;
+            console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+            // Uj autonak ugyanaz az atalakitas kell, mint szerkesztesnel: nevbol idegen kulcs.
+            //console.log(autosMarka);
+            //console.log(autosUzemanyag);
+            //console.log(autosValto);
+            //console.log(autosSzin);
+            autosMarka.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            }
+            );
+            autosUzemanyag.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+            //console.log("Final data for new car:", data);
+            const ujAuto = await Auto.UjAuto(data);
+            res.status(200).json(ujAuto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async UjSzamla(req,res){
+        try {
+            const data = req.body;
+            console.log("UjSzamla data:", data);
+            const ujSzamla = await Auto.UjSzamla(data);
+            res.status(200).json(ujSzamla);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddSzin(req,res){
+        try {
+            const { szin } = req.body;
+            console.log("AddSzin data:", szin);
+            const ujSzin = await Auto.AddSzin(szin);
+            res.status(200).json(ujSzin);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddUzemanyag(req,res){
+        try {
+            const { uzemanyag } = req.body;
+            console.log("AddUzemanyag data:", uzemanyag);
+            const ujUzemanyag = await Auto.AddUzemanyag(uzemanyag);
+            res.status(200).json(ujUzemanyag);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddModell(req,res){
+        try {
+            const { modell } = req.body;
+            console.log("AddModell data:", modell);
+            const ujModell = await Auto.AddModell(modell);
+            res.status(200).json(ujModell);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddValto(req,res){
+        try {
+            const { valto } = req.body;
+            console.log("AddValto data:", valto);
+            const ujValto = await Auto.AddValto(valto);
+            res.status(200).json(ujValto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async KepTorles(req,res){
+        console.log("KepTorles hívás:", req.params); // Debug log
+        try {
+            const { autoId, index } = req.params;
+            console.log("KepTorles data:", { autoId, index });
+            const kepPath = path.join(__dirname, "..", "public", "img", `${autoId}_${index}.jpg`);
+
+            fs.unlink(kepPath, (err) => {
+                if (err) {
+                    console.error("Hiba a törléskor:", err);
+                    return res.status(500).json({ message: "Nem sikerült törölni a képet" });
+                }
+                res.json({ message: "Kép törölve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+        },
+    async KepFeltoltes(req,res){
+        try {
+            const { autoId } = req.params;
+            console.log("KepFeltoltes hívás:", { autoId, file: req.file }); // Debug log
+            if (!req.file) {
+                return res.status(400).json({ message: "Nincs fájl feltöltve" });
+            }
+            // A vegleges fajlnev igazodik a mar hasznalt autoId_index.jpg mintahoz.
+            const uploadPath = path.join(__dirname, "..", "public", "img");
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            const filePath = path.join(uploadPath,`${req.file.filename}.jpg`);
+            fs.rename(req.file.path, filePath, (err) => {
+                if (err) {
+                    console.error("Hiba a fájl átnevezésekor:", err);
+                    return res.status(500).json({ message: "Nem sikerült menteni a képet" });
+                }
+                res.json({ message: "Kép feltöltve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 };
 
 module.exports=autoController;

@@ -1,0 +1,115 @@
+.ujauto-form-outer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9ecef;
+}
+
+.ujauto-form-container {
+  max-width: 1100px;
+  min-width: 320px;
+  margin: 2rem auto;
+  padding: 2rem 2rem 1.5rem 2rem;
+  background: #f8f9fa;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.ujauto-form-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2d3a4b;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.ujauto-form-container form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem 2rem;
+  align-items: start;
+}
+
+.ujauto-form-container form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ujauto-form-container label {
+  font-weight: 500;
+  color: #34495e;
+  font-size: 1rem;
+}
+
+.ujauto-form-container input,
+.ujauto-form-container select,
+.ujauto-form-container textarea {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #bfc9d1;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+.ujauto-form-container input:focus,
+.ujauto-form-container select:focus,
+.ujauto-form-container textarea:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.ujauto-form-container textarea {
+  min-height: 60px;
+  resize: vertical;
+  grid-column: span 4;
+}
+
+.ujauto-form-container button[type="submit"] {
+  grid-column: span 4;
+  justify-self: end;
+  padding: 0.7rem 2.5rem;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.7rem;
+  transition: background 0.2s;
+}
+
+.ujauto-form-container button[type="submit"]:hover {
+  background: #125ea6;
+}
+
+@media (max-width: 1100px) {
+  .ujauto-form-container form {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.2rem;
+  }
+  .ujauto-form-container textarea,
+  .ujauto-form-container button[type="submit"] {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .ujauto-form-container {
+    padding: 1rem 0.5rem;
+  }
+  .ujauto-form-container form {
+    grid-template-columns: 1fr;
+    gap: 0.7rem 0;
+  }
+  .ujauto-form-container textarea,
+  .ujauto-form-container button[type="submit"] {
+    grid-column: span 1;
+  }
+}

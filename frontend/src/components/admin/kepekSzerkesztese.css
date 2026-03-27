@@ -1,0 +1,91 @@
+.kepek-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kepek-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.kepek-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.kep-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.kep-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.kep-torles {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.kep-upload {
+  border: 2px dashed #007bff;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  cursor: pointer;
+  border-radius: 8px;
+  height: 120px;
+}
+
+.kepek-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.kepek-feher-doboz {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  width: 90vw;
+  max-width: 900px;
+  max-height: 85vh;
+  overflow-y: auto;
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+.kepek-feher-doboz {
+  animation: modalPop 0.25s ease-out;
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

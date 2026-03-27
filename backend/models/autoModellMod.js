@@ -2,6 +2,7 @@ const pool = require('../config/db.js');
 const bcrypt = require('bcrypt');
 const Auto = {};
 
+// Ez a modell fogja ossze az adatbazis muveleteket, hogy a controller csak folyamatszinten dolgozzon.
 Auto.osszes = async (data) => {
     try {
         const [rows] = await pool.execute('SELECT * FROM osszes_auto limit ? offset ?',[data.limit,data.offset]);
@@ -21,37 +22,9 @@ Auto.egy = async (id) => {
         throw error;
     }
 };
-
-Auto.hoozzaad = async (autoData) => {
-    try {
-        const { marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras } = autoData;
-        const [result] = await pool.execute(
-            'INSERT INTO osszes_auto (marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras]
-        );
-        return { id: result.insertId, ...autoData };
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-Auto.modosit = async (id, autoData) => {
-    try {
-        const { marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras } = autoData;
-        await pool.execute(
-            'UPDATE osszes_auto SET marka_id = ?, model = ?, valto_id = ?, kiadasiev = ?, uzemanyag_id = ?, motormeret = ?, km = ?, ar = ?, ajtoszam = ?, szemelyek = ?, szin_id = ?, irat = ?, leiras = ? WHERE id = ?',
-            [marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras, id]
-        );
-        return { id, ...autoData };
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
 Auto.torol = async (id) => {
     try {
-        await pool.execute('DELETE FROM osszes_auto WHERE id = ?', [id]);
+        await pool.execute('DELETE FROM autok WHERE id = ?', [id]);
     } catch (error) {
         console.error(error);
         throw error;
@@ -84,10 +57,6 @@ Auto.getUzemanyag = async () => {
         throw error;
     }
 };
-Auto.getfelhasz = async (username) =>{
-    const [rows] = await pool.query("SELECT * FROM user WHERE username = ?", [username]);
-    return rows[0];
-}
 Auto.getValto = async () => {
     try {
         const [rows] = await pool.execute('SELECT * FROM valtok');
@@ -115,14 +84,6 @@ Auto.getSzemely = async () => {
         throw error;
     }
 };
-Auto.validatePassword = async (username, password) =>{
-    const user = await Auto.getfelhasz(username);
-    if (!user) {
-        return false;
-    }
-    const match = await bcrypt.compare(password, user.password);
-    return match ? user : false;
-}
 Auto.szuro = async (sql, values) => {
     try {
         const [rows] = await pool.execute(sql, values);
@@ -168,10 +129,11 @@ Auto.validatePassword = async (email,password) =>{
     return match ? user:false;
 }
 // Érdeklődés hozzáadása
+// Az erdeklodesek kulon tablaban vannak, igy egy user tobb autora is jelezhet szandekot.
 Auto.erdekelHozzaad = async (vevo_id, auto_id) => {
     try {
         await pool.execute(
-            "INSERT IGNORE INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
+            "INSERT INTO erdeklodesek (vevo_id, auto_id) VALUES (?, ?)",
             [vevo_id, auto_id]
         );
         return true;
@@ -242,13 +204,50 @@ Auto.uzenetKuldes = async (vevo_id, auto_id, uzenet) => {
     }
 };
 Auto.uzenetekLekerdezese = async (vevo_id) => {
+    console.log(vevo_id);
     try {
+        // A legutobbi uzenet alapjan listazzuk a szalakat, hogy inbox-szeru sorrendet kapjon a kliens.
         const [rows] = await pool.execute(
-            ` SELECT auto_id,vevo_id,osszes_auto.nev,osszes_auto.model,osszes_auto.ar
- FROM uzenet
-                inner JOIN osszes_auto ON osszes_auto.id = uzenet.auto_id
-                WHERE uzenet.vevo_id = '7'
-                GROUP by auto_id;`,
+            `SELECT
+                u.auto_id,
+                u.vevo_id,
+                a.nev,
+                a.model,
+                a.ar,
+                CASE
+                    WHEN u.valasz IS NOT NULL
+                        AND u.valasz_datum IS NOT NULL
+                        AND u.valasz_datum >= u.elkuldve
+                    THEN u.valasz
+                    ELSE u.uzenet_text
+                END AS utolso_uzenet,
+                CASE
+                    WHEN u.valasz IS NOT NULL
+                        AND u.valasz_datum IS NOT NULL
+                        AND u.valasz_datum >= u.elkuldve
+                    THEN u.valasz_datum
+                    ELSE u.elkuldve
+                END AS utolso_aktivitas
+            FROM uzenet u
+            JOIN osszes_auto a ON a.id = u.auto_id
+            WHERE u.vevo_id = ?
+              AND u.id = (
+                SELECT u2.id
+                FROM uzenet u2
+                WHERE u2.vevo_id = u.vevo_id
+                  AND u2.auto_id = u.auto_id
+                ORDER BY
+                    CASE
+                        WHEN u2.valasz IS NOT NULL
+                            AND u2.valasz_datum IS NOT NULL
+                            AND u2.valasz_datum >= u2.elkuldve
+                        THEN u2.valasz_datum
+                        ELSE u2.elkuldve
+                    END DESC,
+                    u2.id DESC
+                LIMIT 1
+              )
+            ORDER BY utolso_aktivitas DESC, u.auto_id DESC`,
             [vevo_id]
         );
         return rows;
@@ -259,6 +258,7 @@ Auto.uzenetekLekerdezese = async (vevo_id) => {
 };
 Auto.AdminuzenetekLekerdezese = async () => {
     try {
+        // Az admin lista csak azokat a szalakat mutatja, ahol az utolso kerdesre meg nincs valasz.
         const [rows] = await pool.execute(
             `SELECT u.id,v.nev,u.vevo_id,u.auto_id,a.model,a.ar,u.uzenet_text,u.elkuldve,u.valasz
 FROM uzenet u
@@ -354,6 +354,7 @@ return result;
         throw error;
     }
 }
+// A szerkesztes es uj auto mentese a normalizalt autok tablat frissiti, nem a nezetet.
 Auto.Szerkesztes = async (data) =>{
     try {
         console.log(data.nev,data.model,data.váltó,data.kiadasiev,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtoszam,data.szemelyek,data.szin_nev,data.irat,data.leírás,data.id);
@@ -364,5 +365,74 @@ Auto.Szerkesztes = async (data) =>{
         throw error;
     }
 }
+Auto.UjAuto = async (data) =>{
+    try {
+        console.log(data);
+        const [result] =await pool.execute(`INSERT INTO autok (marka_id, model, valto_id, kiadasiev, uzemanyag_id, motormeret, km, ar, ajtoszam, szemelyek, szin_id, irat, leiras) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);`,[data.nev,data.modell,data.váltó,data.evjarat,data.üzemanyag,data.motormeret,data.km,data.ar,data.ajtok,data.szemelyek,data.szin_nev,data.irat,data.leiras])
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.UjSzamla = async (data) =>{
+    try {
+        console.log("Számla adatbázisba mentése:", data.adatok);
+        const [result1] =await pool.execute(`INSERT INTO szamla (szamlaid, felhasz_id, kelt_datum,tel_datum,fiz_datim,fiz_id) VALUES (?,?,?,?,?,?);`,[data.adatok.szamlaSzam,data.adatok.vevoId,data.adatok.datum,data.adatok.datum,data.adatok.datum,data.adatok.fizetesimod])
+        const [result2] = await pool.execute(`Insert Into rendeles (szid,auto_id) VALUES (?,?);`, [data.adatok.szamlaSzam,data.adatok.autokId]);
+        
+
+        return {result1,result2};
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddSzin = async (szin) =>{
+    try {
+        console.log("Új szín hozzáadása:", szin);
+        const [result] = await pool.execute(`INSERT INTO szin (nev) VALUES (?);`, [szin]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddUzemanyag = async (uzemanyag) =>{
+    try {
+        console.log("Új üzemanyag hozzáadása:", uzemanyag);
+        const [result] = await pool.execute(`INSERT INTO uzemanyag (nev) VALUES (?);`, [uzemanyag]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddModell = async (modell) =>{
+    try {
+        console.log("Új modell hozzáadása:", modell);
+        const [result] = await pool.execute(`INSERT INTO marka (nev) VALUES (?);`, [modell]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+Auto.AddValto = async (valto) =>{
+    try {
+        console.log("Új váltó hozzáadása:", valto);
+        const [result] = await pool.execute(`INSERT INTO valtok (nev) VALUES (?);`, [valto]);
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
 
 module.exports = Auto;

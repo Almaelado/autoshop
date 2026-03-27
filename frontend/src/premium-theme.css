@@ -1,0 +1,1603 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+  --primary: #b46833;
+  --primary-dark: #8c4e23;
+  --secondary: #d89a63;
+  --accent: #1d1b1a;
+  --success: #6d8b53;
+  --danger: #a34c37;
+  --dark: #181514;
+  --light: #f6f0e8;
+  --gray: #706458;
+  --radius: 22px;
+  --shadow-sm: 0 10px 30px rgba(24, 21, 20, 0.08);
+  --shadow-md: 0 20px 50px rgba(24, 21, 20, 0.12);
+  --shadow-lg: 0 30px 80px rgba(24, 21, 20, 0.16);
+  --surface-panel: rgba(250, 245, 238, 0.88);
+  --surface-panel-soft: rgba(244, 236, 226, 0.92);
+  --surface-input: rgba(255, 251, 245, 0.96);
+  --surface-border: rgba(121, 98, 75, 0.18);
+  --surface-strong: #201c1a;
+  --surface-strong-soft: #2b2623;
+  --text-strong: #1b1715;
+  --text-muted: #6f6358;
+  --copper-glow: rgba(180, 104, 51, 0.22);
+  --page-bg-gradient:
+    radial-gradient(circle at top left, rgba(216, 154, 99, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(38, 34, 31, 0.08), transparent 24%),
+    linear-gradient(180deg, #f7f2ea 0%, #efe7dc 48%, #e5dbcf 100%);
+}
+
+html,
+body {
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  color: var(--text-strong);
+  background-image: var(--page-bg-gradient) !important;
+}
+
+body {
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-title,
+.hero-overlay h1,
+.autok-container h1,
+.profile-name,
+.uzenetek-title,
+.admin-uzenetek-title,
+.admin-autok-title,
+.profile-edit-form h1,
+.auto-info h2 {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background-color: var(--primary);
+  color: #fffaf5;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgba(24, 21, 20, 0.08);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+a {
+  color: var(--primary);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+button,
+.btn,
+.form-button,
+.register-button,
+.profile-button,
+.profile-edit-btn,
+.profile-edit-back-btn,
+.admin-add-button,
+.admin-card button,
+.nyomtatvanyok-actions button,
+.chat-input button,
+.uzenetek-back,
+.admin-uzenetek-back,
+.vedett-button {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+button:hover,
+.btn:hover,
+.form-button:hover,
+.register-button:hover,
+.profile-button:hover,
+.profile-edit-btn:hover,
+.profile-edit-back-btn:hover,
+.admin-add-button:hover,
+.admin-card button:hover,
+.nyomtatvanyok-actions button:hover,
+.chat-input button:hover,
+.uzenetek-back:hover,
+.admin-uzenetek-back:hover,
+.vedett-button:hover {
+  transform: translateY(-2px);
+}
+
+input,
+textarea,
+select,
+.form-control,
+.form-select,
+.typeahead-input {
+  background: var(--surface-input) !important;
+  border-color: rgba(140, 110, 84, 0.2) !important;
+  color: var(--text-strong);
+  border-radius: 16px !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.form-control:focus,
+.form-select:focus,
+.rbt-input-main.form-control:focus {
+  border-color: rgba(180, 104, 51, 0.55) !important;
+  box-shadow: 0 0 0 4px rgba(180, 104, 51, 0.12) !important;
+}
+
+.rbt-input-main.form-control {
+  min-height: 54px;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+.rbt-menu.dropdown-menu {
+  background: rgba(30, 26, 24, 0.96);
+  border: 1px solid rgba(216, 154, 99, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(12, 10, 10, 0.28);
+  padding: 0.5rem;
+}
+
+.rbt-menu .dropdown-item {
+  color: rgba(255, 247, 238, 0.88);
+  border-radius: 12px;
+}
+
+.rbt-menu .dropdown-item:hover,
+.rbt-menu .dropdown-item:focus {
+  background: rgba(180, 104, 51, 0.18);
+  color: #fff9f2;
+}
+
+.login-form,
+.register-form,
+.profile-header,
+.profile-info,
+.profile-edit-form,
+.admin-card,
+.admin-table-container,
+.admin-form-content,
+.vonalak-table-container,
+.nyomtatvanyok-container,
+.uzenetek-container,
+.admin-uzenetek-container,
+.ujauto-form-container,
+.autok-card,
+.car-card,
+.why-us-card,
+.testimonial-card,
+.auto-details-page,
+.carousel-container,
+.auto-info,
+.ajanlott-autok,
+.ajanlott-card,
+.admin-mod-container,
+.admin-auto-szerkesztes .card,
+.admin-auto-szerkesztes .card-body,
+.admin-auto-szerkesztes .card-header,
+.vedett-vonal-content,
+.vedett-vonal-box,
+.card {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.94) 0%, rgba(242, 235, 226, 0.9) 100%) !important;
+  border: 1px solid var(--surface-border) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.main-menu {
+  background:
+    linear-gradient(135deg, rgba(17, 15, 14, 0.96) 0%, rgba(31, 27, 25, 0.94) 55%, rgba(17, 15, 14, 0.98) 100%) !important;
+  border-bottom: 1px solid rgba(216, 154, 99, 0.18) !important;
+  box-shadow: 0 22px 48px rgba(10, 9, 9, 0.28) !important;
+  backdrop-filter: blur(18px);
+}
+
+.main-menu .navbar-brand {
+  gap: 0.9rem;
+}
+
+.main-menu .menu-logo {
+  background: rgba(255, 250, 244, 0.96);
+  border: 1px solid rgba(216, 154, 99, 0.22);
+  border-radius: 14px;
+}
+
+.main-menu .menu-brand-text {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+}
+
+.main-menu .nav-link,
+.main-menu .dropdown-toggle {
+  color: rgba(255, 244, 232, 0.76);
+}
+
+.main-menu .menu-link.active,
+.main-menu .menu-dropdown.active > .dropdown-toggle,
+.main-menu .nav-link:hover,
+.main-menu .dropdown-toggle:hover {
+  color: #fffaf5 !important;
+  background: rgba(180, 104, 51, 0.14) !important;
+  box-shadow: inset 0 0 0 1px rgba(216, 154, 99, 0.18);
+}
+
+.main-menu .menu-link::after,
+.main-menu .menu-dropdown > .dropdown-toggle::before {
+  background: linear-gradient(90deg, var(--secondary), var(--primary)) !important;
+}
+
+.main-menu .dropdown-menu {
+  background: rgba(24, 21, 20, 0.96);
+  border: 1px solid rgba(216, 154, 99, 0.16);
+  border-radius: 18px;
+  padding: 0.45rem;
+}
+
+.main-menu .dropdown-item {
+  border-radius: 12px;
+}
+
+#fo-oldal {
+  max-width: 1480px;
+  padding: 24px 24px 84px;
+}
+
+.hero {
+  min-height: clamp(540px, 76vh, 820px);
+  border-radius: 32px;
+  padding: clamp(28px, 4vw, 54px);
+  background:
+    linear-gradient(115deg, rgba(13, 12, 12, 0.82) 6%, rgba(29, 25, 23, 0.52) 52%, rgba(180, 104, 51, 0.18) 100%),
+    url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1800&q=80")
+      center/cover no-repeat !important;
+  align-items: flex-end;
+  justify-content: flex-start;
+  box-shadow: 0 36px 80px rgba(18, 16, 15, 0.2);
+  overflow: hidden;
+}
+
+.hero::before {
+  background:
+    radial-gradient(circle at top right, rgba(216, 154, 99, 0.22), transparent 32%),
+    linear-gradient(115deg, rgba(17, 15, 14, 0.18), rgba(17, 15, 14, 0.32)) !important;
+}
+
+.hero-overlay {
+  max-width: 700px;
+  width: min(100%, 700px);
+  padding: clamp(34px, 5vw, 58px);
+  background: linear-gradient(180deg, rgba(16, 14, 13, 0.88) 0%, rgba(31, 27, 24, 0.78) 100%);
+  border: 1px solid rgba(255, 248, 240, 0.12);
+  border-radius: 28px;
+  text-align: left;
+  box-shadow: 0 28px 70px rgba(9, 8, 8, 0.28);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-overlay h1 {
+  color: #fff8f2;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 0.96;
+  margin-bottom: 1.2rem;
+}
+
+.hero-overlay p {
+  color: rgba(245, 233, 220, 0.84);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  max-width: 32rem;
+}
+
+.hero-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 34%),
+    radial-gradient(circle at top right, rgba(216, 154, 99, 0.22), transparent 34%);
+  pointer-events: none;
+}
+
+.hero-btn,
+.hero-overlay button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 1.8rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fffaf5 !important;
+  border: 1px solid rgba(255, 242, 228, 0.18) !important;
+  box-shadow: 0 16px 34px rgba(180, 104, 51, 0.24);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.hero-btn:hover,
+.hero-overlay button:hover {
+  text-decoration: none;
+  box-shadow: 0 22px 42px rgba(180, 104, 51, 0.3);
+}
+
+.section-title {
+  margin-bottom: 2.8rem;
+  color: var(--text-strong);
+  font-size: clamp(2rem, 3vw, 3.1rem);
+}
+
+.section-title::after {
+  width: 92px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--secondary)) !important;
+}
+
+.car-grid {
+  gap: 2rem;
+}
+
+#kiemelt {
+  margin-top: 4.5rem !important;
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  border: 1px solid rgba(111, 86, 63, 0.14);
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.9) 0%, rgba(241, 233, 223, 0.86) 100%);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+#kiemelt::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(216, 154, 99, 0.14), transparent 68%);
+  pointer-events: none;
+}
+
+#kiemelt .section-title {
+  margin-bottom: 2.2rem;
+}
+
+#kiemelt .car-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1.4rem;
+  align-items: stretch;
+}
+
+#kiemelt .car-grid > *:nth-child(n + 7) {
+  display: none;
+}
+
+.car-card,
+.autok-list-page .autok-card,
+.auto-card,
+.ajanlott-card,
+.uzenet-kartya,
+.admin-card {
+  border-radius: 26px !important;
+}
+
+.car-card,
+.autok-list-page .autok-card {
+  overflow: hidden;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  box-shadow: 0 18px 38px rgba(24, 21, 20, 0.1) !important;
+}
+
+.car-card:hover,
+.autok-list-page .autok-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 28px 58px rgba(24, 21, 20, 0.16) !important;
+  border-color: rgba(180, 104, 51, 0.28) !important;
+}
+
+.car-card img,
+.autok-card .card-img-top,
+.ajanlott-img {
+  filter: saturate(0.96) contrast(1.04);
+}
+
+.car-card .card-body,
+.autok-card .card-body {
+  padding: 1.45rem 1.5rem;
+  text-align: left;
+}
+
+#kiemelt .car-card {
+  height: 100%;
+  border: 1px solid rgba(180, 104, 51, 0.16) !important;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+#kiemelt .car-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(216, 154, 99, 0.15), rgba(180, 104, 51, 0.88), rgba(216, 154, 99, 0.15));
+  z-index: 2;
+}
+
+#kiemelt .car-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.18) 22%, transparent 44%);
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#kiemelt .car-card:hover::after {
+  transform: translateX(120%);
+}
+
+#kiemelt .car-card .card-body {
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.8rem;
+}
+
+.car-card .card-title,
+.autok-card .card-title,
+.ajanlott-nev {
+  color: var(--text-strong);
+}
+
+#kiemelt .car-card .card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.7em;
+  line-height: 1.35;
+  margin-bottom: 0;
+}
+
+.car-card .card-text,
+.autok-card .card-text,
+.rolunk-section p,
+.auto-info p,
+.uzenet-tartalom,
+.testimonial-text {
+  color: var(--text-muted);
+}
+
+.car-price,
+.uzenet-nev,
+.admin-card h2,
+.admin-autok-title,
+.admin-uzenetek-title,
+.uzenetek-title,
+.profile-edit-form h1 {
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary)) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#kiemelt .car-price {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 0.1rem;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(180, 104, 51, 0.1) !important;
+  box-shadow: inset 0 0 0 1px rgba(180, 104, 51, 0.12);
+  color: var(--primary-dark) !important;
+  -webkit-text-fill-color: currentColor !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+.car-btn,
+.btn-primary,
+.form-button,
+.register-button,
+.profile-button.primary,
+.profile-edit-btn,
+.profile-edit-back-btn,
+.admin-add-button,
+.admin-card button,
+.nyomtatvanyok-actions button,
+.chat-input button,
+.form-buttons button.submit,
+.vedett-button,
+.szuro-gomb {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fffaf5 !important;
+  border: 1px solid rgba(255, 242, 228, 0.18) !important;
+  box-shadow: 0 14px 28px rgba(180, 104, 51, 0.18) !important;
+}
+
+#kiemelt .car-btn {
+  width: 100%;
+  margin-top: 0.1rem;
+}
+
+.car-btn:hover,
+.btn-primary:hover,
+.form-button:hover,
+.register-button:hover,
+.profile-button.primary:hover,
+.profile-edit-btn:hover,
+.profile-edit-back-btn:hover,
+.admin-add-button:hover,
+.admin-card button:hover,
+.nyomtatvanyok-actions button:hover,
+.chat-input button:hover,
+.form-buttons button.submit:hover,
+.vedett-button:hover,
+.szuro-gomb:hover {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
+  color: #fffaf5 !important;
+}
+
+.profile-button.secondary,
+.chat-back,
+.uzenetek-back,
+.admin-uzenetek-back,
+.form-buttons button.cancel {
+  background: rgba(255, 250, 244, 0.88) !important;
+  color: var(--primary-dark) !important;
+  border: 1px solid rgba(180, 104, 51, 0.22) !important;
+  box-shadow: 0 10px 20px rgba(24, 21, 20, 0.06) !important;
+  -webkit-text-fill-color: currentColor !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+.profile-email {
+  color: var(--text-muted) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+.rolunk-section,
+.why-us-section,
+.testimonials-section,
+.terkep-container,
+.profile-header,
+.profile-info,
+.profile-edit-form,
+.admin-uzenetek-container,
+.uzenetek-container,
+.nyomtatvanyok-container,
+.ujauto-form-container,
+.vedett-vonal-box,
+.admin-form-content {
+  border-radius: 30px !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.rolunk-section,
+.testimonials-section,
+.terkep-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.rolunk-section::before,
+.testimonials-section::before,
+.terkep-container::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(216, 154, 99, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.why-us-card,
+.testimonial-card,
+.info-card {
+  background: linear-gradient(180deg, rgba(255, 251, 245, 0.94) 0%, rgba(241, 232, 221, 0.92) 100%) !important;
+  border: 1px solid rgba(180, 104, 51, 0.12) !important;
+  box-shadow: 0 12px 24px rgba(24, 21, 20, 0.06) !important;
+}
+
+.why-us-card:hover,
+.testimonial-card:hover,
+.info-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 34px rgba(24, 21, 20, 0.1) !important;
+}
+
+.Hargita #Szures,
+#Szures {
+  width: min(420px, 88vw);
+  padding: 32px 26px 24px;
+  background: linear-gradient(180deg, rgba(19, 17, 16, 0.98) 0%, rgba(34, 29, 27, 0.98) 100%) !important;
+  border-right: 1px solid rgba(216, 154, 99, 0.16);
+  box-shadow: 18px 0 48px rgba(11, 10, 10, 0.28);
+}
+
+#Szures .form-label,
+#Szures label,
+#Szures p,
+#Szures .checkbox-label,
+#Szures .range-slider-title,
+#Szures .range-label {
+  color: rgba(255, 245, 233, 0.82) !important;
+}
+
+#Szures p:hover,
+#Szures .checkbox-container:hover .checkbox-label {
+  color: #fff7ee !important;
+}
+
+.range-slider-wrapper {
+  background: rgba(255, 248, 238, 0.06) !important;
+  border: 1px solid rgba(216, 154, 99, 0.12);
+  border-radius: 18px;
+}
+
+.range-values,
+.range-value {
+  color: var(--secondary) !important;
+}
+
+.checkbox-input,
+.slider-input,
+input[type='range'] {
+  accent-color: var(--primary);
+}
+
+.checkbox-input {
+  border-color: rgba(216, 154, 99, 0.45);
+  background: rgba(255, 247, 237, 0.08);
+}
+
+.checkbox-input:checked {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  border-color: var(--primary);
+}
+
+.badge.bg-primary {
+  background: rgba(180, 104, 51, 0.16) !important;
+  color: #fff3e5 !important;
+  border: 1px solid rgba(216, 154, 99, 0.18);
+  border-radius: 999px;
+}
+
+.szuro-gomb {
+  border-radius: 0 20px 20px 0 !important;
+  width: 72px;
+}
+
+.overlay {
+  background: rgba(12, 10, 10, 0.42) !important;
+  backdrop-filter: blur(8px);
+}
+
+.autok-container {
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+.autok-container h1 {
+  margin-bottom: 2rem;
+  color: var(--text-strong);
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.autok-list-page .kereso-sor {
+  width: min(740px, 100%);
+  padding: 0.9rem;
+  border-radius: 999px;
+  background: rgba(253, 248, 242, 0.84);
+  border: 1px solid rgba(111, 86, 63, 0.12);
+  box-shadow: 0 18px 34px rgba(24, 21, 20, 0.08);
+  margin-bottom: 1.2rem;
+}
+
+.autok-list-page .kereso-input {
+  border-radius: 999px !important;
+  background: rgba(255, 252, 247, 0.98) !important;
+}
+
+.autok-list-page .autok-card .list-group-item {
+  background: rgba(248, 242, 234, 0.88) !important;
+  color: #4d433b;
+}
+
+.autok-list-page .autok-card .list-group-item:first-child::before {
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%) !important;
+}
+
+.autok-list-page .autok-card .card-body:last-child {
+  background: linear-gradient(180deg, #211c1a 0%, #151210 100%) !important;
+  color: #fff5ea;
+  box-shadow: none !important;
+}
+
+.autok-list-page .autok-card .card-body:last-child > div {
+  color: var(--secondary);
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  font-size: 1.45rem;
+}
+
+.auto-details-fullpage {
+  padding: 2rem 1.25rem 4rem;
+}
+
+.auto-details-page {
+  max-width: 1180px;
+  padding: 2rem;
+  border-radius: 34px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.close-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(111, 86, 63, 0.14);
+  background: rgba(255, 249, 243, 0.94);
+  color: var(--text-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 24px rgba(24, 21, 20, 0.08);
+}
+
+.carousel-container {
+  padding: 1rem;
+  border-radius: 28px !important;
+}
+
+.carousel-img-wrapper {
+  height: min(62vw, 560px);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(31, 27, 24, 0.92) 0%, rgba(60, 51, 46, 0.88) 100%);
+}
+
+.auto-info {
+  margin-top: 1.8rem;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 28px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auto-info h2 {
+  margin-bottom: 0.8rem;
+  max-width: 920px;
+  text-align: center;
+}
+
+.auto-info p {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.auto-specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 960px;
+  margin: 1.8rem auto 0;
+  border-top: 1px solid rgba(111, 86, 63, 0.12);
+}
+
+.auto-specs > div {
+  padding: 1.1rem 1.15rem;
+  border-radius: 18px;
+  background: rgba(255, 250, 244, 0.86);
+  border: 1px solid rgba(111, 86, 63, 0.1);
+  min-height: 146px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.auto-specs .label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+  width: 100%;
+  text-align: center;
+}
+
+.auto-specs .value {
+  font-weight: 700;
+  color: var(--text-strong);
+  width: 100%;
+  text-align: center;
+}
+
+.erdekel-btn,
+.uzenet-btn {
+  min-height: 48px;
+  padding: 0 1.1rem !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+  border: 1px solid rgba(255, 242, 228, 0.18) !important;
+  box-shadow: 0 14px 24px rgba(180, 104, 51, 0.18) !important;
+}
+
+.ajanlott-autok {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 28px !important;
+}
+
+.ajanlott-lista {
+  gap: 1rem;
+}
+
+.ajanlott-card {
+  width: 220px;
+  padding: 0.9rem;
+}
+
+.ajanlott-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ajanlott-ar {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(180, 104, 51, 0.1) !important;
+  box-shadow: inset 0 0 0 1px rgba(180, 104, 51, 0.12);
+  color: var(--primary-dark) !important;
+  -webkit-text-fill-color: currentColor !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+.ajanlott-card:hover {
+  transform: translateY(-8px);
+  background: linear-gradient(180deg, rgba(255, 249, 241, 0.96) 0%, rgba(246, 236, 225, 0.94) 100%) !important;
+}
+
+@media (max-width: 980px) {
+  .auto-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .auto-specs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.login-container,
+.register-container,
+.vedett-vonal-page {
+  background:
+    radial-gradient(circle at top left, rgba(216, 154, 99, 0.2), transparent 24%),
+    linear-gradient(180deg, #f7f2ea 0%, #ebe2d6 100%) !important;
+}
+
+.login-form,
+.register-form,
+.profile-header,
+.profile-edit-form {
+  border-radius: 30px !important;
+  padding: 2.5rem 2.4rem !important;
+}
+
+.login-form h2,
+.register-form h2,
+.profile-name {
+  color: var(--text-strong);
+}
+
+.login-form p,
+.register-form p,
+.profile-edit-form p,
+.profile-email,
+.vedett-message {
+  color: var(--text-muted);
+}
+
+.profile-avatar {
+  background: linear-gradient(135deg, var(--surface-strong) 0%, #3b332e 100%) !important;
+  box-shadow: 0 20px 36px rgba(24, 21, 20, 0.18);
+}
+
+.profile-info {
+  background: rgba(255, 250, 245, 0.78) !important;
+}
+
+.auto-card {
+  background: linear-gradient(180deg, rgba(255, 250, 245, 0.94) 0%, rgba(244, 237, 228, 0.9) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.1) !important;
+}
+
+.auto-card:hover {
+  background: linear-gradient(180deg, rgba(255, 252, 248, 1) 0%, rgba(246, 238, 227, 0.95) 100%) !important;
+  border-color: rgba(180, 104, 51, 0.2) !important;
+  transform: translateY(-4px) !important;
+}
+
+.profile-edit-left {
+  border-right-color: rgba(111, 86, 63, 0.12);
+}
+
+.profile-field input[type="text"],
+.profile-field input[type="password"] {
+  border-color: rgba(140, 110, 84, 0.18);
+  border-radius: 16px;
+}
+
+.profile-edit-form h1 {
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.password-section h3 {
+  color: var(--text-strong);
+}
+
+.admin-container,
+.admin-autok-container {
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.admin-dashboard {
+  gap: 1.5rem;
+}
+
+.admin-card {
+  min-height: 0;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.admin-card h2 {
+  font-size: 1.5rem;
+  line-height: 1.15;
+  margin-bottom: 0;
+  color: var(--text-strong) !important;
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: var(--text-strong) !important;
+}
+
+.admin-alert {
+  background: linear-gradient(180deg, rgba(255, 244, 225, 0.92) 0%, rgba(248, 228, 194, 0.88) 100%);
+  color: #65431e;
+  border: 1px solid rgba(180, 104, 51, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 14px 30px rgba(24, 21, 20, 0.08);
+}
+
+.admin-alert button {
+  background: #fff5e6 !important;
+  color: #6a431f !important;
+  border: 1px solid rgba(180, 104, 51, 0.22) !important;
+  box-shadow: none !important;
+}
+
+.admin-table-container,
+.admin-uzenetek-container,
+.uzenetek-container,
+.nyomtatvanyok-container,
+.ujauto-form-container {
+  max-width: 1180px;
+}
+
+.admin-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-table th {
+  background: linear-gradient(135deg, #1b1715 0%, #2d2723 100%) !important;
+  color: #fff5ea !important;
+  border-bottom: 1px solid rgba(216, 154, 99, 0.18);
+}
+
+.admin-table td {
+  border-top: 1px solid rgba(111, 86, 63, 0.08);
+  color: var(--text-strong);
+}
+
+.admin-table tr:hover {
+  background: rgba(255, 248, 239, 0.82) !important;
+}
+
+.admin-edit-btn,
+.form-buttons button.submit {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff7ef !important;
+}
+
+.admin-delete-btn {
+  background: linear-gradient(135deg, #864136 0%, #a75a46 100%) !important;
+  color: #fff7f3 !important;
+  border: 1px solid rgba(255, 223, 214, 0.16);
+}
+
+.uzenetek-container,
+.admin-uzenetek-container,
+.chat-container {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.96) 0%, rgba(242, 235, 226, 0.92) 100%) !important;
+}
+
+.uzenetek-header,
+.chat-header {
+  border-bottom: 1px solid rgba(111, 86, 63, 0.08);
+}
+
+.uzenetek-title,
+.admin-uzenetek-title {
+  color: var(--text-strong) !important;
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.uzenet-nev {
+  color: var(--primary-dark) !important;
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.uzenet-kartya {
+  background: linear-gradient(180deg, rgba(255, 251, 246, 0.96) 0%, rgba(243, 235, 226, 0.92) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.1) !important;
+  box-shadow: 0 16px 28px rgba(24, 21, 20, 0.08) !important;
+}
+
+.uzenet-kartya:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 40px rgba(24, 21, 20, 0.12) !important;
+  border-color: rgba(180, 104, 51, 0.18) !important;
+}
+
+.uzenet-ar {
+  background: rgba(180, 104, 51, 0.12) !important;
+  color: var(--primary-dark) !important;
+}
+
+.chat-container {
+  border-radius: 30px !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #181514 0%, #2a231f 100%) !important;
+  color: #fff6ed;
+}
+
+.chat-header h2 {
+  color: #fff6ed;
+}
+
+.chat-back {
+  color: #fff1e3 !important;
+  background: rgba(216, 154, 99, 0.12) !important;
+  border-color: rgba(216, 154, 99, 0.18) !important;
+}
+
+.chat-messages {
+  background: linear-gradient(180deg, rgba(249, 243, 236, 0.82) 0%, rgba(255, 250, 245, 0.96) 100%) !important;
+}
+
+.message {
+  border-radius: 22px;
+  box-shadow: 0 12px 22px rgba(24, 21, 20, 0.08);
+}
+
+.message.left {
+  background: linear-gradient(180deg, rgba(255, 250, 245, 0.98) 0%, rgba(239, 231, 221, 0.96) 100%) !important;
+  color: var(--text-strong);
+  border-color: rgba(111, 86, 63, 0.08);
+}
+
+.message.right {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
+  color: #fff9f3;
+}
+
+.chat-input {
+  background: rgba(255, 250, 245, 0.92) !important;
+  border-top: 1px solid rgba(111, 86, 63, 0.08) !important;
+}
+
+.chat-input input {
+  background: rgba(255, 253, 249, 0.98) !important;
+  border-radius: 999px !important;
+}
+
+.nyomtatvanyok-container h1,
+.ujauto-form-container h2 {
+  color: var(--text-strong);
+}
+
+.ujauto-form-container form {
+  gap: 1.35rem 1.5rem;
+}
+
+.ujauto-form-container label {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.ujauto-form-container input,
+.ujauto-form-container select,
+.ujauto-form-container textarea {
+  border-radius: 16px;
+  min-height: 52px;
+}
+
+.ujauto-form-container textarea {
+  min-height: 140px;
+}
+
+.vedett-vonal-box {
+  text-align: left;
+}
+
+.vedett-title {
+  color: var(--text-strong);
+}
+
+.spinner {
+  border-top-color: var(--primary);
+  border-color: rgba(180, 104, 51, 0.16);
+}
+
+footer.bg-dark,
+.footer {
+  background:
+    linear-gradient(180deg, rgba(18, 16, 15, 0.98) 0%, rgba(30, 26, 24, 0.98) 100%) !important;
+  color: rgba(255, 244, 232, 0.82) !important;
+  border-top: 1px solid rgba(216, 154, 99, 0.18) !important;
+  box-shadow: 0 -20px 40px rgba(11, 10, 10, 0.08);
+}
+
+.footer-section h4 {
+  color: var(--secondary) !important;
+}
+
+.footer-section a,
+footer.bg-dark a {
+  color: rgba(255, 244, 232, 0.76) !important;
+}
+
+.footer-section a:hover,
+footer.bg-dark a:hover {
+  color: #fff8f1 !important;
+}
+
+.footer-bottom,
+footer.bg-dark .container {
+  border-top-color: rgba(216, 154, 99, 0.14) !important;
+}
+
+.social-link {
+  background: rgba(216, 154, 99, 0.12) !important;
+  color: var(--secondary) !important;
+  border: 1px solid rgba(216, 154, 99, 0.16);
+}
+
+.social-link:hover {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff9f2 !important;
+}
+
+.uzenet-container {
+  max-width: 960px;
+  margin: 48px auto;
+  padding: 0 18px;
+}
+
+.uzenet-box {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.95) 0%, rgba(240, 232, 223, 0.9) 100%) !important;
+  border-radius: 30px;
+  border: 1px solid rgba(111, 86, 63, 0.12);
+  box-shadow: var(--shadow-md);
+}
+
+.uzenet-title,
+.kezdolap-title,
+.admin-page-title,
+.admin-sidebar-title,
+.admin-felhasznalok-title,
+.admin-vonalak-title {
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary)) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.uzenet-form-group label,
+.kezdolap-subtitle,
+.stat-info h3,
+.user-email,
+.admin-mod-container h3,
+.vedett-vonal-message {
+  color: var(--text-muted) !important;
+}
+
+.uzenet-submit {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff9f2 !important;
+  border: 1px solid rgba(255, 242, 228, 0.18) !important;
+}
+
+.uzenet-success {
+  background: linear-gradient(135deg, #607e48 0%, #7fa05d 100%) !important;
+  color: #fbfff7;
+}
+
+.uzenet-error {
+  background: linear-gradient(135deg, #864136 0%, #a75a46 100%) !important;
+  color: #fff8f5;
+}
+
+.kepek-feher-doboz {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.98) 0%, rgba(240, 232, 223, 0.94) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.14);
+  border-radius: 28px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.kepek-header {
+  border-bottom: 1px solid rgba(111, 86, 63, 0.1) !important;
+  color: var(--text-strong);
+}
+
+.kep-card {
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 12px 24px rgba(24, 21, 20, 0.08);
+}
+
+.kep-torles {
+  background: rgba(24, 21, 20, 0.72) !important;
+  color: #fff7f0 !important;
+  border: 1px solid rgba(255, 244, 232, 0.14);
+}
+
+.kep-upload {
+  border-color: rgba(180, 104, 51, 0.38) !important;
+  color: var(--primary) !important;
+  background: rgba(255, 248, 239, 0.7);
+  border-radius: 18px !important;
+}
+
+.admin-wrapper {
+  background: linear-gradient(180deg, #f7f1e8 0%, #e9dfd3 100%) !important;
+}
+
+.admin-sidebar {
+  background: linear-gradient(180deg, rgba(20, 17, 16, 0.98) 0%, rgba(34, 29, 27, 0.98) 100%) !important;
+  box-shadow: 14px 0 34px rgba(11, 10, 10, 0.18);
+  border-right: 1px solid rgba(216, 154, 99, 0.12);
+}
+
+.admin-sidebar-header {
+  border-bottom-color: rgba(216, 154, 99, 0.16) !important;
+}
+
+.admin-sidebar-link {
+  color: rgba(255, 244, 232, 0.72) !important;
+  border-left-color: transparent !important;
+  border-radius: 14px !important;
+}
+
+.admin-sidebar-link:hover,
+.admin-sidebar-link.active {
+  background: rgba(180, 104, 51, 0.12) !important;
+  color: #fff8f2 !important;
+  border-left-color: var(--secondary) !important;
+}
+
+.admin-content {
+  padding: 36px;
+}
+
+.stat-card,
+.user-card {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.96) 0%, rgba(240, 232, 223, 0.92) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.stat-card:hover,
+.user-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(180, 104, 51, 0.22) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.stat-icon,
+.user-avatar {
+  background: linear-gradient(135deg, #1d1a18 0%, #403731 100%) !important;
+  color: #fff7f0 !important;
+  box-shadow: 0 16px 26px rgba(24, 21, 20, 0.16) !important;
+}
+
+.stat-info p,
+.user-name,
+.admin-mod-container h2,
+.vedett-vonal-title {
+  color: var(--text-strong) !important;
+}
+
+.admin-felhasznalok-container,
+.admin-vonalak-container {
+  padding: 30px 24px;
+}
+
+.user-role,
+.vonal-status.status-active,
+.status-active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+}
+
+.status-inactive {
+  background: linear-gradient(135deg, #5f5750 0%, #7d746c 100%) !important;
+  color: #fff8f2 !important;
+}
+
+.user-edit-btn,
+.vonal-edit-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+}
+
+.user-delete-btn,
+.vonal-delete-btn {
+  background: linear-gradient(135deg, #864136 0%, #a75a46 100%) !important;
+  color: #fff8f5 !important;
+}
+
+.vonalak-table-container {
+  border-radius: 28px !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.vonalak-table th {
+  background: linear-gradient(135deg, #1b1715 0%, #2d2723 100%) !important;
+  color: #fff5ea !important;
+}
+
+.vonalak-table td {
+  color: var(--text-strong) !important;
+  border-top-color: rgba(111, 86, 63, 0.08) !important;
+}
+
+.vonalak-table tr:hover {
+  background: rgba(255, 248, 239, 0.82) !important;
+}
+
+.vedett-vonal-container {
+  background:
+    radial-gradient(circle at top left, rgba(216, 154, 99, 0.18), transparent 24%),
+    linear-gradient(180deg, #f7f2ea 0%, #ebe2d6 100%) !important;
+}
+
+.vedett-vonal-content {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.96) 0%, rgba(240, 232, 223, 0.92) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  border-radius: 30px !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.vedett-vonal-button {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+}
+
+.admin-mod-container {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.96) 0%, rgba(240, 232, 223, 0.92) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-sm) !important;
+  font-family: 'Manrope', 'Segoe UI', sans-serif !important;
+}
+
+.admin-mod-container button {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+}
+
+.admin-mod-container input[type="text"] {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 16px !important;
+  border-color: rgba(140, 110, 84, 0.18) !important;
+}
+
+.kezdolap-container {
+  background:
+    radial-gradient(circle at top left, rgba(216, 154, 99, 0.18), transparent 24%),
+    linear-gradient(180deg, #f7f2ea 0%, #ebe2d6 100%) !important;
+}
+
+.kezdolap-subtitle {
+  max-width: 720px;
+}
+
+.cta-button.primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+}
+
+.cta-button.secondary {
+  background: rgba(255, 250, 244, 0.88) !important;
+  color: var(--primary-dark) !important;
+  border: 1px solid rgba(180, 104, 51, 0.22) !important;
+}
+
+.chat-window-container {
+  background: linear-gradient(180deg, rgba(251, 247, 241, 0.96) 0%, rgba(240, 232, 223, 0.92) 100%) !important;
+  border: 1px solid rgba(111, 86, 63, 0.12) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.chat-window-header {
+  background: linear-gradient(135deg, #181514 0%, #2a231f 100%) !important;
+  color: #fff6ed !important;
+}
+
+.chat-window-input {
+  background: rgba(255, 250, 245, 0.92) !important;
+  border-top: 1px solid rgba(111, 86, 63, 0.08) !important;
+}
+
+.chat-window-input button {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: #fff8f2 !important;
+}
+
+@media (max-width: 991.98px) {
+  #kiemelt .car-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .hero {
+    min-height: 560px;
+  }
+
+  .hero-overlay {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .autok-list-page .kereso-sor {
+    border-radius: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  #fo-oldal {
+    padding-inline: 14px;
+  }
+
+  #kiemelt {
+    padding: 1.15rem;
+    border-radius: 24px;
+  }
+
+  #kiemelt .car-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero {
+    min-height: 500px;
+    border-radius: 24px;
+    justify-content: center;
+  }
+
+  .hero-overlay {
+    padding: 28px 22px;
+    border-radius: 22px;
+  }
+
+  .auto-details-page,
+  .rolunk-section,
+  .testimonials-section,
+  .terkep-container,
+  .profile-header,
+  .profile-edit-form,
+  .uzenetek-container,
+  .admin-uzenetek-container,
+  .nyomtatvanyok-container,
+  .ujauto-form-container {
+    border-radius: 22px !important;
+  }
+
+  .chat-container {
+    width: calc(100% - 24px);
+    margin: 12px;
+    border-radius: 22px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-overlay h1 {
+    font-size: 2.5rem;
+  }
+
+  .autok-container,
+  .admin-container,
+  .admin-autok-container {
+    padding-inline: 1rem;
+  }
+
+  .auto-details-page {
+    padding: 1.15rem;
+  }
+
+  .chat-container {
+    width: 100%;
+    margin: 0;
+    border-radius: 0 !important;
+  }
+}
