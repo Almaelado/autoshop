@@ -1,4 +1,4 @@
-/backend/node_modules
+
 # dependencies
 frontend/node_modules
 frontend/.pnp
@@ -7,21 +7,67 @@ frontend.pnp.js
 # testing
 /frontend/coverage
 
+/frontend/dist
+
 # production
 /frontend/build
 
 # misc
+/frontend/dist
 /frontend/.DS_Store
 /frontend/.env.local
 /frontend/.env.development.local
 /frontend/.env.test.local
 /frontend/.env.production.local
 
-/frontendnpm/-debug.log*
-/frontendyarn/-debug.log*
-/frontendyarn/-error.log*
+/frontend/npm/-debug.log*
+/frontend/yarn/-debug.log*
+/frontend/yarn/-error.log*
 
 /frontend/public/img
 
 /backend/node_modules
 /backend/.env
+
+# Dependencies
+/mobil/node_modules/
+
+# Expo
+
+
+# Native
+/mobil/ios
+/mobil/android
+/mobil/.kotlin/
+
+# Debug
+/mobil/npm-debug.*
+/mobil/yarn-debug.*
+/mobil/yarn-error.*
+
+# Env
+/mobil/.env
+/mobil/.env.*
+
+# Security
+/mobil/*.jks
+/mobil/*.p8
+/mobil/*.p12
+/mobil/*.key
+/mobil/*.mobileprovision
+/mobil/*.pem
+
+# macOS
+/mobil/.DS_Store
+
+# TypeScript
+/mobil/*.tsbuildinfo
+/mobil/expo-env.d.ts
+
+
+
+
+
+
+
+
