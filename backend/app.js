@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -6,6 +7,7 @@ require('dotenv').config();
 
 var app = express();
 
+// Az Express app alap middleware-jei: logolas, body parsing, cookie kezeles es statikus fajlok.
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -14,17 +16,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const cors = require('cors');
 var corsOptions ={
-  origin:'http://localhost:3000', 
-  credentials:true           
+  origin:true,
+  "credentials":true           
 }
+// A frontend es a mobil kliens cookie-val es tokennel is eleri ezt az API-t.
 app.use(cors(corsOptions)); 
 
 var autoModRouter = require('./routes/autoMod');
-var authRouter = require('./routes/authRouter');
 var authMiddleware = require('./middleware/authAuto');
 
-app.use('/auth', authRouter);
+// Az auto router ala kerul az alkalmazas teljes uzleti API-ja.
 app.use('/auto' ,autoModRouter);
-
+app.use("/img",express.static("public/img"));
 
 module.exports = app;

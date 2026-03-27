@@ -1,0 +1,194 @@
+/* ===== MODERN KÉTOSZLOPOS PROFIL SZERKESZTÉS ===== */
+.profile-edit-container {
+  max-width: 900px;
+  margin: 48px auto;
+  padding: 0 16px;
+}
+
+.profile-edit-form {
+  background: #fff;
+  border-radius: 18px;
+  padding: 36px 28px 32px 28px;
+  box-shadow: 0 6px 32px rgba(0, 60, 120, 0.10);
+  border: 1.5px solid #e3e8f0;
+  animation: fadeIn 0.7s cubic-bezier(.4,1.4,.6,1);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.profile-edit-form h1 {
+  font-size: 2rem;
+  color: #1a237e;
+  font-weight: 700;
+  margin-bottom: 18px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #1976d2 0%, #00bcd4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.profile-edit-form p {
+  color: #546e7a;
+  font-size: 1rem;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.profile-edit-columns {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.profile-edit-left,
+.profile-edit-right {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.profile-edit-left {
+  border-right: 1.5px solid #e3e8f0;
+  padding-right: 32px;
+}
+
+.profile-edit-right {
+  padding-left: 32px;
+}
+
+.profile-field {
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-field label {
+  color: #263238;
+  font-weight: 600;
+  margin-bottom: 7px;
+  font-size: 1rem;
+  letter-spacing: 0.1px;
+}
+
+.profile-field input[type="text"],
+.profile-field input[type="password"] {
+  padding: 13px 16px;
+  border: 1.5px solid #b0bec5;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f7fafc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.profile-field input[type="text"]:focus,
+.profile-field input[type="password"]:focus {
+  outline: none;
+  border-color: #1976d2;
+  background: #fff;
+  box-shadow: 0 0 0 2px #1976d220;
+}
+
+.profile-field .required {
+  color: #e53935;
+  margin-left: 2px;
+  font-size: 1.1em;
+}
+
+.profile-edit-btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #1976d2 0%, #00bcd4 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.profile-edit-btn:hover {
+  background: linear-gradient(90deg, #1565c0 0%, #0097a7 100%);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.password-section {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 0;
+}
+
+.password-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+  color: #1976d2;
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(24px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+@media (max-width: 900px) {
+  .profile-edit-columns {
+    flex-direction: column;
+    gap: 0;
+  }
+  .profile-edit-left,
+  .profile-edit-right {
+    border: none;
+    padding: 0;
+  }
+  .profile-edit-form {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-edit-form {
+    padding: 22px 8px 18px 8px;
+  }
+  .profile-edit-form h1,
+  .profile-edit-form h2,
+  .profile-edit-form h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* ===== ALAP ÉRZÉKENYÍTÉS A GOMBOKRA ===== */
+button {
+  font-family: inherit;
+}
+
+.profile-edit-back {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.profile-edit-back-btn {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,102,255,0.13);
+  transition: background 0.2s, transform 0.2s;
+}
+.profile-edit-back-btn:hover {
+  background: linear-gradient(135deg, #0052cc 0%, #00b4d8 100%);
+  transform: translateY(-2px) scale(1.03);
+}

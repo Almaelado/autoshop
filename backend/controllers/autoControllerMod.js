@@ -1,14 +1,18 @@
+const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 const Auto=require('../models/autoModellMod');
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
+// A rovid eletu access token minden vedett keresnel kell a kliensnek.
 function generateAccessToken(user) {
     return jwt.sign(user, ACCESS_SECRET, { expiresIn: '15m' }); 
 }
 
+// A refresh token segit uj access tokent kerni uj bejelentkezes nelkul.
 function generateRefreshToken(user) {
     return jwt.sign(user, REFRESH_SECRET, { expiresIn: '7d' }); 
 }
@@ -16,7 +20,8 @@ function generateRefreshToken(user) {
 const autoController={
     async osszes(req, res) {
         try {
-            const autos =  await Auto.osszes();
+            console.log(req.query);
+            const autos =  await Auto.osszes(req.query);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -36,28 +41,6 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-
-    async hozzaad(req, res) {
-        try {
-            const autoData = req.body;
-            const ujAuto = await Auto.hoozzaad(autoData);
-            res.status(201).json(ujAuto);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-
-    async modosit(req, res) {
-        try {
-            const id = req.params.id;
-            const autoData = req.body;
-            const frissitettAuto = await Auto.modosit(id, autoData);
-            res.status(200).json(frissitettAuto);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-
     async torol(req, res) {
         try {
             const id = req.params.id;
@@ -67,17 +50,6 @@ const autoController={
             res.status(500).json({ message: error.message });
         }
     },
-
-    async szinkeres(req,res){
-        try {
-            const szin_id=req.params.szin_id;
-            const autos=await Auto.szinkeres(szin_id);
-            res.status(200).json(autos);
-        } catch (error) {
-            res.status(500).json({message:error.message});
-        }
-    },
-
     async getMarka(req, res) {
         try {
             const autos =  await Auto.getMarka();
@@ -90,6 +62,7 @@ const autoController={
     async getSzin(req, res) {
         try {
             const autos =  await Auto.getSzin();
+            console.log(autos);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -117,6 +90,7 @@ const autoController={
     async getAjto(req, res) {   
         try {
             const autos =  await Auto.getAjto();
+            console.log(autos)
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
@@ -126,36 +100,23 @@ const autoController={
     async getSzemely(req, res) {
         try {
             const autos =  await Auto.getSzemely();
+            console.log(autos);
             res.status(200).json(autos);
         } catch (error) {
             console.error("Error fetching all cars:", error);
             res.status(500).json({ message: error.message });
         }
     },
-    async szuro(req, res, next) {
-    try {/*
-        const szuro_json = {
-            markak:["Mahindra","Hyundai"],      // -> SQL: nev
-            uzemanyag:["Diesel","Petrol"],       // -> SQL: üzemanyag
-            szin:["zöld","sárga"],               // -> SQL: szin_nev
-            arRange:[0,17300000],
-            kmRange:[0,350000],
-            evjarat:[1930,2025],
-            irat:true,
-            valto:[],                  // -> SQL: váltó
-            motormeret:[],
-            ajto:[],                           // -> SQL: ajto
-            szemely:[]                         // -> SQL: szemelyek
-        };
-        */
-       
+async szuro(req, res, next) {
+    try {
         const szuro_json = req.body;
-        console.log("Szurok: ",szuro_json);
+        console.log("Szurok:", szuro_json);
 
+        // A bejovo filter objektumbol dinamikusan epul fel a WHERE resz.
         let whereClauses = [];
         let values = [];
 
-        // Milyen JSON kulcs -> melyik SQL oszlop
+        // Tömb alapú szűrők
         const fieldMap = {
             markak: "nev",
             uzemanyag: "üzemanyag",
@@ -165,17 +126,15 @@ const autoController={
             szemely: "szemelyek"
         };
 
-        // ⬅⬅ csak akkor kerül be, ha a tömb nem üres!
         for (const key in fieldMap) {
             const sqlField = fieldMap[key];
-
             if (Array.isArray(szuro_json[key]) && szuro_json[key].length > 0) {
                 whereClauses.push(`${sqlField} IN (${szuro_json[key].map(() => '?').join(',')})`);
                 values.push(...szuro_json[key]);
             }
         }
 
-        // Range mezők -> BETWEEN
+        // Range szűrők
         const rangeFields = {
             arRange: "ar",
             kmRange: "km",
@@ -190,69 +149,490 @@ const autoController={
         }
 
         // Boolean mező
-        if (typeof szuro_json.irat === "boolean") {
-            if(szuro_json.irat==true){
-                whereClauses.push(`irat = ?`);
-                values.push(1);
-            }
-
+        if (typeof szuro_json.irat === "boolean" && szuro_json.irat === true) {
+            whereClauses.push(`irat = ?`);
+            values.push(1);
         }
 
-            if(szuro_json.motormeret>0){
-                whereClauses.push(`motormeret >= ?`);
+        // Motorméret
+        if (typeof szuro_json.motormeret === "number" && szuro_json.motormeret > 0) {
+            whereClauses.push(`motormeret >= ?`);
             values.push(szuro_json.motormeret);
-            }
-            
-        
+        }
+
+        // Keresés SQL-ben (csak létező oszlopok)
+        if (szuro_json.keres && szuro_json.keres.trim() !== "") {
+            const keres = `%${szuro_json.keres.trim()}%`;
+            whereClauses.push(`(nev LIKE ? OR model LIKE ? OR szin_nev LIKE ?)`);
+            values.push(keres, keres, keres);
+        }
 
         // SQL összeállítása
+        // A kliens mindig ugyanazt az alapnezetet szuri, csak a feltetelek valtoznak.
         let sql = "SELECT * FROM osszes_auto";
         if (whereClauses.length > 0) {
             sql += " WHERE " + whereClauses.join(" AND ");
         }
 
+        // Paginálás
+        // Az oldalszamozast a frontend infinite scroll-ja hasznalja.
+        const limit = Number(szuro_json.limit) || 10;
+        const page = Number(szuro_json.page) || 1;
+        const offset = (page - 1) * limit;
+
+        // LIMIT és OFFSET közvetlenül az SQL-be
+        sql += ` LIMIT ${limit} OFFSET ${offset}`;
+
+        console.log("Generated SQL:", sql, "Values:", values);
+
+        // Lekérés
         const results = await Auto.szuro(sql, values);
         res.status(200).json(results);
+
     } catch (error) {
         console.error("Error in filtering:", error);
         res.status(500).json({ message: error.message });
     }
-},
-    async login (req, res,next){   
-        const { username, password } = req.body;    
-        /*
-        const user = await authModel.validatePassword(username,password);
-        console.log('Bejelentkezési kísérlet:', user);
-        if (user!= false){
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
-        res.cookie('refreshToken', refreshToken, 
-            { httpOnly: true, 
-              secure: false, // true ha HTTPS-t használsz
-              sameSite: 'Lax', // Strict, Lax, None
-              maxAge: 7*24*60*60*1000 // 7 nap
-            });
-        res.json({ accessToken });
+}
 
-        } else {
-            res.status(401).send('Érvénytelen belépés');
-        }*/
-       if(username === 'admin' && password === 'password'){
-            const user = { username: 'admin', role: 'admin' }; 
-            const accessToken = generateAccessToken(user);
-            const refreshToken = generateRefreshToken(user);
+
+,
+
+    async login (req, res,next){
+        //console.log('Login request body:', req.body); // Debug log
+        const { email, password, admin } = req.body;
+        const user = await Auto.validatePassword(email,password);
+        console.log('Bejelentkezési kísérlet:', user);
+
+        if(user!= false){
+            // A token payload csak a kliensnek tenyleg szukseges adatokat tartalmazza.
+            // Csak az id-t és emailt tesszük a tokenbe!
+            const accessToken = generateAccessToken({ id: user.id, email: user.email , admin: user.admin});
+            const refreshToken = generateRefreshToken({ id: user.id, email: user.email, admin: user.admin});
             res.cookie('refreshToken', refreshToken, 
                 { httpOnly: true, 
                   secure: false, // true ha HTTPS-t használsz
                   sameSite: 'Lax', // Strict, Lax, None
                   maxAge: 7*24*60*60*1000 // 7 nap
                 });
-            res.json({ accessToken });
+            res.json({ accessToken, user });
         } else {
             res.status(401).send('Érvénytelen belépés');
         }
+    },
+    async getCount(req, res) {
+        try {
+            const count =  await Auto.getCount();
+            res.status(200).json({count: count});
+        } catch (error) {   
+            console.error("Error fetching car count:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async regisztracio(req,res){
+        try {
+            const body = req.body;
+            if(!body.email || !body.password){
+                res.status(404).send("Nincs email vagy jelszo");
+            }
+            else{
+                const response = await Auto.regisztracio(body);
+                res.status(200).json(response);
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    refresh (req, res) {
+        const refreshToken = req.cookies.refreshToken;
 
-}
+        if (!refreshToken) {
+            return res.sendStatus(204); // nincs cookie
+        }
+
+        jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // lejárt / hamis
+            }
+
+            const { iat, exp, ...payload } = user; // eltávolítjuk a JWT metaadatokat és csak a felhasználói adatokat tartjuk meg payload változóban pl: { id: user.id, email: user.email }
+            // Itt csak uj access token keszul, a refresh cookie marad a bongeszoben.
+            const newAccessToken = generateAccessToken(payload);
+            console.log(payload);
+            res.json({ accessToken: newAccessToken , user: payload });
+        });
+    },
+    async profil (req, res) { 
+            const user = req.user;  // req.user-t az authenticateToken middleware állítja be
+            const profil = await Auto.keresEmail(user.email);
+            //console.log("Profil lekérdezés user:", user);
+        res.json(profil);
+    },
+    logout (req, res) {
+        res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'Lax' });
+        res.sendStatus(204);
+    },
+    async ajanlott(req, res) {
+        try {
+            const marka = req.params.marka;
+            const excludeId = req.query.kiveve;
+            let sql = 'SELECT * FROM osszes_auto WHERE nev = ?';
+            let params = [marka];
+            if (excludeId) {
+                sql += ' AND id != ?';
+                params.push(excludeId);
+            }
+            sql += ' LIMIT 4';
+            const rows = await Auto.szuro(sql, params);
+            res.status(200).json(rows);
+        } catch (error) {
+            console.error('Ajánlott autók lekérdezési hiba:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // POST /auto/erdekel
+    async erdekel(req, res) {
+        try {
+            console.log('ERDEKEL', req.user, req.query); // DEBUG: logoljuk a usert és az autoId-t
+            const user = req.user;
+            const { autoId } = req.body;
+            if (!user || !user.id || !autoId) {
+                return res.status(400).json({ message: "Hiányzó adat vagy user id!" });
+            }
+            await Auto.erdekelHozzaad(user.id, autoId);
+            res.status(201).json({ success: true });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // GET /auto/erdekeltek
+    async erdekeltek(req, res) {
+        try {
+            const user = req.user;
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+            const lista = await Auto.erdekeltekListaja(user.id);
+            res.status(200).json(lista);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async felhasznaloModositas(req, res) {
+        try {
+            const data = req.body;
+            await Auto.felhasznaloModositas(data);
+            res.status(200).json({ success: true });
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async jelszoModositas(req, res) {
+        try {
+           const { email, oldPassword,newPassword } = req.body;    
+            const user = await Auto.validatePassword(email,oldPassword);
+
+            const isMatch = await bcrypt.compare(oldPassword, user.jelszo);
+            if (!isMatch) {
+                return res.status(403).json({ message: "Hibás régi jelszó" });
+            }
+
+            await Auto.jelszoModositas(email, newPassword);
+            res.status(200).json({ message: "Jelszó sikeresen módosítva" });
+        } catch (error) {
+            console.error("Error changing password:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetKuldes(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, uzenet } = req.body;
+            if (!user || !user.id || !autoId || !uzenet) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            await Auto.uzenetKuldes(user.id, autoId, uzenet);
+            res.status(201).json({ success: true });
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async uzenetekLekerdezese(req, res) {
+        try {
+            console.log("asd");
+            const user = req.user;
+            console.log("Uzenetek lekérdezése user:", user);
+            if (!user) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+
+            const uzenetek = await Auto.uzenetekLekerdezese(user.id);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async AdminUzenetek(req, res) {
+        try {
+            const uzenetek = await Auto.AdminuzenetekLekerdezese();
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async ChatAblak(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, vevoId } = req.query;
+            console.log("ChatAblak hívás:", { user, autoId, vevoId });
+            if (!user || !user.id || !autoId || !vevoId) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            const uzenetek = await Auto.ChatAblak(vevoId, autoId);
+            console.log("Lekérdezett üzenetek:", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
     
+    async ChatAblakAdmin(req, res) {
+        try {
+            //console.log("req.body:", req.body);
+            const uzenetek = await Auto.ChatAblakAdmin(req.body.uzenetId, req.body.uzenet_text);
+            //console.log("Lekérdezett üzenetek (Admin):", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async ChatAblakFelhasznalo(req, res) {
+        try {
+            const user = req.user;
+            const { autoId, vevoId,uzenet_text } = req.body;
+            //console.log("ChatAblakFelhasznalo hívás:", { user, autoId, vevoId });
+            if (!user || !user.id || !autoId || !vevoId) {
+                return res.status(400).json({ message: "Hiányzó adat!" });
+            }
+            const uzenetek = await Auto.ChatAblakFelhasznalo(vevoId, autoId,uzenet_text);
+            //console.log("Lekérdezett üzenetek (Felhasználó):", uzenetek);
+            res.status(200).json(uzenetek);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async szamlaAdatok(req, res) {
+        try {
+            const user = req.user;
+            if (!user || !user.id) {
+                return res.status(401).json({ message: "Nincs bejelentkezve" });
+            }
+
+            const szamlaAdatok = await Auto.szamlaAdatok(user.id);
+            res.status(200).json(szamlaAdatok);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async randomautok(req,res){
+        try {
+            const randomAutok =  await Auto.random();
+            res.status(200).json(randomAutok);
+            
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async Szerkesztes(req,res){
+        try {
+            const data = req.body;
+            //console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+
+            // A frontend olvashato neveket kuld, itt forditjuk vissza adatbazis ID-kra.
+
+            autosMarka.forEach(element => {
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            });
+
+            autosUzemanyag.forEach(element => {
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+
+            const autoModosit = await Auto.Szerkesztes(data);
+            res.status(200).json(autoModosit);
+        } catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async UjAuto(req,res){
+        try {
+            const data = req.body;
+            console.log(data);
+            const autosMarka =  await Auto.getMarka();
+            const autosUzemanyag = await Auto.getUzemanyag();
+            const autosValto = await Auto.getValto();
+            const autosSzin = await Auto.getSzin();
+            // Uj autonak ugyanaz az atalakitas kell, mint szerkesztesnel: nevbol idegen kulcs.
+            //console.log(autosMarka);
+            //console.log(autosUzemanyag);
+            //console.log(autosValto);
+            //console.log(autosSzin);
+            autosMarka.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.nev){
+                    data.nev = element.id;
+                }
+            }
+            );
+            autosUzemanyag.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.üzemanyag){
+                    data.üzemanyag = element.id;
+                }
+            });
+            autosSzin.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.szin_nev){
+                    data.szin_nev = element.id;
+                }
+            });
+            autosValto.forEach(element => {
+                //console.log(element);
+                if(element.nev === data.váltó){
+                    data.váltó = element.id;
+                }
+            });
+            //console.log("Final data for new car:", data);
+            const ujAuto = await Auto.UjAuto(data);
+            res.status(200).json(ujAuto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async UjSzamla(req,res){
+        try {
+            const data = req.body;
+            console.log("UjSzamla data:", data);
+            const ujSzamla = await Auto.UjSzamla(data);
+            res.status(200).json(ujSzamla);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddSzin(req,res){
+        try {
+            const { szin } = req.body;
+            console.log("AddSzin data:", szin);
+            const ujSzin = await Auto.AddSzin(szin);
+            res.status(200).json(ujSzin);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddUzemanyag(req,res){
+        try {
+            const { uzemanyag } = req.body;
+            console.log("AddUzemanyag data:", uzemanyag);
+            const ujUzemanyag = await Auto.AddUzemanyag(uzemanyag);
+            res.status(200).json(ujUzemanyag);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddModell(req,res){
+        try {
+            const { modell } = req.body;
+            console.log("AddModell data:", modell);
+            const ujModell = await Auto.AddModell(modell);
+            res.status(200).json(ujModell);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async AddValto(req,res){
+        try {
+            const { valto } = req.body;
+            console.log("AddValto data:", valto);
+            const ujValto = await Auto.AddValto(valto);
+            res.status(200).json(ujValto);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });       
+        }
+    },
+    async KepTorles(req,res){
+        console.log("KepTorles hívás:", req.params); // Debug log
+        try {
+            const { autoId, index } = req.params;
+            console.log("KepTorles data:", { autoId, index });
+            const kepPath = path.join(__dirname, "..", "public", "img", `${autoId}_${index}.jpg`);
+
+            fs.unlink(kepPath, (err) => {
+                if (err) {
+                    console.error("Hiba a törléskor:", err);
+                    return res.status(500).json({ message: "Nem sikerült törölni a képet" });
+                }
+                res.json({ message: "Kép törölve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+        },
+    async KepFeltoltes(req,res){
+        try {
+            const { autoId } = req.params;
+            console.log("KepFeltoltes hívás:", { autoId, file: req.file }); // Debug log
+            if (!req.file) {
+                return res.status(400).json({ message: "Nincs fájl feltöltve" });
+            }
+            // A vegleges fajlnev igazodik a mar hasznalt autoId_index.jpg mintahoz.
+            const uploadPath = path.join(__dirname, "..", "public", "img");
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            const filePath = path.join(uploadPath,`${req.file.filename}.jpg`);
+            fs.rename(req.file.path, filePath, (err) => {
+                if (err) {
+                    console.error("Hiba a fájl átnevezésekor:", err);
+                    return res.status(500).json({ message: "Nem sikerült menteni a képet" });
+                }
+                res.json({ message: "Kép feltöltve" });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 };
+
 module.exports=autoController;

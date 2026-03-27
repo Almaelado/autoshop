@@ -1,0 +1,197 @@
+/* ===== ADMIN VONALAK ===== */
+.admin-vonalak-container {
+  padding: 30px;
+}
+
+.admin-vonalak-title {
+  font-size: 2rem;
+  color: #1a1a2e;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.vonalak-table-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 2px solid rgba(0, 102, 255, 0.1);
+}
+
+.vonalak-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vonalak-table th {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  padding: 16px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.vonalak-table td {
+  padding: 16px;
+  border-top: 1px solid rgba(0, 102, 255, 0.1);
+  color: #1a1a2e;
+}
+
+.vonalak-table tr:hover {
+  background: #f8fafc;
+  transition: background 0.3s ease;
+}
+
+.vonal-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-active {
+  background: linear-gradient(135deg, #00b381 0%, #00d4a8 100%);
+  color: white;
+}
+
+.status-inactive {
+  background: linear-gradient(135deg, #999 0%, #bbb 100%);
+  color: white;
+}
+
+.vonal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.vonal-edit-btn,
+.vonal-delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.vonal-edit-btn {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+}
+
+.vonal-edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.vonal-delete-btn {
+  background: linear-gradient(135deg, #ff3333 0%, #ff6b35 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 51, 51, 0.2);
+}
+
+.vonal-delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 51, 51, 0.3);
+}
+
+@media (max-width: 768px) {
+  .admin-vonalak-container {
+    padding: 20px;
+  }
+
+  .vonalak-table {
+    font-size: 0.85rem;
+  }
+
+  .vonalak-table td,
+  .vonalak-table th {
+    padding: 12px 8px;
+  }
+
+  .vonal-actions {
+    flex-direction: column;
+  }
+}
+
+/* ===== VÉDETT VONAL ===== */
+.vedett-vonal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  padding: 20px;
+}
+
+.vedett-vonal-content {
+  text-align: center;
+  background: white;
+  padding: 60px 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  border: 2px solid rgba(0, 102, 255, 0.1);
+  animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.vedett-vonal-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.vedett-vonal-title {
+  font-size: 2rem;
+  color: #1a1a2e;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.vedett-vonal-message {
+  color: #6c757d;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.vedett-vonal-button {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.vedett-vonal-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .vedett-vonal-content {
+    padding: 40px 25px;
+  }
+
+  .vedett-vonal-title {
+    font-size: 1.5rem;
+  }
+}

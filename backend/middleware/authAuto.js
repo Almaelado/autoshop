@@ -5,8 +5,10 @@ const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
 
 function authenticateToken(req, res, next) {
+    // A Bearer token ellenorzese utan a dekodolt user raul a requestre.
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
+    //console.log('Authentikációs token:', token);
     if (token == null) return res.sendStatus(401); // nincs token
     jwt.verify(token, ACCESS_SECRET, (err, user) => {
         if (err) return res.sendStatus(403); // érvénytelen token
@@ -14,5 +16,6 @@ function authenticateToken(req, res, next) {
         next();
     });
 }
+
 
 module.exports = authenticateToken;

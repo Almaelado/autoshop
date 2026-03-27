@@ -1,0 +1,412 @@
+body .nyomtatvanyok-container {
+  --ny-paper: #f7f1e8;
+  --ny-paper-strong: #efe5d8;
+  --ny-ink: #201912;
+  --ny-muted: #6f6154;
+  --ny-line: rgba(121, 94, 67, 0.2);
+  --ny-line-strong: rgba(121, 94, 67, 0.32);
+  --ny-accent: #cf8645;
+  --ny-accent-dark: #b96f30;
+  --ny-accent-soft: rgba(207, 134, 69, 0.14);
+  position: relative;
+  z-index: 0;
+  width: min(calc(100% - 32px), 760px);
+  max-width: 760px !important;
+  margin: 40px auto 56px !important;
+  padding: 38px 40px 34px !important;
+  color: var(--ny-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.14)),
+    linear-gradient(145deg, var(--ny-paper) 0%, #f3ece4 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  border-radius: 30px !important;
+  box-shadow:
+    0 24px 54px rgba(110, 84, 54, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+body .nyomtatvanyok-container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 38%),
+    radial-gradient(circle at top right, rgba(210, 171, 129, 0.18), transparent 34%),
+    linear-gradient(180deg, #f5efe6 0%, #efe7db 100%);
+}
+
+body .nyomtatvanyok-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.55), transparent 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 42%);
+}
+
+body .nyomtatvanyok-container > h1 {
+  margin: 0 0 28px;
+  color: var(--ny-ink) !important;
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 2.55rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+}
+
+body .nyomtatvanyok-container .nyomtatvanyok-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+body .nyomtatvanyok-container .nyomtatvanyok-actions button {
+  min-width: 138px;
+  padding: 13px 26px !important;
+  border: 1px solid rgba(155, 96, 42, 0.34) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, #d89355 0%, #c97b37 100%) !important;
+  color: #fffaf5 !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 12px 24px rgba(201, 123, 55, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+body .nyomtatvanyok-container .nyomtatvanyok-actions button:hover,
+body .nyomtatvanyok-container .nyomtatvanyok-actions button:focus {
+  background: linear-gradient(180deg, #d18440 0%, #ba6c2e 100%) !important;
+  box-shadow:
+    0 14px 28px rgba(186, 108, 46, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+  outline: none !important;
+}
+
+body .nyomtatvanyok-container > div:last-child > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body .nyomtatvanyok-container br {
+  display: none;
+}
+
+body .nyomtatvanyok-container h2 {
+  margin: 4px 0 6px;
+  color: var(--ny-ink) !important;
+  text-align: center;
+  font-size: 1.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+body .nyomtatvanyok-container h4 {
+  margin: 6px 0 -2px;
+  color: var(--ny-ink);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+body .nyomtatvanyok-container .form-label {
+  margin-bottom: 8px !important;
+  color: var(--ny-ink) !important;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+body .nyomtatvanyok-container .mb-3 {
+  margin-bottom: 4px !important;
+}
+
+body .nyomtatvanyok-container .badge.bg-primary {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 0.52rem 0.8rem !important;
+  border: 1px solid rgba(194, 124, 61, 0.24);
+  border-radius: 999px !important;
+  background: rgba(207, 134, 69, 0.12) !important;
+  color: var(--ny-ink) !important;
+  font-weight: 600;
+  box-shadow: none !important;
+}
+
+body .nyomtatvanyok-container .btn-close.btn-close-white {
+  filter: none !important;
+  opacity: 0.65;
+}
+
+body .nyomtatvanyok-container .rbt {
+  width: 100%;
+}
+
+body .nyomtatvanyok-container .rbt-input-main,
+body .nyomtatvanyok-container .rbt-input-hint,
+body .nyomtatvanyok-container > div:last-child > div > input,
+body .nyomtatvanyok-container h4 + button + div input {
+  min-height: 54px;
+  border: 1px solid var(--ny-line) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 252, 247, 0.9) !important;
+  color: var(--ny-ink) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 10px 20px rgba(146, 113, 75, 0.06) !important;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+body .nyomtatvanyok-container .rbt-input-main,
+body .nyomtatvanyok-container .rbt-input-hint {
+  padding: 0.92rem 1rem !important;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > input,
+body .nyomtatvanyok-container h4 + button + div input {
+  width: min(100%, 320px);
+  padding: 0.9rem 1rem;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > input:nth-of-type(3) {
+  width: 100%;
+  max-width: none;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > input:nth-of-type(4),
+body .nyomtatvanyok-container > div:last-child > div > input:nth-of-type(5) {
+  width: min(100%, 190px);
+}
+
+body .nyomtatvanyok-container h4 + button + div input {
+  width: 100%;
+  max-width: none;
+}
+
+body .nyomtatvanyok-container .rbt-input-main::placeholder,
+body .nyomtatvanyok-container > div:last-child > div > input::placeholder,
+body .nyomtatvanyok-container h4 + button + div input::placeholder {
+  color: rgba(111, 97, 84, 0.68) !important;
+}
+
+body .nyomtatvanyok-container .rbt-input-main:focus,
+body .nyomtatvanyok-container > div:last-child > div > input:focus,
+body .nyomtatvanyok-container h4 + button + div input:focus {
+  border-color: rgba(207, 134, 69, 0.55) !important;
+  box-shadow:
+    0 0 0 4px rgba(207, 134, 69, 0.12),
+    0 12px 24px rgba(146, 113, 75, 0.08) !important;
+  outline: none;
+}
+
+body .nyomtatvanyok-container .rbt-menu {
+  margin-top: 8px !important;
+  padding: 8px !important;
+  border: 1px solid rgba(121, 94, 67, 0.16) !important;
+  border-radius: 18px !important;
+  background: #fffaf4 !important;
+  box-shadow: 0 20px 34px rgba(104, 77, 48, 0.16) !important;
+}
+
+body .nyomtatvanyok-container .dropdown-item {
+  padding: 0.78rem 0.9rem !important;
+  border-radius: 12px !important;
+  color: var(--ny-ink) !important;
+}
+
+body .nyomtatvanyok-container .dropdown-item:hover,
+body .nyomtatvanyok-container .dropdown-item:focus,
+body .nyomtatvanyok-container .dropdown-item.active {
+  background: var(--ny-accent-soft) !important;
+  color: var(--ny-ink) !important;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > button {
+  width: fit-content;
+  min-height: 48px;
+  padding: 0.85rem 1.35rem;
+  border: 1px solid rgba(155, 96, 42, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #d89355 0%, #c97b37 100%);
+  color: #fffaf5;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 12px 20px rgba(201, 123, 55, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > button:hover,
+body .nyomtatvanyok-container > div:last-child > div > button:focus {
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #d18440 0%, #ba6c2e 100%);
+  box-shadow:
+    0 14px 24px rgba(186, 108, 46, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  outline: none;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > h4 + button {
+  padding-inline: 1rem;
+  border-color: var(--ny-line-strong);
+  background: rgba(255, 252, 247, 0.82);
+  color: var(--ny-ink);
+  box-shadow: none;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > h4 + button:hover,
+body .nyomtatvanyok-container > div:last-child > div > h4 + button:focus {
+  background: rgba(207, 134, 69, 0.1);
+  color: var(--ny-ink);
+  box-shadow: none;
+}
+
+body .nyomtatvanyok-container > div:last-child > div > button:last-child {
+  margin-top: 6px;
+}
+
+body .nyomtatvanyok-container h4 + button + div {
+  width: 100%;
+  margin: 4px 0 2px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(121, 94, 67, 0.16) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 250, 244, 0.68) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+body .nyomtatvanyok-container h4 + button + div:empty {
+  padding: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  border-width: 1px 0 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body .nyomtatvanyok-container h4 + button + div > div {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  padding-right: 4px;
+}
+
+body .nyomtatvanyok-container table {
+  width: 100% !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid rgba(121, 94, 67, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 253, 249, 0.95);
+}
+
+body .nyomtatvanyok-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #eee1d2;
+  color: var(--ny-ink);
+  font-weight: 700;
+}
+
+body .nyomtatvanyok-container th,
+body .nyomtatvanyok-container td {
+  padding: 0.82rem 0.75rem;
+  border-bottom: 1px solid rgba(121, 94, 67, 0.12);
+  text-align: left;
+  font-size: 0.94rem;
+  vertical-align: middle;
+}
+
+body .nyomtatvanyok-container tbody tr:nth-child(even) td {
+  background: rgba(245, 236, 226, 0.44);
+}
+
+body .nyomtatvanyok-container tbody tr:hover td {
+  background: rgba(207, 134, 69, 0.09);
+}
+
+body .nyomtatvanyok-container tbody tr:last-child td {
+  border-bottom: none;
+}
+
+body .nyomtatvanyok-container table button {
+  min-height: 40px;
+  padding: 0.62rem 0.88rem;
+  font-size: 0.92rem;
+  border-radius: 12px;
+}
+
+body .nyomtatvanyok-container p {
+  margin: 0;
+  color: var(--ny-muted);
+}
+
+body .nyomtatvanyok-container input:-webkit-autofill,
+body .nyomtatvanyok-container input:-webkit-autofill:hover,
+body .nyomtatvanyok-container input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ny-ink);
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 252, 247, 0.95) inset;
+}
+
+@media (max-width: 720px) {
+  body .nyomtatvanyok-container {
+    width: min(calc(100% - 20px), 760px);
+    margin: 20px auto 36px !important;
+    padding: 28px 18px 24px !important;
+    border-radius: 24px !important;
+  }
+
+  body .nyomtatvanyok-container > h1 {
+    margin-bottom: 22px;
+    font-size: 1.85rem;
+  }
+
+  body .nyomtatvanyok-container h2 {
+    font-size: 1.5rem;
+  }
+
+  body .nyomtatvanyok-container h4 {
+    font-size: 1.4rem;
+  }
+
+  body .nyomtatvanyok-container .nyomtatvanyok-actions {
+    gap: 12px;
+  }
+
+  body .nyomtatvanyok-container .nyomtatvanyok-actions button,
+  body .nyomtatvanyok-container > div:last-child > div > button {
+    width: 100%;
+  }
+
+  body .nyomtatvanyok-container > div:last-child > div > input,
+  body .nyomtatvanyok-container > div:last-child > div > input:nth-of-type(4),
+  body .nyomtatvanyok-container > div:last-child > div > input:nth-of-type(5) {
+    width: 100%;
+    max-width: none;
+  }
+
+  body .nyomtatvanyok-container table {
+    display: block;
+    overflow-x: auto;
+  }
+}
