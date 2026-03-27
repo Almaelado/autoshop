@@ -38,6 +38,7 @@ export default function Szures({ nyitva, setNyitva, onSearch }: SzuresProps) {
     if (!backendUrl) return;
   const fetchOptions = async () => {
     try {
+      // A valaszthato szuroertekeket minden esetben a backend torzsadatai adjak.
       const [markaRes, uzemanyagRes, szinRes, valtoRes, ajtoRes, szemelyRes] = await Promise.all([
         api.get('/auto/marka'),
         api.get('/auto/uzemanyag'),
@@ -80,10 +81,12 @@ const toggleSelect = (item: { id: number; nev: any }, selected: string[], setSel
       markak, uzemanyag, szin, valto, ajto, szemely, irat,
       arRange, kmRange, evjarat, motormeret
     };
+    // A modal csak filtereket gyujt, a tenyleges lista ujratolteset a szulo vegzi.
     onSearch(filters);
     setNyitva(false);
   };
 
+// Ujrafelhasznalhato UI resz az osszes tobbvalaszthato szurohoz.
 const renderMultiSelect = (
   label: string,
   options: { id: number; nev: any }[],

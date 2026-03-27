@@ -4,6 +4,8 @@ var router = express.Router();
 var authenticateToken = require('../middleware/authAuto');
 var autoController = require('../controllers/autoControllerMod');
 const multer = require('multer');
+
+// Az admin kepfeltoltes ideiglenesen a tmp mappaba ment, onnan mozog at a vegleges helyere.
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const dir = 'tmp/';
@@ -21,6 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
+// Nyilvanos auto- es szurovegpontok.
 router.get('/minden', autoController.osszes);
 router.get('/egy/:id', autoController.egy);
 router.delete('/torol/:id', autoController.torol);
@@ -35,6 +38,7 @@ router.get('/ajtok', autoController.getAjto);
 router.get('/szemelyek', autoController.getSzemely);
 router.get('/count', autoController.getCount);
 router.post('/refresh', autoController.refresh);
+// Bejelentkezett felhasznalohoz kotott funkciok.
 router.get('/profil',authenticateToken,autoController.profil);
 router.post('/logout', autoController.logout);
 router.get('/ajanlott/:marka', autoController.ajanlott);
@@ -50,6 +54,7 @@ router.post('/admin/chatablak', authenticateToken, autoController.ChatAblakAdmin
 router.post('/felhasznalo/chatablak', authenticateToken, autoController.ChatAblakFelhasznalo);
 router.get('/szamla', authenticateToken, autoController.szamlaAdatok);
 router.get('/random',autoController.randomautok);
+// Admin szerkeszto- es torzsadat-vegpontok.
 router.put('/szerkesztes/:id',authenticateToken,autoController.Szerkesztes);
 router.post('/ujauto',authenticateToken,autoController.UjAuto);
 router.post('/szamla',authenticateToken,autoController.UjSzamla);

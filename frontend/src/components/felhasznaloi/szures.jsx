@@ -22,7 +22,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
   const [valto, setValto] = useState([]);
   const [valtoList, setValtoList] = useState([]);
 
-  const [evjarat, setEvjarat] = useState([1900, new Date().getFullYear()]);
+  const [evjarat, setEvjarat] = useState([2010, new Date().getFullYear()]);
 
   const maxKm = 200000;
   const [kmRange, setKmRange] = useState([0, maxKm]);
@@ -59,6 +59,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
     fetchData("auto/ajtok", setAjtoList);
     fetchData("auto/szemelyek", setSzemelyList);
 
+    // Ha URL-bol jon a lap, a query paramokat visszatoltjuk a UI allapotaba.
     const params = Object.fromEntries([...searchParams]);
 
     if (params.markak) setMarkak(params.markak.split(","));
@@ -102,6 +103,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
       onSearch(JSON.stringify(filters));
     }
 
+    // A szurok query paramkent is bekerulnek, hogy megoszthato legyen az allapot.
     const params = {};
 
     if (markak.length) params.markak = markak.join(",");
@@ -177,7 +179,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
 
       <RangeSlider
         label="Gyártási év"
-        min={1900}
+        min={2010}
         max={new Date().getFullYear()}
         step={1}
         value={evjarat}

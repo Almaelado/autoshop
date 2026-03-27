@@ -12,6 +12,7 @@ export function BackendProvider({ children }: { children: React.ReactNode }) {
   const [backendUrl, setBackendUrlState] = useState("");
 
   const setBackendUrl = (url: string) => {
+    // A felhasznalo altal beirt backend cim az axios instance-re is rogton raul.
     setBackendUrlState(url);
     api.defaults.baseURL = url;
   };

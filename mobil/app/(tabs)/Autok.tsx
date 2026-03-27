@@ -43,12 +43,14 @@ export default function AutokMobile() {
   const [selectedAuto, setSelectedAuto] = useState<Termek | null>(null);
 
   // ----- Szűrés kezelése -----
+  // Az aktualis filtercsomaggal ujrainditjuk a listat az elso oldaltol.
   const handleSearch = (filters: any) => {
     setCurrentFilters(filters);
     loadPage(1, true, filters);
   };
 
   // ----- Oldalak betöltése -----
+  // Ugyanaz a backend szuro vegpont szolgaltat, csak mobilra lapozva kerjuk le.
   const loadPage = async (pageNum: number, refresh = false, filters: any = {}) => {
     if (loading) return;
 
@@ -76,6 +78,7 @@ export default function AutokMobile() {
   };
 
   // ----- Infinite scroll -----
+  // A FlatList vegehez erve toltjuk a kovetkezo adagot.
   const loadMore = () => {
     if (hasMore && !loading) loadPage(page + 1, false, currentFilters);
   };
@@ -87,6 +90,7 @@ export default function AutokMobile() {
 }, [backendUrl]);
 
   // ----- Render Item -----
+  // Egy kartya egyszerre listanezet es belepesi pont a reszletezo modalhoz.
   const renderItem = ({ item }: { item: Termek }) => (
     <TouchableOpacity style={styles.card} onPress={() => {
     setSelectedAuto(item);

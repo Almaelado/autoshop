@@ -58,6 +58,7 @@ const handleErdekel = async () => {
     return;
   }
 
+  // Mentes elott lekerjuk, hogy a user jelezte-e mar erdeklodeset erre az autora.
   setErdekelLoading(true);
   setErdekelSuccess(false);
 
@@ -84,6 +85,7 @@ const handleErdekel = async () => {
 };
 
   const handleImageError = (index:number) => {
+  // Ha nincs tobb kep, a hibas indexet egyszeruen kivesszuk a karusszelbol.
   setKepek(prev => prev.filter((_,i) => i !== index));
 };
   if (!auto) return null;
@@ -97,6 +99,7 @@ const handleErdekel = async () => {
     >
       <View style={styles.overlay}>
         <View style={styles.modal}>
+        {/* Ugyanitt nyithato meg a beagyazott chat modal is ugyanahhoz az autohoz. */}
         <TouchableOpacity
   style={styles.closeIcon}
   onPress={() => setNyitva(false)}

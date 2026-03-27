@@ -1,44 +1,34 @@
 # Backend dokumentáció – Autókereskedés
 
 **Áttekintés**
-A backend egy Node.js + Express alapú REST API, amelyet a webes frontend és a mobil kliens is használ. A szerver az autók listázását, részletek lekérését, összetett szűrését, a felhasználói hitelesítést, a profilkezelést, az érdeklődési és üzenetkezelési folyamatokat, valamint az admin felülethez tartozó autó-, képfeltöltési és nyomtatványos műveleteket szolgálja ki. A statikus autóképek a `backend/public/img` mappából érhetők el a `/img` útvonalon.
 
-**A rendszer célja és funkciója**
-- Nyilvános autólista, autóadatlap, ajánlott autók és véletlenszerű ajánlatok kiszolgálása.
-- JWT alapú bejelentkezés, regisztráció, profillekérés, profilmódosítás és jelszócsere.
-- Érdeklődési és üzenetküldési folyamatok kezelése a felhasználói oldalon.
-- Admin felület támogatása: autók létrehozása, szerkesztése, képfeltöltés, segédadatok bővítése.
-- Számlaadatok lekérése és számla/rendelés mentése.
+Az autókereskedés backendje egy Node.js és Express alapú REST API, amely a webes frontend és a mobil kliens közös kiszolgálását végzi. A szerver feladata az autók adatainak lekérdezése és szűrése, a felhasználói hitelesítés, a profilkezelés, az érdeklődések és üzenetek kezelése, valamint az admin felület működéséhez szükséges autókezelési, képfeltöltési és számlázási műveletek biztosítása.
 
-**Rövid architektúra leírás**
-A backend MVC-szerű felépítést követ. Az útvonalak a kontrollerekhez irányítják a kéréseket, a kontrollerek állítják össze a válaszlogikát, az adatbázis-elérést pedig a modellek végzik. Külön service réteg jelenleg nincs, a vezérlők közvetlenül hívják a modelleket. A JWT ellenőrzést middleware végzi, a képek és egyéb statikus fájlok az Express statikus kiszolgálásán keresztül érhetők el.
+A backend nemcsak adatforrásként működik, hanem a projekt szervező gerince is: itt található a kliensalkalmazások által használt üzleti logika, a jogosultsági ellenőrzések jelenlegi megvalósítása, illetve a statikus képek kiszolgálása is a `/img` útvonalon keresztül.
 
-**Fő komponensek és modulok**
-- `backend/app.js`: Express alkalmazás inicializálása, middleware-ek és route-ok bekötése.
+**A backend szerepe a rendszerben**
+
+Jelenlegi feladatai röviden:
+- nyilvános autólista, autóadatlap, ajánlott autók és véletlenszerű ajánlatok kiszolgálása;
+- bejelentkezés, regisztráció, profillekérés, profilmódosítás és jelszócsere;
+- érdeklődési és üzenetküldési folyamatok kezelése;
+- admin felület támogatása autófelvitellel, szerkesztéssel, segédadat-kezeléssel és képfeltöltéssel;
+- számlaadatok lekérése, számla és rendelés mentése.
+
+**Felépítés és fő komponensek**
+
+A backend MVC-szerű szerkezetet követ. Külön service réteg jelenleg nincs, ezért a vezérlők közvetlenül a modellekkel dolgoznak. Ez a megoldás egyszerű és jól követhető, ugyanakkor a projekt további bővítésénél érdemes lehet a logikát később rétegezettebben szétválasztani.
+
+Főbb fájlok és felelősségek:
+- `backend/app.js`: Express alkalmazás inicializálása, middleware-ek, CORS és route-ok bekötése.
 - `backend/bin/www`: HTTP szerver indítása.
-- `backend/routes/autoMod.js`: az összes REST végpont definíciója.
+- `backend/routes/autoMod.js`: a végpontok definíciója.
 - `backend/controllers/autoControllerMod.js`: vezérlőlogika, tokenkezelés, képfeltöltés, számla mentés.
-- `backend/models/autoModellMod.js`: SQL lekérdezések és adatbázis műveletek.
+- `backend/models/autoModellMod.js`: SQL műveletek és adatbázis-elérés.
 - `backend/middleware/authAuto.js`: JWT ellenőrzés és `req.user` beállítása.
 - `backend/config/db.js`: MySQL kapcsolat pool konfiguráció.
-- `backend/public/img`: kiszolgált képek mappája.
+- `backend/public/img`: a kliensoldalról elérhető képek mappája.
 - `backend/tmp`: ideiglenes feltöltési mappa a `multer` számára.
-
-**Technológiai stack**
-- Nyelv: JavaScript (Node.js).
-- Framework: Express 4.16.1.
-- Adatbázis driver: `mysql2/promise` 3.15.3.
-- Hitelesítés: `jsonwebtoken` 9.0.2, `bcrypt` 6.0.0.
-- Fájlkezelés: `multer` 2.0.2.
-- Middleware-ek: `cors`, `cookie-parser`, `morgan`, `dotenv`.
-- Fejlesztői futtatás: `nodemon`.
-
-**Rendszerarchitektúra**
-Modulok és rétegek:
-- Route réteg: `backend/routes/autoMod.js`
-- Controller réteg: `backend/controllers/autoControllerMod.js`
-- Model réteg: `backend/models/autoModellMod.js`
-- Middleware réteg: `backend/middleware/authAuto.js`
 
 Adatáramlás:
 ```mermaid
@@ -52,15 +42,19 @@ flowchart LR
     Express -->|/img| Static[(public/img)]
 ```
 
-Összefüggések más rendszerekkel:
-- A webes frontend a `frontend` mappából, a mobil kliens a `mobil` mappából használja ugyanazt az API-t.
-- A képek közvetlenül a backend `/img` útvonalán érhetők el.
-- Külső fizetési vagy e-mail integráció jelenleg nincs.
+Technológiai alapok:
+- JavaScript (Node.js)
+- Express 4.16.1
+- `mysql2/promise`
+- `jsonwebtoken` és `bcrypt`
+- `multer`
+- `cors`, `cookie-parser`, `morgan`, `dotenv`
+- `nodemon`
 
-Skálázási és deployment megjegyzések:
-- Jelenleg egyetlen Node.js folyamat fut.
-- Külön service layer, queue vagy cache nincs.
-- A jelenlegi kód egyszerű fejlesztői/iskolai futtatásra van optimalizálva.
+Kapcsolódó rendszerek:
+- a webes frontend a `frontend` mappából használja az API-t;
+- a mobil kliens a `mobil` mappából szintén ugyanezt a backendet éri el;
+- külső fizetési vagy e-mail integráció jelenleg nincs.
 
 **Adatbázis és adatmodellezés**
 Adatbázis séma és ER összefoglaló:
@@ -104,14 +98,16 @@ Adatmigrációk és seed adatok:
 - A seed tartalmaz autókat, márkákat, színeket, üzemanyagokat, váltókat, fizetési módokat és teszt felhasználókat.
 
 **API dokumentáció**
+
 Alap útvonal: minden végpont a `/auto` prefix alatt érhető el.
 
 Hitelesítés:
-- A védett végpontok `Authorization: Bearer <accessToken>` fejlécet várnak.
-- A refresh token `refreshToken` néven HTTP-only cookie-ban tárolódik.
-- Az access token 15 percig, a refresh token 7 napig érvényes.
+- a védett végpontok `Authorization: Bearer <accessToken>` fejlécet várnak;
+- a refresh token `refreshToken` néven HTTP-only cookie-ban tárolódik;
+- az access token 15 percig, a refresh token 7 napig érvényes.
 
 Végpontok összefoglaló táblázata:
+
 | Metódus | Útvonal | Auth | Leírás |
 |---|---|---|---|
 | GET | `/auto/minden` | Nem | Összes autó listázása `limit` és `offset` query paraméterekkel. |
@@ -154,7 +150,8 @@ Végpontok összefoglaló táblázata:
 | DELETE | `/auto/kepek/:autoId/:index` | JWT | Egy kép törlése. |
 | GET | `/auto/admin/unansweredcount` | Nem | Megválaszolatlan üzenetek száma. |
 
-Paraméterek és request body példák:
+Példák:
+
 - `POST /auto/login`
 ```json
 {
@@ -162,6 +159,7 @@ Paraméterek és request body példák:
   "password": "titkosjelszo"
 }
 ```
+
 Válasz:
 ```json
 {
@@ -204,40 +202,53 @@ Válasz:
 A feltöltés `multipart/form-data` formában történik, a fájlmező neve `file`.
 
 Jogosultsági megjegyzések:
-- A `JWT` jelölés jelenleg csak tokenellenőrzést jelent, központi admin szerepkör-ellenőrzést nem.
-- Az admin felületet a webes frontend útvonalőrei korlátozzák, de a backend több admin jellegű végpontnál nem vizsgálja külön az `admin` flaget.
-- A `/auto/torol/:id` és a `/auto/admin/unansweredcount` végpont jelenleg token nélkül is elérhető.
+- a `JWT` jelölés jelenleg tokenellenőrzést jelent, nem teljes szerepkör-ellenőrzést;
+- a webes admin felület kliensoldali védelmet használ, de a backend több admin jellegű végpontnál nem vizsgálja külön az `admin` flaget;
+- a `/auto/torol/:id` és a `/auto/admin/unansweredcount` végpont jelenleg token nélkül is elérhető.
 
 **Biztonság**
-- A jelszavak `bcrypt` hash formában kerülnek tárolásra.
-- A legtöbb SQL művelet paraméterezett lekérdezést használ.
-- A szűrő végpont dinamikusan építi a lekérdezést, és a `LIMIT/OFFSET` közvetlenül kerül az SQL-be, ezért további szerveroldali validálás javasolt.
-- A `refreshToken` cookie `httpOnly`, de jelenleg `secure: false` beállítással működik.
-- A CORS konfiguráció `origin: true` és `credentials: true`, ami fejlesztéshez kényelmes, éles környezetben szigorítást igényel.
-- Külön admin jogosultságellenőrzés és központi inputvalidáció még nincs.
+
+A backend biztonsági megoldásai részben már működnek, részben még továbbfejlesztésre szorulnak.
+
+Jelenlegi állapot:
+- a jelszavak `bcrypt` hash formában kerülnek tárolásra;
+- a legtöbb SQL művelet paraméterezett lekérdezést használ;
+- a szűrő végpont dinamikusan építi a lekérdezést, ezért ott további szerveroldali validáció javasolt;
+- a `refreshToken` cookie `httpOnly`, de jelenleg `secure: false` beállítással működik;
+- a CORS konfiguráció fejlesztői környezetre van szabva (`origin: true`, `credentials: true`);
+- központi inputvalidáció és részletes admin jogosultságkezelés még nincs.
 
 **Hibakezelés és logolás**
-- A hibák többsége 500-as státuszkóddal és `{ message }` struktúrával tér vissza.
-- Egységes hibakezelő middleware nincs.
-- Naplózás: `morgan('dev')`, valamint több helyen `console.log` és `console.error`.
-- Monitoring és alerting nincs beépítve.
 
-**Deployment és üzemeltetés**
+A backend hibakezelése jelenleg egyszerű, de átlátható.
+- a hibák többsége 500-as státuszkóddal és `{ message }` szerkezettel tér vissza;
+- egységes hibakezelő middleware nincs;
+- a naplózás `morgan('dev')`, `console.log` és `console.error` használatával történik;
+- monitoring és automatikus riasztás nincs beépítve.
+
+**Üzemeltetés**
+
 Környezeti változók:
 - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`, `DB_PORT`
 - `ACCESS_SECRET`, `REFRESH_SECRET`
 
 Futtatás:
-- Indítás: `npm start`
-- A szerver a `backend/bin/www` fájlból indul.
-- A HTTP port jelenleg a `DB_PORT` környezeti változóból kerül kiolvasásra.
+- indítás: `npm start`
+- a szerver a `backend/bin/www` fájlból indul;
+- a HTTP port jelenleg a `DB_PORT` környezeti változóból kerül kiolvasásra.
 
 Aktuális üzemeltetési állapot:
-- Docker vagy Kubernetes konfiguráció nincs.
-- Több környezetre bontott konfiguráció nincs.
-- Automatizált backup és rollback folyamat nincs.
+- Docker vagy Kubernetes konfiguráció nincs;
+- több környezetre bontott konfiguráció nincs;
+- automatizált mentési és visszaállítási folyamat nincs;
+- a jelenlegi szerkezet elsősorban fejlesztői és iskolai bemutatási környezetre alkalmas.
 
-**Tesztelés**
-- Automatikus tesztek jelenleg nem találhatók a projektben.
-- A backend főleg manuális teszteléssel használható.
-- Javasolt továbblépés: `Jest` + `Supertest`, valamint dokumentált Postman gyűjtemény.
+**Tesztelés és továbbfejlesztés**
+
+A projektben jelenleg nem található automatikus backend tesztkészlet, ezért a végpontok ellenőrzése főként manuális próbákkal és a klienseken keresztül történik.
+
+Javasolt következő lépések:
+- egységes inputvalidáció bevezetése;
+- valódi admin jogosultságellenőrzés kialakítása;
+- automatizált API tesztek készítése `Jest` és `Supertest` használatával;
+- a futtatási konfiguráció szétválasztása fejlesztői és éles környezetre.

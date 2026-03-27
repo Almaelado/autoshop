@@ -43,12 +43,14 @@ function AppContent({
   const location = useLocation();
   const isAutokPage = location.pathname === "/autok";
 
+  // A szuro oldalsav csak az autolistanal marad nyitva.
   useEffect(() => {
     if (!isAutokPage && szuroNyitva) {
       setSzuroNyitva(false);
     }
   }, [isAutokPage, szuroNyitva, setSzuroNyitva]);
 
+  // Nyitott mobil szuronel letiltjuk a hatter gorgeteset.
   useEffect(() => {
     const shouldLockScroll = isAutokPage && szuroNyitva;
 
@@ -86,7 +88,7 @@ function AppContent({
                     className="szuro-gomb btn btn-primary d-flex align-items-center"
                     onClick={() => setSzuroNyitva(true)}
                   >
-                    <span className="me-2 bi bi-funnel"></span> Szuro
+                    <span className="me-2 bi bi-funnel"></span> Szűrő
                   </button>
                 )}
 
@@ -251,6 +253,7 @@ function App() {
     })
   );
 
+  // A Hargita kontener valos viewport-merete CSS valtozokent kerul at a layoutnak.
   const updateHargitaViewport = useCallback(() => {
     const hargita = hargitaRef.current;
     if (!hargita) return;
@@ -286,6 +289,7 @@ function App() {
     let scrollRafId = null;
     const scrollDarkenDistancePx = 3200;
 
+    // A landing oldali hatter fokozatos sotetedeset gorgeteshez kotjuk.
     const updateScrollProgress = () => {
       scrollRafId = null;
       const progress = Math.min(window.scrollY / scrollDarkenDistancePx, 1);
@@ -318,6 +322,7 @@ function App() {
   useEffect(() => {
     const refreshAccessToken = async () => {
       try {
+        // Oldalfrissites utan a refresh cookie-bol probaljuk visszaepiteni a sessiont.
         const res = await http.post("/auto/refresh", {}, { withCredentials: true });
 
         if (res.data?.accessToken) {

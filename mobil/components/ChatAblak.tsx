@@ -48,6 +48,7 @@ export default function ChatAblak({
   }, [user]);
 
   useEffect(() => {
+    // A backend rekordokat egy egyszeru, idorendi buboreksorra bontjuk a megjeleniteshez.
     const ujRendezett: [string, string, boolean][] = [];
     for (let i = 0; i < messages.length; i++) {
       const msg = messages[i];
@@ -113,6 +114,7 @@ export default function ChatAblak({
     <Modal visible={nyitva} animationType="slide" transparent>
       <View style={styles.overlay}>
         <View style={[styles.container, showLoginModal && styles.loginContainer]}>
+          {/* Bejelentkezes nelkul nem engedunk uzenetet kuldeni, csak tajekoztatast mutatunk. */}
           {!user ? (
   <>
     <Text style={styles.centeredText}>

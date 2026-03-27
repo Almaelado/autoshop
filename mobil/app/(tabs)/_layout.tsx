@@ -11,6 +11,7 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { user } = useAuth(); // 👈 EZ A LÉNYEG
 
+  // A harmadik tab cime es ikonja attol fugg, hogy van-e aktiv session.
   const isLoggedIn = !!user;
 
   return (

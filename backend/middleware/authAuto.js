@@ -5,6 +5,7 @@ const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
 
 function authenticateToken(req, res, next) {
+    // A Bearer token ellenorzese utan a dekodolt user raul a requestre.
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     //console.log('Authentikációs token:', token);

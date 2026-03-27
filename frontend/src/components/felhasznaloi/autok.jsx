@@ -31,6 +31,7 @@ const Autok = ({ szuro, admin }) => {
             if (response.data.length === 0) {
                 setHasMore(false);
             } else {
+                // Infinite scrollnal csak az uj elemeket fuzzuk a listahoz.
                 setAutok((prev) => {
                     const newItems = response.data.filter(
                         (item) => !prev.some((prevItem) => prevItem.id === item.id)
@@ -55,6 +56,7 @@ const Autok = ({ szuro, admin }) => {
             fetchAutok();
         }, [szuro, page, searchTerm]);
 
+    // Az utolso kartyat figyeljük, es ha latszik, betoltjuk a kovetkezo oldalt.
     const lastItemRef = useCallback(
         (node) => {
             if (loading) return;
@@ -82,6 +84,7 @@ const Autok = ({ szuro, admin }) => {
         setKereso(e.target.value);
     };
     const handleKeresoGomb = () => {
+        // Uj keresoszora mindig nullarol indul az oldalszamozas.
         setAutok([]);
         setPage(1);
         setHasMore(true);
