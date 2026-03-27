@@ -88,7 +88,7 @@ function AppContent({
                     className="szuro-gomb btn btn-primary d-flex align-items-center"
                     onClick={() => setSzuroNyitva(true)}
                   >
-                    <span className="me-2 bi bi-funnel"></span> Szuro
+                    <span className="me-2 bi bi-funnel"></span> Szűrő
                   </button>
                 )}
 

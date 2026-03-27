@@ -22,7 +22,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
   const [valto, setValto] = useState([]);
   const [valtoList, setValtoList] = useState([]);
 
-  const [evjarat, setEvjarat] = useState([1900, new Date().getFullYear()]);
+  const [evjarat, setEvjarat] = useState([2010, new Date().getFullYear()]);
 
   const maxKm = 200000;
   const [kmRange, setKmRange] = useState([0, maxKm]);
@@ -179,7 +179,7 @@ export default function Szures({ value, onSearch, nyitva, setNyitva }) {
 
       <RangeSlider
         label="Gyártási év"
-        min={1900}
+        min={2010}
         max={new Date().getFullYear()}
         step={1}
         value={evjarat}
