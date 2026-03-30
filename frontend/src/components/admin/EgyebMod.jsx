@@ -13,6 +13,7 @@ import './egyedmod.css';
         http.post(`/auto/addszin`, {szin}, { headers: { Authorization: `Bearer ${accessToken}` } })
             .then(response => {
                 console.log("Szín hozzáadva:", response.data);
+                alert("Változtatás Sikeres!");
             })
             .catch(error => {
                 console.error("Hiba a szín hozzáadása során:", error);
@@ -23,6 +24,7 @@ import './egyedmod.css';
         http.post(`/auto/adduzemanyag`, {uzemanyag}, { headers: { Authorization: `Bearer ${accessToken}` } })
             .then(response => {
                 console.log("Üzemanyag hozzáadva:", response.data);
+                alert("Változtatás Sikeres!");
             })
             .catch(error => {
                 console.error("Hiba az üzemanyag hozzáadása során:", error);
@@ -32,6 +34,7 @@ import './egyedmod.css';
         http.post(`/auto/addmodell`, {modell}, { headers: { Authorization: `Bearer ${accessToken}` } })
             .then(response => {
                 console.log("Autó modell hozzáadva:", response.data);
+                alert("Változtatás Sikeres!");
             })
             .catch(error => {
                 console.error("Hiba az autó modell hozzáadása során:", error);
@@ -41,6 +44,7 @@ import './egyedmod.css';
         http.post(`/auto/addvalto`, {valto}, { headers: { Authorization: `Bearer ${accessToken}` } })
             .then(response => {
                 console.log("Váltó hozzáadva:", response.data);
+                alert("Változtatás Sikeres!");
             })
             .catch(error => {
                 console.error("Hiba a váltó hozzáadása során:", error);
