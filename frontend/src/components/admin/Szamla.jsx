@@ -100,15 +100,13 @@ const szurtAutokLista = autokLista.filter(auto =>
     }
 
     const handleFizetesimodValasztas = (valasztott) => {
-       // console.log("Kiválasztott fizetési mód:", valasztott[0]);
-        const jsonData = JSON.parse(egesz);
-        for(let i = 0 ; i<jsonData.fizetesimod.length;i++){
-            if(jsonData.fizetesimod[i].mod === valasztott[0]){
-                setFizetesimod(jsonData.fizetesimod[i].mod);
-                break;
-            }
-        }
-    }
+      console.log(egesz);
+  const jsonData = JSON.parse(egesz);
+  const modObj = jsonData.fizetesimod.find(f => f.mod === valasztott[0]);
+  if (modObj) {
+    setFizetesimod(modObj.id);  // 🔹 fontos: ID, nem név
+  }
+};
     const fetchAutok = async (reset = false) => {
   if (betolt || !vanTobb) return;
 
@@ -176,9 +174,9 @@ const handleScroll = (e) => {
 
   const generatePDF = () => {
   const doc = new jsPDF();
-
-
-  const datum = new Date().toLocaleDateString("hu-HU");
+  const jsonData = JSON.parse(egesz);
+  const fizetesimodNev = jsonData.fizetesimod.find(f => f.id === fizetesimod)?.mod;
+  const datum = new Date().toISOString().split("T")[0];
   const szamlaSzam = `SZ-${Math.floor(Math.random() * 100000)}`;
 
   // ===== CÉG ADATOK =====
@@ -223,11 +221,11 @@ const handleScroll = (e) => {
   const netto = mennyiseg * egysegar;
   const afa = netto * 0.27;
   const brutto = netto + afa;
-
+  
   const y = doc.lastAutoTable.finalY + 10;
 
 doc.setFontSize(10);
-doc.text(`Fizetési mód: ${fizetesimod}`, 140, y);
+doc.text(`Fizetési mód: ${fizetesimodNev}`, 140, y);
 doc.text(`Nettó összesen: ${netto.toLocaleString("hu-HU")} Ft`, 140, y + 6);
 doc.text(`ÁFA (27%): ${afa.toLocaleString("hu-HU")} Ft`, 140, y + 12);
 

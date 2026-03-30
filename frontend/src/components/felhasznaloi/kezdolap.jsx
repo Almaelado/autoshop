@@ -60,9 +60,13 @@ export default function FoOldal() {
           {randomAutok.map((auto) => (
             <Card key={auto.id} className="car-card">
               <Card.Img
-                variant="top"
-                src={`http://localhost:80/img/${auto.id}_1.jpg`}
-              />
+  variant="top"
+  src={`http://localhost:80/img/${auto.id}_1.jpg`}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "http://localhost:80/img/noimg.jpg";
+  }}
+/>
 
               <Card.Body>
                 <Card.Title>
