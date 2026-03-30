@@ -17,17 +17,20 @@
   gap: 32px;
 }
 
-.profile-edit-form h1 {
+.profile-edit-container .profile-edit-form .profile-edit-title {
   font-size: 2rem;
-  color: #1a237e;
+  color: #2b2623 !important;
   font-weight: 700;
-  margin-bottom: 18px;
+  margin: 0 auto 18px;
   text-align: center;
   letter-spacing: 0.5px;
-  background: linear-gradient(90deg, #1976d2 0%, #00bcd4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  width: fit-content;
+  max-width: 100%;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  line-height: 1.15;
 }
 
 .profile-edit-form p {
@@ -158,7 +161,7 @@
   .profile-edit-form {
     padding: 22px 8px 18px 8px;
   }
-  .profile-edit-form h1,
+  .profile-edit-title,
   .profile-edit-form h2,
   .profile-edit-form h3 {
     font-size: 1.2rem;
