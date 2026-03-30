@@ -269,7 +269,7 @@ CREATE TABLE `uzemanyag` (
 
 LOCK TABLES `uzemanyag` WRITE;
 /*!40000 ALTER TABLE `uzemanyag` DISABLE KEYS */;
-INSERT INTO `uzemanyag` VALUES (3,'CNG'),(1,'Diesel'),(4,'Electric'),(2,'Petrol');
+INSERT INTO `uzemanyag` VALUES (2,'Benzin'),(3,'CNG'),(1,'Dízel'),(4,'Elektromos');
 /*!40000 ALTER TABLE `uzemanyag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,10 +284,10 @@ CREATE TABLE `uzenet` (
   `id` int NOT NULL AUTO_INCREMENT,
   `vevo_id` int NOT NULL,
   `auto_id` int NOT NULL,
-  `elkuldve` date NOT NULL,
+  `elkuldve` datetime NOT NULL,
   `uzenet_text` text COLLATE utf8mb4_hungarian_ci NOT NULL,
   `valasz` text COLLATE utf8mb4_hungarian_ci,
-  `valasz_datum` date DEFAULT NULL,
+  `valasz_datum` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_uzenet_auto_id` (`auto_id`),
   KEY `FK_uzenet_vevo_id` (`vevo_id`),
@@ -302,7 +302,7 @@ CREATE TABLE `uzenet` (
 
 LOCK TABLES `uzenet` WRITE;
 /*!40000 ALTER TABLE `uzenet` DISABLE KEYS */;
-INSERT INTO `uzenet` VALUES (13,5,4,'2026-03-30','Szia, érdekelne ez az autó. Mikor tudom megnézni? ',NULL,NULL);
+INSERT INTO `uzenet` VALUES (13,5,4,'2026-03-30 00:00:00','Szia, érdekelne ez az autó. Mikor tudom megnézni? ',NULL,NULL);
 /*!40000 ALTER TABLE `uzenet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,4 +388,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-30  9:37:55
+-- Dump completed on 2026-03-30 11:38:10
