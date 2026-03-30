@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const res = await api.post("/auto/login", { email, password }, { withCredentials: true });
       const token = res.data.accessToken;
       setAccessToken(token);
-      Alert.alert(token);
        // A context akkor tekinti bejelentkezettnek a usert, ha a profil is betoltott.
        const userProfile = await fetchUserProfile(token);
        setUser(userProfile); // Beállítjuk a teljes felhasználói profilt

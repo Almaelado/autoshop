@@ -25,7 +25,7 @@ export default function BejReg() {
         password: password,
       })
       .then(response => {
-        console.log('Regisztráció sikeres:', response.data);
+        //console.log('Regisztráció sikeres:', response.data);
         setVizsg(false);
       })
       .catch(error => {
