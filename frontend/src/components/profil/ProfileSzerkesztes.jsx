@@ -119,7 +119,7 @@ export default function ProfileSzerkesztes({ accessToken }) {
           &#8592; Vissza
         </button>
       </div>
-      <h1>Profil Szerkesztése</h1>
+      <h1 className="profile-edit-title">Profil Szerkesztése</h1>
       <p>
         Cég esetében csak az adószám megadása kötelező, magánszemélynél nem.<br />
         A lakcím mezőnél pontos cím megadása kötelező, cég esetén a székhelyet kell megadni.
