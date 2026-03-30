@@ -446,19 +446,37 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
 
 
       {/* Carousel */}
-      {kepek.length > 0 && (
-        <div className="carousel-container">
-          <Carousel interval={null} indicators controls>
-            {kepek.map((kep, index) => (
-              <Carousel.Item key={index}>
-                <div className="carousel-img-wrapper">
-                  <img src={kep} alt={`Kép ${index + 1}`} className="carousel-img" />
-                </div>
-              </Carousel.Item>
-            ))}
-          </Carousel>
-        </div>
-      )}
+      {kepek.length > 0 ? (
+  <div className="carousel-container">
+    <Carousel interval={null} indicators controls>
+      {kepek.map((kep, index) => (
+        <Carousel.Item key={index}>
+          <div className="carousel-img-wrapper">
+            <img
+              src={kep}
+              alt={`Kép ${index + 1}`}
+              className="carousel-img"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "http://localhost:80/img/noimg.jpg";
+              }}
+            />
+          </div>
+        </Carousel.Item>
+      ))}
+    </Carousel>
+  </div>
+) : (
+  <div className="carousel-container">
+  <div className="carousel-img-wrapper">
+    <img
+      src="http://localhost:80/img/noimg.jpg"
+      alt="Nincs kép"
+      className="carousel-img"
+    />
+  </div>
+</div>
+)}
 
       {/* Autó adatok */}
       <div className="auto-info">
@@ -508,7 +526,15 @@ export default function Autokreszletek({ accessToken, onLoginModalOpen,admin }) 
                   }
                 }}
               >
-                <img src={`http://localhost:80/img/${a.id}_1.jpg`} alt={a.nev} className="ajanlott-img" />
+                <img
+  src={`http://localhost:80/img/${a.id}_1.jpg`}
+  alt={a.nev}
+  className="ajanlott-img"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "http://localhost:80/img/noimg.jpg";
+  }}
+/>
                 <div className="ajanlott-info">
                   <div className="ajanlott-nev">{a.nev} {a.model}</div>
                   <div className="ajanlott-ar">{a.ar?.toLocaleString()} Ft</div>

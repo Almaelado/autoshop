@@ -88,9 +88,28 @@ export default function Profil({ accessToken }) {
           </Button>
         </div>
         <div className="profile-avatar">
-          {profilData?.nev?.[0]?.toUpperCase() || "?"}
-        </div>
-        <div className="profile-name">{profilData?.nev || "Betöltés..."}</div>
+  {profilData?.nev
+    ? profilData.nev[0].toUpperCase()
+    : "!"}
+</div>
+
+<div className="profile-name">
+  {profilData?.nev
+    ? profilData.nev
+    : (<div
+    style={{
+      backgroundColor: "#fff3cd",
+      border: "1px solid #ffeeba",
+      color: "#856404",
+      padding: "12px 16px",
+      borderRadius: "8px",
+      marginTop: "10px",
+      fontWeight: "500"
+    }}
+  >
+    Kérlek, töltsd ki a profilodat, nyomj a Szerkesztés gombra!
+  </div>)}
+</div>
         <div className="profile-email">{profilData?.email}</div>
       </div>
       <hr />
@@ -115,17 +134,21 @@ export default function Profil({ accessToken }) {
               }}
             >
               <img
-                src={`http://localhost:80/img/${auto.id}_1.jpg`}
-                alt={auto.nev}
-                style={{
-                  width: 80,
-                  height: 60,
-                  objectFit: 'cover',
-                  borderRadius: 6,
-                  marginRight: 16,
-                  border: "1px solid #d0e2ff"
-                }}
-              />
+  src={`http://localhost:80/img/${auto.id}_1.jpg`}
+  alt={auto.nev}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "http://localhost:80/img/noimg.jpg";
+  }}
+  style={{
+    width: 80,
+    height: 60,
+    objectFit: 'cover',
+    borderRadius: 6,
+    marginRight: 16,
+    border: "1px solid #d0e2ff"
+  }}
+/>
               <div>
                 <div style={{ fontWeight: 'bold', fontSize: 16 }}>
                   {auto.nev} {auto.model}

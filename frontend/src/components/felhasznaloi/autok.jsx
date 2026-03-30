@@ -121,9 +121,13 @@ const Autok = ({ szuro, admin }) => {
                         onClick={() => admin==false ? navigate(`/auto/${auto.id}`) : null}
                     >
                         <Card.Img
-                              variant="top"
-                              src={`http://localhost:80/img/${auto.id}_1.jpg`}
-                            />
+    variant="top"
+    src={`http://localhost:80/img/${auto.id}_1.jpg`}
+    onError={(e) => {
+        e.target.onerror = null; // végtelen loop elkerülése
+        e.target.src = "http://localhost:80/img/noimg.jpg";
+    }}
+/>
 
                         <Card.Body>
                             <Card.Title>{auto.nev} {auto.model}</Card.Title>
