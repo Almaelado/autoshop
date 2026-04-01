@@ -38,6 +38,11 @@
   gap: 24px;
 }
 
+.footer-top-admin {
+  justify-content: center;
+  text-align: center;
+}
+
 .footer-brand h3 {
   margin: 0 0 8px;
   color: #fff7ef;
@@ -83,6 +88,10 @@
   border-top: 1px solid rgba(216, 154, 99, 0.12);
 }
 
+.footer-admin .footer-bottom p {
+  text-align: center;
+}
+
 .footer-bottom p {
   margin: 0;
   color: rgba(255, 244, 232, 0.66);
@@ -101,6 +110,10 @@
   .footer-top {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .footer-top-admin {
+    align-items: center;
   }
 
   .footer-links {

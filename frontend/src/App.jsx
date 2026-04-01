@@ -223,7 +223,7 @@ function AppContent({
         </Routes>
       </div>
 
-      <Footer />
+      <Footer isAdmin={isAdmin} />
     </>
   );
 }

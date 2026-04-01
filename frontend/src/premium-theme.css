@@ -200,6 +200,19 @@ select:focus,
   box-shadow: var(--shadow-sm) !important;
 }
 
+.admin-auto-szerkesztes .card-header {
+  background: linear-gradient(135deg, #3a2417 0%, #8c4e23 100%) !important;
+  border-bottom: 1px solid rgba(255, 248, 242, 0.14) !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.admin-auto-szerkesztes .card-header h5 {
+  color: #fffaf5 !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(24, 21, 20, 0.35);
+}
+
 .main-menu {
   background:
     linear-gradient(135deg, rgba(17, 15, 14, 0.96) 0%, rgba(31, 27, 25, 0.94) 55%, rgba(17, 15, 14, 0.98) 100%) !important;
